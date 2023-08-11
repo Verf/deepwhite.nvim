@@ -1,0 +1,28 @@
+return {
+	base0 = "#1a1918", -- hsv(30, 8%, 10%)
+	base1 = "#595855", -- hsv(45, 4%, 35%)
+	base2 = "#807e79", -- hsv(43, 5%, 50%)
+	base3 = "#999791", -- hsv(45, 5%, 60%)
+	base4 = "#b3b1ad", -- hsv(40, 3%, 70%)
+	base5 = "#cccbc6", -- hsv(50, 3%, 80%)
+	base6 = "#e6e4df", -- hsv(43, 3%, 90%)
+	base7 = "#FAFAFA", -- hsv(60, 0%, 98%)
+
+	light_orange = "#fae7d4", -- hsv(30, 15%, 98%)
+	light_yellow = "#fafad4", -- hsv(60, 15%, 98%)
+	light_green = "#d4fad4", -- hsv(120, 15%, 98%)
+	light_cyan = "#d4fafa", -- hsv(180, 15%, 98%)
+	light_blue = "#d4d4fa", -- hsv(240, 15%, 98%)
+	light_purple = "#edd4fa", -- hsv(280, 15%, 98%)
+	light_pink = "#fad4ed", -- hsv(320, 15%, 98%)
+	light_red = "#fad4d4", -- hsv(360, 15%, 98%)
+
+	orange = "#f27900", -- hsv(30, 100%, 95%)
+	yellow = "#f2f200", -- hsv(60, 100%, 95%)
+	green = "#00f200", -- hsv(120, 100%, 95%)
+	cyan = "#00f2f2", -- hsv(180, 100%, 95%)
+	blue = "#0000a6", -- hsv(240, 100%, 65%)
+	purple = "#6f00a6", -- hsv(280, 100%, 65%)
+	pink = "#a6006f", -- hsv(320, 100%, 65%)
+	red = "#a60000", -- hsv(360, 100%, 65%)
+}
