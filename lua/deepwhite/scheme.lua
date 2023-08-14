@@ -2,6 +2,7 @@ local c = require("deepwhite.colors")
 
 return {
 	Normal = { fg = c.base0, bg = c.base7 },
+	NormalFloat = { link = "Normal" },
 	NonText = { fg = c.base3 },
 
 	SpecialKey = { fg = c.blue, bold = true },
