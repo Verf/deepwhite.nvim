@@ -62,8 +62,8 @@ return {
 	Statement = { fg = c.base0, bg = c.light_orange }, -- Conditional Repeat Label Operator Keyword Exception
 	Operator = { link = "Identifier" },
 	PreProc = { fg = c.base0, bold = true }, -- Include Define Macro PreCondit
-	Type = { fg = c.purple }, -- StorageClass Structure Typedef
-	Special = { fg = c.blue }, -- SpecialChar Tag Delimiter SpecialComment Debug
+	Type = { fg = c.purple, bold = true }, -- StorageClass Structure Typedef
+	Special = { link = "SpecialKey" }, -- SpecialChar Tag Delimiter SpecialComment Debug
 	Underlined = { underline = true },
 	Ignore = { fg = c.base7 },
 	Error = { link = "ErrorMsg" },
