@@ -22,7 +22,7 @@ function M.get_groups()
 
 		Question = { fg = c.base0, bold = true },
 
-		StatusLine = { fg = c.base0, bg = c.base7 },
+		StatusLine = { fg = c.base0, bg = c.base7, bold = true },
 		StatusLineNC = { fg = c.base0, bg = c.base7 },
 
 		TabLine = { link = "Normal" },
@@ -84,6 +84,8 @@ function M.get_groups()
 		DiagnosticUnderlineInfo = { sp = c.blue, undercurl = true },
 		DiagnosticUnderlineHint = { sp = c.base3, undercurl = true },
 		DiagnosticUnderlineOk = { sp = c.green, undercurl = true },
+		-- Lspsaga
+		RenameNormal = { link = "Normal" },
 
 		-- Treesittere
 		-- syntax
