@@ -29,14 +29,15 @@ use {
     end,
 }
 ```
+
 ## Configuration
 
 ```lua
 -- default configuration
 require('deepwhite').setup({
- -- If you have some anti-blue light setting (f.lux, light bulb, or low blue light mode monitor),
- -- turn it on, this will set the background color to a cooler color to prevent the background from being too warm.
- low_blue_light = true 
+    -- If you have some anti-blue light setting (f.lux, light bulb, or low blue light mode monitor),
+    -- turn it on, this will set the background color to a cooler color to prevent the background from being too warm.
+    low_blue_light = true
 })
 
 ```
@@ -44,6 +45,7 @@ require('deepwhite').setup({
 ## Q & A
 
 #### Which statusline and tabline are you using?
+
 <details>
 <summary>customizd heirline</summary>
     
@@ -182,4 +184,3 @@ require('deepwhite').setup({
     end,
 }
 </details>
-
