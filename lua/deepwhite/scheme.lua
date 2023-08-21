@@ -1,8 +1,6 @@
 local M = {}
 
-function M.get_groups()
-	local config = require("deepwhite").config
-	local c = require("deepwhite.colors").get_colors()
+function M.get_groups(c)
 	return {
 		Normal = { fg = c.base0, bg = c.base7 },
 		NormalFloat = { link = "Normal" },

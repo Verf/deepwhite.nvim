@@ -1,11 +1,8 @@
+local config = require("deepwhite.config")
 local M = {}
 
-M.config = {
-	low_blue_light = true,
-}
-
-function M.setup(config)
-	M.config = vim.tbl_deep_extend("force", M.config, config or {})
+function M.setup(opts)
+	config.setup(opts)
 end
 
 function M.load()
@@ -19,7 +16,8 @@ function M.load()
 	vim.o.background = "light"
 	vim.o.termguicolors = true
 
-	local groups = require("deepwhite.scheme").get_groups()
+	local colors = require("deepwhite.colors").get_colors(config.options)
+	local groups = require("deepwhite.scheme").get_groups(colors)
 
 	for name, val in pairs(groups) do
 		vim.api.nvim_set_hl(0, name, val)

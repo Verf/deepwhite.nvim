@@ -1,7 +1,6 @@
 local M = {}
 
-function M.get_colors()
-	local config = require("deepwhite").config
+function M.get_colors(options)
 	local colors = {
 		base0 = "#1A1918", -- hsv(30, 8%, 10%)
 		base1 = "#595855", -- hsv(45, 4%, 35%)
@@ -30,7 +29,7 @@ function M.get_colors()
 		pink = "#A6006F", -- hsv(320, 100%, 65%)
 		red = "#A60000", -- hsv(360, 100%, 65%)
 	}
-	if config.low_blue_light then
+	if options.low_blue_light then
 		colors.base7 = "#FAFAFA" -- hsv(60, 0%, 98%)
 	end
 	return colors
