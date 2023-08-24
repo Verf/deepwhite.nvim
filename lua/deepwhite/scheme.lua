@@ -16,7 +16,7 @@ function M.get_groups(c)
 		CurSearch = { link = "IncSearch" },
 
 		LineNr = { fg = c.base3 },
-		CursorLineNr = { link = "LineNr" },
+		CursorLineNr = { link = "Normal" },
 
 		Question = { fg = c.base0, bold = true },
 
@@ -30,7 +30,6 @@ function M.get_groups(c)
 
 		SignColumn = { link = "LineNr" },
 		FoldColumn = { link = "SignColumn" },
-		FoldColumn = { link = "SignColumn" },
 
 		Conceal = { fg = c.base5 },
 		SpellBad = { fg = c.base0, undercurl = true },
@@ -40,10 +39,12 @@ function M.get_groups(c)
 
 		Pmenu = { fg = c.base0, bg = c.base7 },
 		PmenuSel = { fg = c.base0, bg = c.base3 },
+		PmenuSbar = { bg = c.base0 },
+		PmenuThumb = { link = "PmenuSbar" },
 
 		WildMenu = { bg = c.base4 },
 		Visual = { bg = c.base5 },
-		Folded = { bg = c.base6 },
+		Folded = { bg = c.light_purple },
 
 		CursorLine = { bg = c.base6 },
 		CursorColumn = { link = "CursorLine" },
