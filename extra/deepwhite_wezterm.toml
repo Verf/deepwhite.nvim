@@ -1,0 +1,68 @@
+[metadata]
+name = "deepwhite"
+author = "Verf"
+origin_url = "https://github.com/Verf/deepwhite.nvim"
+
+[colors]
+foreground = "#1A1918"
+background = "#FAF2EB"
+cursor_bg = "#1A1918"
+cursor_border = "#1A1918"
+cursor_fg = "#FAF2EB"
+compose_cursor = '#999791'
+selection_bg = "#CCCBC6"
+selection_fg = "#1A1918"
+scrollbar_thumb = "#1A1918"
+split = "#1A1918"
+visual_bell = "#A60000"
+ansi = ["#A60000", "#00F200", "#F2F200", "#0000A6", "#6F00A6", "#00F2F2", "#FAF2EB"]
+brights = ["#F2201F", "#23FD00", "#FFFD00", "#1A8FFF", "#FD28FF", "#14FFFF", "#FAFAFA"]
+
+[colors.indexed]
+16 = "#EDD4FA"
+17 = "#FAE1C8"
+
+[colors.tab_bar]
+background = "#FAF2EB"
+inactive_tab_edge = "#CCCBC6"
+inactive_tab_edge_hover = "#FAE1C8"
+
+[colors.tab_bar.active_tab]
+bg_color = "#1A1918"
+fg_color = "#FAF2EB"
+intensity = "Normal"
+italic = false
+strikethrough = false
+underline = "None"
+
+[colors.tab_bar.inactive_tab]
+bg_color = "#FAF2EB"
+fg_color = "#1A1918"
+intensity = "Normal"
+italic = false
+strikethrough = false
+underline = "None"
+
+[colors.tab_bar.inactive_tab_hover]
+bg_color = "#FAF2EB"
+fg_color = "#1A1918"
+intensity = "Normal"
+italic = false
+strikethrough = false
+underline = "None"
+
+[colors.tab_bar.new_tab]
+bg_color = "#FAF2EB"
+fg_color = "#A60000"
+intensity = "Normal"
+italic = false
+strikethrough = false
+underline = "None"
+
+[colors.tab_bar.new_tab_hover]
+bg_color = "#FAE1C8"
+fg_color = "#1A1918"
+intensity = "Normal"
+italic = false
+strikethrough = false
+underline = "None"

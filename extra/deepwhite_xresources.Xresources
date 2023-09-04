@@ -1,0 +1,20 @@
+! DeepWhite colors for Xresources
+! Upstream: https://github.com/Verf/deepwhite.nvim/blob/main/extra/deepwhite_xresources.Xresources
+*background: #FAF2EB
+*foreground: #1A1918
+*color0: #1A1918
+*color1: #A60000
+*color2: #00F200
+*color3: #F2F200
+*color4: #0000A6
+*color5: #6F00A6
+*color6: #00F2F2
+*color7: #FAF2EB
+*color8: #999791
+*color9: #f2201f
+*color10: #23fd00
+*color11: #fffd00
+*color12: #1a8fff
+*color13: #fd28ff
+*color14: #14ffff
+*color15: #FAFAFA 

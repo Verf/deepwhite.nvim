@@ -1,0 +1,23 @@
+{
+   "name"               : "deepwhite",
+   "foreground"         : "#1A1918",
+   "background"         : "#FAF2EB",
+   "cursorColor"        : "#7A7571",
+   "selectionBackground": "#CCCBC6",
+   "black"              : "#1A1918",
+   "brightBlack"        : "#999791",
+   "red"                : "#A60000",
+   "brightRed"          : "#f2201f",
+   "green"              : "#00F200",
+   "brightGreen"        : "#23fd00",
+   "yellow"             : "#F2F200",
+   "brightYellow"       : "#fffd00",
+   "blue"               : "#0000A6",
+   "brightBlue"         : "#1a8fff",
+   "cyan"               : "#6F00A6",
+   "brightCyan"         : "#fd28ff",
+   "purple"             : "#00F2F2",
+   "brightPurple"       : "#14ffff",
+   "white"              : "#FAF2EB",
+   "brightWhite"        : "#FAFAFA"
+}
