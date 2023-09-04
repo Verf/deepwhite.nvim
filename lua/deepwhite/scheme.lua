@@ -143,6 +143,27 @@ function M.get_groups(c)
 		MiniFilesNormal = { link = "Normal" }, -- basic foreground/background highlighting.
 		MiniFilesTitle = { link = "Comment" }, -- title of regular windows.
 		MiniFilesTitleFocused = { link = "PreProc" }, -- title of focused window.
+
+		-- barbar
+		BufferCurrent = { link = "TabLineSel" },
+		BufferCurrentIndex = { link = "TabLineSel" },
+		BufferCurrentMod = { fg = c.orange },
+		BufferCurrentSign = { fg = c.base7 },
+		BufferCurrentTarget = { fg = c.red },
+		BufferInactive = { link = "TabLine" },
+		BufferInactiveIndex = { link = "TabLine" },
+		BufferInactiveMod = { link = "BufferCurrentMod" },
+		BufferInactiveSign = { link = "BufferCurrentSign" },
+		BufferInactiveTarget = { link = "BufferCurrentTarget" },
+		BufferVisible = { link = "BufferInactive" },
+		BufferVisibleIndex = { link = "BufferInactiveIndex" },
+		BufferVisibleMod = { link = "BufferInactiveMod" },
+		BufferVisibleSign = { link = "BufferInactiveSign" },
+		BufferVisibleTarget = { link = "BufferInactiveTarget" },
+		BufferTabpages = { link = "TabLineSel" },
+		BufferTabpageFill = { link = "TabLine" },
+		BufferOffset = { link = "TabLineSel" },
+		BufferScrollArrow = { link = "TabLineSel" },
 	}
 end
 
