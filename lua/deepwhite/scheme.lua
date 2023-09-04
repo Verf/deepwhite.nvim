@@ -160,7 +160,7 @@ function M.get_groups(c)
 		BufferVisibleMod = { link = "BufferInactiveMod" },
 		BufferVisibleSign = { link = "BufferInactiveSign" },
 		BufferVisibleTarget = { link = "BufferInactiveTarget" },
-		BufferTabpages = { link = "TabLineSel" },
+		BufferTabpages = { link = "TabLine" },
 		BufferTabpageFill = { link = "TabLine" },
 		BufferOffset = { link = "TabLineSel" },
 		BufferScrollArrow = { link = "TabLineSel" },
