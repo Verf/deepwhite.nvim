@@ -38,7 +38,18 @@ require('deepwhite').setup({
     -- turn it on, this will set the background color to a cooler color to prevent the background from being too warm.
     low_blue_light = true
 })
+```
 
+![screenshot](screenshot/lualine.png)
+
+## lualine theme
+
+```lua
+require('lualine').setup({
+        options = {
+            theme = 'deepwhite',
+        },
+    })
 ```
 
 ## Q & A
