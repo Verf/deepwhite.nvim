@@ -46,6 +46,8 @@ function M.get_groups(c)
 		Visual = { bg = c.base5 },
 		Folded = { bg = c.light_purple },
 
+		Cursor = { bg = c.base2 },
+		TermCursor = { link = "Cursor" },
 		CursorLine = { bg = c.base6 },
 		CursorColumn = { link = "CursorLine" },
 
