@@ -90,8 +90,10 @@ function M.get_groups(c)
 
 		-- Treesittere
 		-- syntax
+		["@keyword.function"] = { fg = c.base0, bg = c.light_purple },
 		["@function.call"] = { link = "Special" },
 		["@method.call"] = { link = "@function.call" },
+
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
 		TSRainbowOrange = { fg = c.orange },
