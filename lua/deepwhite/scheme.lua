@@ -55,6 +55,7 @@ function M.get_groups(c)
 
 		ErrorMsg = { fg = c.base7, bg = c.red },
 		WarningMsg = { fg = c.base7, bg = c.orange },
+
 		DiffAdd = { fg = c.green },
 		DiffChange = { fg = c.orange },
 		DiffDelete = { fg = c.red },
@@ -194,6 +195,11 @@ function M.get_groups(c)
 		NeogitDiffDelete = { bg = c.light_red },
 		NeogitDiffDeleteHighlight = { link = "NeogitDiffDelete" },
 		NeogitHunkHeader = { link = "NeogitHunkHeaderHighlight" },
+
+		-- Diffview
+		DiffviewDiffAdd = { bg = c.light_green },
+		DiffviewDiffDelete = { bg = c.light_red },
+		DiffviewDiffChange = { bg = c.light_orange },
 	}
 end
 
