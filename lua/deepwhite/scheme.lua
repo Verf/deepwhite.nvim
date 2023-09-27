@@ -95,13 +95,15 @@ function M.get_groups(c)
 
 		["@constructor"] = { link = "Identifier" },
 
-		["@function.call"] = { link = "Special"},
-		["@method.call"] = { link = "Special"},
+		["@function.call"] = { link = "Special" },
+		["@method.call"] = { link = "Special" },
 
 		["@type.builtin"] = { link = "Type" },
 		["@constant.builtin"] = { link = "Type" },
 		["@variable.builtin"] = { link = "Type" },
 		["@function.builtin"] = { link = "Type" },
+
+		["@text.title.gitcommit"] = { link = "@spell" },
 
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
@@ -185,6 +187,13 @@ function M.get_groups(c)
 		-- noice.nvim
 		NoiceCmdlinePopupTitle = { fg = c.base0, bold = true },
 		NoiceCmdlinePopupBorder = { fg = c.base0 },
+
+		-- Neogit
+		NeogitDiffAdd = { bg = c.light_green },
+		NeogitDiffAddHighlight = { link = "NeogitDiffAdd" },
+		NeogitDiffDelete = { bg = c.light_red },
+		NeogitDiffDeleteHighlight = { link = "NeogitDiffDelete" },
+		NeogitHunkHeader = { link = "NeogitHunkHeaderHighlight" },
 	}
 end
 
