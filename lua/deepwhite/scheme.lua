@@ -90,9 +90,18 @@ function M.get_groups(c)
 
 		-- Treesittere
 		-- syntax
-		["@keyword.function"] = { fg = c.base0, bg = c.light_purple },
-		["@function.call"] = { link = "Special" },
-		["@method.call"] = { link = "@function.call" },
+		["@keyword.function"] = { bg = c.light_purple },
+		["@keyword.operator"] = { link = "Keyword" },
+
+		["@constructor"] = { link = "Identifier" },
+
+		["@function.call"] = { link = "Special"},
+		["@method.call"] = { link = "Special"},
+
+		["@type.builtin"] = { link = "Type" },
+		["@constant.builtin"] = { link = "Type" },
+		["@variable.builtin"] = { link = "Type" },
+		["@function.builtin"] = { link = "Type" },
 
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
@@ -148,6 +157,10 @@ function M.get_groups(c)
 		MiniFilesTitle = { link = "Comment" }, -- title of regular windows.
 		MiniFilesTitleFocused = { link = "PreProc" }, -- title of focused window.
 
+		-- mini.jump2d
+		MiniJump2dSpot = { fg = c.orange, bold = true },
+		MiniJump2dDim = { link = "Comment" },
+
 		-- barbar
 		BufferCurrent = { link = "TabLineSel" },
 		BufferCurrentIndex = { link = "TabLineSel" },
@@ -168,6 +181,10 @@ function M.get_groups(c)
 		BufferTabpageFill = { link = "TabLine" },
 		BufferOffset = { link = "TabLineSel" },
 		BufferScrollArrow = { link = "TabLineSel" },
+
+		-- noice.nvim
+		NoiceCmdlinePopupTitle = { fg = c.base0, bold = true },
+		NoiceCmdlinePopupBorder = { fg = c.base0 },
 	}
 end
 
