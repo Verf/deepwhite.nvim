@@ -44,7 +44,7 @@ function M.get_groups(c)
 
 		WildMenu = { bg = c.base4 },
 		Visual = { bg = c.base5 },
-		Folded = { bg = c.light_purple },
+		Folded = {},
 
 		Cursor = { bg = c.base2 },
 		TermCursor = { link = "Cursor" },
