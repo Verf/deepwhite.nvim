@@ -97,14 +97,21 @@ function M.get_groups(c)
 		["@constructor"] = { link = "Identifier" },
 
 		["@function.call"] = { link = "Special" },
+		["@function.builtin"] = { link = "Type" },
 		["@method.call"] = { link = "Special" },
 
 		["@type.builtin"] = { link = "Type" },
 		["@constant.builtin"] = { link = "Type" },
 		["@variable.builtin"] = { link = "Type" },
-		["@function.builtin"] = { link = "Type" },
 
+		["@text.strong"] = { bold = true },
+		["@text.emphasis"] = { italic = true },
+		["@text.strike"] = { strikethrough = true },
+		["@text.literal"] = { bg = c.light_orange },
+		["@text.literal.block"] = {},
 		["@text.title.gitcommit"] = { link = "@spell" },
+		["@text.quote"] = { fg = c.base1 },
+		["@text.reference"] = { underline = true },
 
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
