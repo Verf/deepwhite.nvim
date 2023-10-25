@@ -207,6 +207,16 @@ function M.get_groups(c)
 		DiffviewDiffAdd = { bg = c.light_green },
 		DiffviewDiffDelete = { bg = c.light_red },
 		DiffviewDiffChange = { bg = c.light_orange },
+
+		-- modicator.nvim
+		NormalMode = { link = "Normal" },
+		InsertMode = { bold = True },
+		VisualMode = { link = "Visual" },
+		CommandMode = { link = "NormalMode" },
+		ReplaceMode = { fg = c.red },
+		SelectMode = { link = "VisualMode" },
+		TerminalMode = { link = "NormalMode" },
+		TerminalNormalMode = { link = "NormalMode" },
 	}
 end
 
