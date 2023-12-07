@@ -53,6 +53,8 @@ function M.get_groups(c)
 
 		ColorColumn = { bg = c.light_yellow },
 
+		MoreMsg = { fg = c.cyan },
+		ModeMsg = { fg = c.blue },
 		ErrorMsg = { fg = c.base7, bg = c.red },
 		WarningMsg = { fg = c.base7, bg = c.orange },
 
@@ -63,12 +65,14 @@ function M.get_groups(c)
 		Comment = { fg = c.base3 },
 		Constant = { fg = c.base0, bg = c.light_blue }, -- String Character Number Boolean Float
 		String = { fg = c.base0, bg = c.light_green },
-		Identifier = { fg = c.base0 }, -- Function
+		Identifier = { fg = c.base0 },
+		Delimiter = { link = "Identifier" },
 		Statement = { fg = c.base0, bg = c.light_orange }, -- Conditional Repeat Label Operator Keyword Exception
 		Operator = { link = "Identifier" },
 		PreProc = { link = "Question" }, -- Include Define Macro PreCondit
 		Type = { fg = c.pink }, -- StorageClass Structure Typedef
 		Special = { link = "SpecialKey" }, -- SpecialChar Tag Delimiter SpecialComment Debug
+		Function = { link = "Special" },
 		Underlined = { underline = true },
 		Ignore = { fg = c.base7 },
 		Error = { link = "ErrorMsg" },
