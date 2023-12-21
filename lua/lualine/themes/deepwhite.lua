@@ -1,6 +1,15 @@
 local config = require("deepwhite.config")
 local colors = require("deepwhite.colors").get_colors(config.options)
-vim.opt.fillchars:append({ stl = "─", stlnc = "─" })
+
+-- vim.opt.fillchars:append({ stl = "─", stlnc = "─" })
+
+function set_option_safe(name, setter)
+    for scope in {"local", "global"} do
+        local scoped_value = vim.api.nvim_get_option_value(name, {scope = scope})
+        vim.api.nvim_set_option_value(name, setter(scoped_value), { scope = scope })
+    end
+end
+set_option_safe("fillchars", function (fcs) { stl = "─", stlnc = "─", table.unpack(fcs) } end)
 
 return {
 	visual = {
