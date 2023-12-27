@@ -13,13 +13,12 @@ local colors = require("deepwhite.colors").get_colors(config.options)
   To avoid this behavior, we have to explicitly specify the scope---local or
   global---when setting an option value.
 ]]
-function set_option_safe(name, setter)
-    for scope in {"local", "global"} do
-        local scoped_value = vim.api.nvim_get_option_value(name, {scope = scope})
-        vim.api.nvim_set_option_value(name, setter(scoped_value), { scope = scope })
+local function set_option_safe(name, setter)
+    for _, scope in ipairs({ "local", "global" }) do
+        setter(vim["opt_" .. scope][name])
     end
 end
-set_option_safe("fillchars", function (fcs) { stl = "─", stlnc = "─", table.unpack(fcs) } end)
+set_option_safe("fillchars", function (opt) opt:append({ stl = "─", stlnc = "─" }) end)
 
 return {
 	visual = {
