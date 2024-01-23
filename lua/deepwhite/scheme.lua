@@ -72,7 +72,7 @@ function M.get_groups(c)
 		PreProc = { link = "Question" }, -- Include Define Macro PreCondit
 		Type = { fg = c.pink }, -- StorageClass Structure Typedef
 		Special = { link = "SpecialKey" }, -- SpecialChar Tag Delimiter SpecialComment Debug
-		Function = { link = "Special" },
+		Function = { link = "Identifier" },
 		Underlined = { underline = true },
 		Ignore = { fg = c.base7 },
 		Error = { link = "ErrorMsg" },
@@ -102,7 +102,7 @@ function M.get_groups(c)
 
 		["@function.call"] = { link = "Special" },
 		["@function.builtin"] = { link = "Type" },
-		["@method.call"] = { link = "Special" },
+		["@method.call"] = { link = "@function.call" },
 
 		["@type.builtin"] = { link = "Type" },
 		["@constant.builtin"] = { link = "Type" },
@@ -116,6 +116,18 @@ function M.get_groups(c)
 		["@text.title.gitcommit"] = { link = "@spell" },
 		["@text.quote"] = { fg = c.base1 },
 		["@text.reference"] = { underline = true },
+
+		-- adapt to https://github.com/nvim-treesitter/nvim-treesitter/pull/5895
+		["@function.method.call"] = { link = "@function.call" },
+
+		["@markup.strong"] = { bold = true },
+		["@markup.emphasis"] = { italic = true },
+		["@markup.strike"] = { strikethrough = true },
+		["@markup.raw"] = { bg = c.light_orange },
+		["@markup.raw.block"] = {},
+		["@markup.heading.gitcommit"] = { link = "@spell" },
+		["@markup.quote"] = { fg = c.base1 },
+		["@markup.link"] = { underline = true },
 
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
