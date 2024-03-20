@@ -204,11 +204,20 @@ function M.get_groups(c)
 		-- rainbow
 		TSRainbowRed = { fg = c.red },
 		TSRainbowOrange = { fg = c.orange },
-		TSRainbowYellow = { fg = c.orange },
+		TSRainbowYellow = { fg = c.yellow },
 		TSRainbowGreen = { fg = c.green },
-		TSRainbowCyan = { fg = c.blue },
+		TSRainbowCyan = { fg = c.cyan },
 		TSRainbowBlue = { fg = c.blue },
 		TSRainbowViolet = { fg = c.purple },
+
+		-- rainbow-delimiters
+		RainbowDelimiterRed = { fg = c.red },
+		RainbowDelimiterYellow = { fg = c.yellow },
+		RainbowDelimiterBlue = { fg = c.blue },
+		RainbowDelimiterOrange = { fg = c.orange },
+		RainbowDelimiterGreen = { fg = c.green },
+		RainbowDelimiterViolet = { fg = c.purple },
+		RainbowDelimiterCyan = { fg = c.cyan },
 
 		-- nvim-notify
 		NotifyERRORBorder = { fg = c.base0 },
