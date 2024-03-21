@@ -69,7 +69,7 @@ function M.get_groups(c)
 		Delimiter = { link = "Identifier" },
 		Statement = { fg = c.base0, bg = c.light_orange }, -- Conditional Repeat Label Operator Keyword Exception
 		Operator = { link = "Identifier" },
-		PreProc = { link = "Keyword" }, -- Include Define Macro PreCondit
+		PreProc = { link = "Question" }, -- Include Define Macro PreCondit
 		Type = { fg = c.pink }, -- StorageClass Structure Typedef
 		Special = { link = "SpecialKey" }, -- SpecialChar Tag Delimiter SpecialComment Debug
 		Function = { link = "Identifier" },
