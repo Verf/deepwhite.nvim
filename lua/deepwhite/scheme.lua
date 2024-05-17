@@ -9,7 +9,7 @@ function M.get_groups(c)
 		SpecialKey = { fg = c.blue },
 		Directory = { link = "SpecialKey" },
 
-		Title = { fg = c.base7, bg = c.base0 },
+		Title = { fg = c.base0, bold = true },
 
 		IncSearch = { fg = c.base0, bg = c.light_yellow },
 		Search = { link = "IncSearch" },
@@ -77,6 +77,8 @@ function M.get_groups(c)
 		Ignore = { fg = c.base7 },
 		Error = { link = "ErrorMsg" },
 		Todo = { fg = c.green },
+
+		MatchParen = { fg = c.red, underline = true },
 
 		-- Plugins
 		-- LSP
@@ -255,6 +257,15 @@ function M.get_groups(c)
 		CmpItemKindModule = { link = "CmpItemKindClass" },
 		CmpItemKindStruct = { link = "CmpItemKindClass" },
 
+		-- mini.diff
+		MiniDiffSignAdd = { fg = c.green },
+		MiniDiffSignChange = { fg = c.orange },
+		MiniDiffSignDelete = { fg = c.red },
+		MiniDiffOverAdd = { bg = c.light_green },
+		MiniDiffOverChange = { bg = c.light_orange },
+		MiniDiffOverContext = { bg = c.light_cyan },
+		MiniDiffOverDelete = { bg = c.light_red },
+
 		-- mini.files
 		MiniFilesBorder = { link = "WinSeparator" }, -- border of regular windows.
 		MiniFilesBorderModified = { link = "DiffChange" }, -- border of windows showing modified buffer.
@@ -267,6 +278,19 @@ function M.get_groups(c)
 		-- mini.jump2d
 		MiniJump2dSpot = { fg = c.orange, bold = true },
 		MiniJump2dDim = { link = "Comment" },
+
+		-- mini.statusline
+		MiniStatuslineModeNormal = { bg = c.light_purple },
+		MiniStatuslineModeInsert = { bg = c.light_green },
+		MiniStatuslineModeVisual = { bg = c.light_cyan },
+		MiniStatuslineModeReplace = { bg = c.light_orange },
+		MiniStatuslineModeCommand = { bg = c.light_red },
+		MiniStatuslineModeOther = { bg = c.light_blue },
+
+		-- mini.starter
+		MiniStarterHeader = { fg = c.base0 },
+		MiniStarterFooter = { fg = c.base3 },
+		MiniStarterItemPrefix = { fg = c.red },
 
 		-- barbar
 		BufferCurrent = { link = "TabLineSel" },
