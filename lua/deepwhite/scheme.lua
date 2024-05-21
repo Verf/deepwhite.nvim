@@ -257,10 +257,20 @@ function M.get_groups(c)
 		CmpItemKindModule = { link = "CmpItemKindClass" },
 		CmpItemKindStruct = { link = "CmpItemKindClass" },
 
+		-- mini.deps
+		MiniDepsChangeAdded = { fg = c.green },
+		MiniDepsChangeRemoved = { fg = c.orange },
+		MiniDepsHint = { fg = c.base3 },
+		MiniDepsInfo = { fg = c.base0 },
+		MiniDepsTitle = { fg = c.base0, bold = true },
+		MiniDepsTitleError = { fg = c.red, bold = true },
+		MiniDepsTitleSame = { fg = c.blue, bold = true },
+		MiniDepsTitleUpdate = { fg = c.green, bold = true },
+
 		-- mini.diff
-		MiniDiffSignAdd = { fg = c.green },
-		MiniDiffSignChange = { fg = c.orange },
-		MiniDiffSignDelete = { fg = c.red },
+		MiniDiffSignAdd = { bg = c.light_green },
+		MiniDiffSignChange = { bg = c.light_orange },
+		MiniDiffSignDelete = { bg = c.light_red },
 		MiniDiffOverAdd = { bg = c.light_green },
 		MiniDiffOverChange = { bg = c.light_orange },
 		MiniDiffOverContext = { bg = c.light_cyan },
@@ -276,8 +286,8 @@ function M.get_groups(c)
 		MiniFilesTitleFocused = { link = "PreProc" }, -- title of focused window.
 
 		-- mini.jump2d
-		MiniJump2dSpot = { fg = c.orange, bold = true },
-		MiniJump2dDim = { link = "Comment" },
+		MiniJump2dSpot = { fg = c.red, bold = true },
+		MiniJump2dSpotAhead = { fg = c.orange },
 
 		-- mini.statusline
 		MiniStatuslineModeNormal = { bg = c.light_purple },
@@ -286,11 +296,20 @@ function M.get_groups(c)
 		MiniStatuslineModeReplace = { bg = c.light_orange },
 		MiniStatuslineModeCommand = { bg = c.light_red },
 		MiniStatuslineModeOther = { bg = c.light_blue },
+		MiniStatuslineInactive = { fg = c.base3 },
 
 		-- mini.starter
 		MiniStarterHeader = { fg = c.base0 },
 		MiniStarterFooter = { fg = c.base3 },
 		MiniStarterItemPrefix = { fg = c.red },
+
+		-- mini.tabline
+		MiniTablineCurrent = { fg = c.base7, bg = c.base0 },
+		MiniTablineVisible = { link = "MiniTablineCurrent" },
+		MiniTablineHidden = { fg = c.base0, bg = c.base7 },
+		MiniTablineModifiedCurrent = { fg = c.orange, bg = c.base0 },
+		MiniTablineModifiedVisible = { link = "MiniTablineModifiedCurrent" },
+		MiniTablineModifiedHidden = { fg = c.orange, bg = c.base7 },
 
 		-- barbar
 		BufferCurrent = { link = "TabLineSel" },
