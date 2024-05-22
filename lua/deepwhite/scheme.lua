@@ -211,7 +211,7 @@ function M.get_groups(c)
 		["@lsp.type.function"] = { link = "@function.call" },
 		["@lsp.type.interface"] = { link = "@type" },
 		["@lsp.type.macro"] = { link = "@macro" },
-		["@lsp.type.method"] = { link = "@method" },
+		["@lsp.type.method"] = { link = "@function.call" },
 		["@lsp.type.namespace"] = { link = "@namespace" },
 		["@lsp.type.parameter"] = { link = "@parameter" },
 		["@lsp.type.property"] = { link = "@property" },
