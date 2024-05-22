@@ -66,6 +66,10 @@ require('barbar').setup({
 
 #### Which statusline and tabline are you using?
 
+Now: [mini.statusline](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-statusline.md) and [mini.tabline](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-tabline.md)
+
+Previous:
+
 <details>
 <summary>customizd heirline</summary>
     
