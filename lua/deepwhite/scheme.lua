@@ -136,7 +136,7 @@ function M.get_groups(c)
 		["@keyword"] = { link = "Keyword" },
 		["@keyword.coroutine"] = { link = "Keyword" },
 		["@keyword.function"] = { bg = c.light_purple },
-		["@keyword.operator"] = { link = "Operator" },
+		["@keyword.operator"] = { link = "Keyword" },
 		["@keyword.import"] = { link = "Include" },
 		["@keyword.storage"] = { link = "Keyword" },
 		["@keyword.repeat"] = { link = "Repeat" },
