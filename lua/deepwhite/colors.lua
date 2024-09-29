@@ -28,6 +28,12 @@ function M.get_colors(options)
 		purple = "#6F00A6", -- hsv(280, 100%, 65%)
 		pink = "#A6006F", -- hsv(320, 100%, 65%)
 		red = "#A60000", -- hsv(360, 100%, 65%)
+
+		foam = '#56949f',
+		iris = '#907aa9',
+		love = '#b4637a',
+		gold = '#ea9d34',
+		muted = '#9893a5',
 	}
 	if options.low_blue_light then
 		colors.base7 = "#FAFAFA" -- hsv(60, 0%, 98%)

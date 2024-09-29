@@ -387,6 +387,27 @@ function M.get_groups(c)
 		SelectMode = { link = "VisualMode" },
 		TerminalMode = { link = "NormalMode" },
 		TerminalNormalMode = { link = "NormalMode" },
+
+		-- rcarriga/nvim-dap-ui
+		DapUIVariable = { link = 'Normal' },
+		DapUIValue = { link = 'Normal' },
+		DapUIFrameName = { link = 'Normal' },
+		DapUIThread = { fg = c.orange },
+		DapUIWatchesValue = { link = 'DapUIThread' },
+		DapUIBreakpointsInfo = { link = 'DapUIThread' },
+		DapUIBreakpointsCurrentLine = { fg = c.orange, bold = True },
+		-- DapUIWatchesEmpty = { fg = c.love },
+		DapUIWatchesError = { link = 'DapUIWatchesEmpty' },
+		DapUIBreakpointsDisabledLine = { fg = c.muted },
+		DapUISource = { fg = c.iris },
+		DapUIBreakpointsPath = { fg = c.cyan },
+		DapUIScope = { link = 'DapUIBreakpointsPath' },
+		DapUILineNumber = { link = 'DapUIBreakpointsPath' },
+		DapUIBreakpointsLine = { link = 'DapUIBreakpointsPath' },
+		DapUIFloatBorder = { link = 'DapUIBreakpointsPath' },
+		DapUIStoppedThread = { link = 'DapUIBreakpointsPath' },
+		DapUIDecoration = { link = 'DapUIBreakpointsPath' },
+		DapUIModifiedValue = { fg = c.cyan, bold = True },
 	}
 end
 
