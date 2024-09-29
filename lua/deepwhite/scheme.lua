@@ -396,7 +396,6 @@ function M.get_groups(c)
 		DapUIWatchesValue = { link = 'DapUIThread' },
 		DapUIBreakpointsInfo = { link = 'DapUIThread' },
 		DapUIBreakpointsCurrentLine = { fg = c.orange, bold = True },
-		-- DapUIWatchesEmpty = { fg = c.love },
 		DapUIWatchesError = { link = 'DapUIWatchesEmpty' },
 		DapUIBreakpointsDisabledLine = { fg = c.muted },
 		DapUISource = { fg = c.iris },
