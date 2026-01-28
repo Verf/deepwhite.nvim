@@ -69,7 +69,7 @@ function M.get_groups(c)
         StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
         TabLine = { fg = c.base7, bg = c.base0 }, -- Tab pages line, not active tab page label.
         TabLineFill = { fg = c.base0, bg = c.base7 }, -- Tab pages line, where there are no labels.
-        TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
+        TabLineSel = { reverse = true }, -- Tab pages line, active tab page label.
         Title = { fg = c.base0, bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
@@ -494,8 +494,8 @@ function M.get_groups(c)
 
         -- Mini Tabline
         MiniTablineCurrent = { link = 'TabLineSel' },
-        MiniTablineVisible = { link = 'TabLine' },
-        MiniTablineHidden = { link = 'TabLineSel' },
+        MiniTablineVisible = { link = 'TabLineSel' },
+        MiniTablineHidden = { link = 'TabLine' },
         MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base7, bold = true, italic = true },
         MiniTablineModifiedHidden = { link = 'MiniTablineModifiedCurrent' },
         MiniTablineModifiedVisible = { fg = c.base7, bg = c.base0, italic = true },
