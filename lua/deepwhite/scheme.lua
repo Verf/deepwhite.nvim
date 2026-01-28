@@ -297,8 +297,8 @@ function M.get_groups(c)
         ['@lsp.mod.static'] = { link = 'Storage' }, -- Class members (static members)
 
         -- vim.diagnostic
-        DiagnosticError = { fg = c.red },
-        DiagnosticWarn = { fg = c.orange },
+        DiagnosticError = { link = 'ErrorMsg' },
+        DiagnosticWarn = { link = 'WarningMsg' },
         DiagnosticInfo = { fg = c.blue },
         DiagnosticHint = { fg = c.cyan },
         DiagnosticOk = { fg = c.green },
