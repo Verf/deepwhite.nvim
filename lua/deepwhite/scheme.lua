@@ -478,12 +478,12 @@ function M.get_groups(c)
         MiniStarterSection = { link = 'Special' }, -- Group headers
 
         -- Mini Statusline
-        MiniStatuslineModeNormal = { fg = c.base7, bg = c.light_purple, bold = true }, -- Strong contrast
-        MiniStatuslineModeInsert = { fg = c.base7, bg = c.light_green, bold = true },
-        MiniStatuslineModeVisual = { fg = c.base7, bg = c.light_cyan, bold = true },
-        MiniStatuslineModeReplace = { fg = c.base7, bg = c.light_orange, bold = true },
-        MiniStatuslineModeCommand = { fg = c.base7, bg = c.light_red, bold = true },
-        MiniStatuslineModeOther = { fg = c.base7, bg = c.light_blue, bold = true },
+        MiniStatuslineModeNormal = { fg = c.base0, bg = c.light_purple, bold = true }, -- Strong contrast
+        MiniStatuslineModeInsert = { fg = c.base0, bg = c.light_green, bold = true },
+        MiniStatuslineModeVisual = { fg = c.base0, bg = c.light_cyan, bold = true },
+        MiniStatuslineModeReplace = { fg = c.base0, bg = c.light_orange, bold = true },
+        MiniStatuslineModeCommand = { fg = c.base0, bg = c.light_red, bold = true },
+        MiniStatuslineModeOther = { fg = c.base0, bg = c.light_blue, bold = true },
 
         MiniStatuslineDevinfo = { link = 'Normal' },
         MiniStatuslineFileinfo = { link = 'Normal' },
