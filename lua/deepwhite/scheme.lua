@@ -478,16 +478,18 @@ function M.get_groups(c)
         MiniStarterSection = { link = 'Special' }, -- Group headers
 
         -- Mini Statusline
-        MiniStatuslineDevinfo = { link = 'StatusLine' },
-        MiniStatuslineFileinfo = { link = 'StatusLine' },
-        MiniStatuslineFilename = { link = 'StatusLineNC' }, -- Slightly dimmer than active info
-        MiniStatuslineInactive = { link = 'StatusLineNC' },
-        MiniStatuslineModeCommand = { fg = c.base7, bg = c.orange, bold = true },
-        MiniStatuslineModeInsert = { fg = c.base7, bg = c.green, bold = true },
-        MiniStatuslineModeNormal = { fg = c.base7, bg = c.base0, bold = true }, -- Strong contrast
-        MiniStatuslineModeOther = { fg = c.base7, bg = c.cyan, bold = true },
-        MiniStatuslineModeReplace = { fg = c.base7, bg = c.red, bold = true },
-        MiniStatuslineModeVisual = { fg = c.base7, bg = c.purple, bold = true },
+        MiniStatuslineModeNormal = { fg = c.base7, bg = c.light_purple, bold = true }, -- Strong contrast
+        MiniStatuslineModeInsert = { fg = c.base7, bg = c.light_green, bold = true },
+        MiniStatuslineModeVisual = { fg = c.base7, bg = c.light_cyan, bold = true },
+        MiniStatuslineModeReplace = { fg = c.base7, bg = c.light_orange, bold = true },
+        MiniStatuslineModeCommand = { fg = c.base7, bg = c.light_red, bold = true },
+        MiniStatuslineModeOther = { fg = c.base7, bg = c.light_blue, bold = true },
+
+        MiniStatuslineDevinfo = { link = 'Normal' },
+        MiniStatuslineFileinfo = { link = 'Normal' },
+        MiniStatuslineFilename = { link = 'Normal' },
+
+        MiniStatuslineInactive = { link = 'Comment' },
 
         -- Mini Surround
         MiniSurround = { link = 'IncSearch' }, -- Highlight surrounding chars
