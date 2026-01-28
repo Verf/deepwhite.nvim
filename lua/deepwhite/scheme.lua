@@ -357,9 +357,9 @@ function M.get_groups(c)
         MiniCmdlinePeekTitle = { link = 'FloatTitle' },
 
         -- Mini Completion
-        MiniCompletionActiveParameter = { underline = true },
-        MiniCompletionDeprecated = { link = 'Comment', strikethrough = true },
-        MiniCompletionInfoBorderOutdated = { link = 'Error' },
+        MiniCompletionActiveParameter = { link = 'Underlined' },
+        MiniCompletionDeprecated = { link = 'DiagnosticDeprecated' },
+        MiniCompletionInfoBorderOutdated = { link = 'DiagnosticFloatingWarn' },
 
         -- Mini Cursorword
         MiniCursorword = { underline = true }, -- Subtle highlight for word under cursor
