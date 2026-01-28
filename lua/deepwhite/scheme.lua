@@ -449,9 +449,9 @@ function M.get_groups(c)
         MiniPickHeader = { link = 'Title' },
         MiniPickIconDirectory = { link = 'Directory' },
         MiniPickIconFile = { link = 'NormalFloat' },
-        MiniPickMatchCurrent = { link = 'Search' }, -- Highlight current match (Yellow bg)
+        MiniPickMatchCurrent = { link = 'CursorLine' },
         MiniPickMatchMarked = { link = 'Visual' },
-        MiniPickMatchRanges = { link = 'SpecialKey' }, -- Highlight matched characters
+        MiniPickMatchRanges = { link = 'Search' },
         MiniPickNormal = { link = 'NormalFloat' },
         MiniPickPreviewLine = { link = 'CursorLine' },
         MiniPickPreviewRegion = { link = 'IncSearch' },
