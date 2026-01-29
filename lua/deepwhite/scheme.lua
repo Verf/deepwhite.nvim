@@ -261,28 +261,28 @@ function M.get_groups(c)
         LspCodeLensSeparator = { link = 'Comment' }, -- Used to color the separator between two or more code lenses.
         LspSignatureActiveParameter = { link = 'LspReferenceText' }, -- Used to highlight the active parameter in the signature help.
 
-        ['@lsp.type.class'] = { link = 'Structure' }, -- Identifiers that declare or reference a class type
+        ['@lsp.type.class'] = { link = 'Identifier' }, -- Identifiers that declare or reference a class type
         ['@lsp.type.comment'] = { link = 'Comment' }, -- Tokens that represent a comment
-        ['@lsp.type.decorator'] = { link = 'Function' }, -- Identifiers that declare or reference decorators and annotations
-        ['@lsp.type.enum'] = { link = 'Structure' }, -- Identifiers that declare or reference an enumeration type
-        ['@lsp.type.enumMember'] = { link = 'Constant' }, -- Identifiers that declare or reference an enumeration property, constant, or member
+        ['@lsp.type.decorator'] = { link = 'Identifier' }, -- Identifiers that declare or reference decorators and annotations
+        ['@lsp.type.enum'] = { link = 'Identifier' }, -- Identifiers that declare or reference an enumeration type
+        ['@lsp.type.enumMember'] = { link = 'Identifier' }, -- Identifiers that declare or reference an enumeration property, constant, or member
         ['@lsp.type.event'] = { link = 'Identifier' }, -- Identifiers that declare an event property
-        ['@lsp.type.function'] = { link = 'Function' }, -- Identifiers that declare a function
-        ['@lsp.type.interface'] = { link = 'Structure' }, -- Identifiers that declare or reference an interface type
+        ['@lsp.type.function'] = { link = 'Identifier' }, -- Identifiers that declare a function
+        ['@lsp.type.interface'] = { link = 'Identifier' }, -- Identifiers that declare or reference an interface type
         ['@lsp.type.keyword'] = { link = 'Keyword' }, -- Tokens that represent a language keyword
-        ['@lsp.type.macro'] = { link = 'Macro' }, -- Identifiers that declare a macro
-        ['@lsp.type.method'] = { link = 'Function' }, -- Identifiers that declare a member function or method
+        ['@lsp.type.macro'] = { link = 'Identifier' }, -- Identifiers that declare a macro
+        ['@lsp.type.method'] = { link = 'Identifier' }, -- Identifiers that declare a member function or method
         ['@lsp.type.modifier'] = { link = 'Storage' }, -- Tokens that represent a modifier
-        ['@lsp.type.namespace'] = { link = 'Structure' }, -- Identifiers that declare or reference a namespace, module, or package
+        ['@lsp.type.namespace'] = { link = 'Identifier' }, -- Identifiers that declare or reference a namespace, module, or package
         ['@lsp.type.number'] = { link = 'Number' }, -- Tokens that represent a number literal
         ['@lsp.type.operator'] = { link = 'Operator' }, -- Tokens that represent an operator
         ['@lsp.type.parameter'] = { link = 'Identifier' }, -- Identifiers that declare or reference a function or method parameters
         ['@lsp.type.property'] = { link = 'Identifier' }, -- Identifiers that declare or reference a member property, member field, or member variable
         ['@lsp.type.regexp'] = { link = 'String' }, -- Tokens that represent a regular expression literal
         ['@lsp.type.string'] = { link = 'String' }, -- Tokens that represent a string literal
-        ['@lsp.type.struct'] = { link = 'Structure' }, -- Identifiers that declare or reference a struct type
-        ['@lsp.type.type'] = { link = 'Type' }, -- Identifiers that declare or reference a type that is not covered above
-        ['@lsp.type.typeParameter'] = { link = 'Type' }, -- Identifiers that declare or reference a type parameter
+        ['@lsp.type.struct'] = { link = 'Identifier' }, -- Identifiers that declare or reference a struct type
+        ['@lsp.type.type'] = { link = 'Identifier' }, -- Identifiers that declare or reference a type that is not covered above
+        ['@lsp.type.typeParameter'] = { link = 'Identifier' }, -- Identifiers that declare or reference a type parameter
         ['@lsp.type.variable'] = { link = 'Identifier' }, -- Identifiers that declare or reference a local or global variable
 
         ['@lsp.mod.deprecated'] = { link = 'Error' }, -- Symbols that should no longer be used
