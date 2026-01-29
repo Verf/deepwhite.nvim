@@ -285,16 +285,16 @@ function M.get_groups(c)
         ['@lsp.type.typeParameter'] = { link = 'Type' }, -- Identifiers that declare or reference a type parameter
         ['@lsp.type.variable'] = { link = 'Identifier' }, -- Identifiers that declare or reference a local or global variable
 
-        ['@lsp.mod.abstract'] = { link = 'Storage' }, -- Types and member functions that are abstract
-        ['@lsp.mod.async'] = { link = 'Keyword' }, -- Functions that are marked async
-        ['@lsp.mod.declaration'] = { link = 'Identifier' }, -- Declarations of symbols
-        ['@lsp.mod.defaultLibrary'] = { link = 'Special' }, -- Symbols that are part of the standard library
-        ['@lsp.mod.definition'] = { link = 'Identifier' }, -- Definitions of symbols, for example, in header files
         ['@lsp.mod.deprecated'] = { link = 'Error' }, -- Symbols that should no longer be used
-        ['@lsp.mod.documentation'] = { link = 'SpecialComment' }, -- Occurrences of symbols in documentation
-        ['@lsp.mod.modification'] = { link = 'Identifier' }, -- Variable references where the variable is assigned to
-        ['@lsp.mod.readonly'] = { link = 'Constant' }, -- Readonly variables and member fields (constants)
-        ['@lsp.mod.static'] = { link = 'Storage' }, -- Class members (static members)
+        -- ['@lsp.mod.abstract'] = {}, -- Types and member functions that are abstract
+        -- ['@lsp.mod.async'] = {}, -- Functions that are marked async
+        -- ['@lsp.mod.declaration'] = {}, -- Declarations of symbols
+        -- ['@lsp.mod.defaultLibrary'] = {}, -- Symbols that are part of the standard library
+        -- ['@lsp.mod.definition'] = {}, -- Definitions of symbols, for example, in header files
+        -- ['@lsp.mod.documentation'] = {}, -- Occurrences of symbols in documentation
+        -- ['@lsp.mod.modification'] = {}, -- Variable references where the variable is assigned to
+        -- ['@lsp.mod.readonly'] = {}, -- Readonly variables and member fields (constants)
+        -- ['@lsp.mod.static'] = {}, -- Class members (static members)
 
         -- vim.diagnostic
         DiagnosticError = { link = 'ErrorMsg' },
