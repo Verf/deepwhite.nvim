@@ -165,7 +165,7 @@ function M.get_groups(c)
         ['@number'] = { link = 'Number' }, -- numeric literals
         ['@number.float'] = { link = 'Float' }, -- floating-point number literals
 
-        ['@type'] = { link = 'Identifier' }, -- type or class definitions and annotations
+        ['@type'] = { link = 'Type' }, -- type or class definitions and annotations
         ['@type.builtin'] = { link = 'Type' }, -- built-in types
         ['@type.definition'] = { link = 'Identifier' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
 
@@ -186,8 +186,8 @@ function M.get_groups(c)
 
         ['@keyword'] = { link = 'Keyword' }, -- keywords not fitting into specific categories
         ['@keyword.coroutine'] = { link = 'Keyword' }, -- keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
-        ['@keyword.function'] = { link = 'Storage' }, -- keywords that define a function (e.g. `func` in Go, `def` in Python)
-        ['@keyword.operator'] = { link = 'Operator' }, -- operators that are English words (e.g. `and`, `or`)
+        ['@keyword.function'] = { bg = c.light_purple }, -- keywords that define a function (e.g. `func` in Go, `def` in Python)
+        ['@keyword.operator'] = { likn = 'Operator' }, -- operators that are English words (e.g. `and`, `or`)
         ['@keyword.import'] = { link = 'Include' }, -- keywords for including or exporting modules (e.g. `import`, `from` in Python)
         ['@keyword.type'] = { link = 'Structure' }, -- keywords describing namespaces and composite types (e.g. `struct`, `enum`)
         ['@keyword.modifier'] = { link = 'Storage' }, -- keywords modifying other constructs (e.g. `const`, `static`, `public`)
