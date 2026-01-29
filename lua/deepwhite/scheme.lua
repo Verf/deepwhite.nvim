@@ -286,12 +286,12 @@ function M.get_groups(c)
         ['@lsp.type.variable'] = { link = 'Identifier' }, -- Identifiers that declare or reference a local or global variable
 
         ['@lsp.mod.deprecated'] = { link = 'Error' }, -- Symbols that should no longer be used
+        ['@lsp.mod.documentation'] = { link = 'Comment' }, -- Occurrences of symbols in documentation
         -- ['@lsp.mod.abstract'] = {}, -- Types and member functions that are abstract
         -- ['@lsp.mod.async'] = {}, -- Functions that are marked async
         -- ['@lsp.mod.declaration'] = {}, -- Declarations of symbols
         -- ['@lsp.mod.defaultLibrary'] = {}, -- Symbols that are part of the standard library
         -- ['@lsp.mod.definition'] = {}, -- Definitions of symbols, for example, in header files
-        -- ['@lsp.mod.documentation'] = {}, -- Occurrences of symbols in documentation
         -- ['@lsp.mod.modification'] = {}, -- Variable references where the variable is assigned to
         -- ['@lsp.mod.readonly'] = {}, -- Readonly variables and member fields (constants)
         -- ['@lsp.mod.static'] = {}, -- Class members (static members)
