@@ -167,10 +167,8 @@ function M.get_groups(c)
 
         ['@function'] = { link = 'Function' }, -- function definitions
         ['@function.builtin'] = { link = 'Type' }, -- built-in functions
-        ['@function.call'] = { link = 'Special' }, -- function calls
 
         ['@function.method'] = { link = '@function' }, -- method definitions
-        ['@function.method.call'] = { link = '@function.call' }, -- method calls
 
         ['@constructor'] = { link = 'Identifier' }, -- constructor calls and definitions
 
