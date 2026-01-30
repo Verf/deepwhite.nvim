@@ -137,18 +137,20 @@ function M.get_groups(c)
         -- :help treesitter-highlight-groups
         ['@variable'] = { link = 'Identifier' }, -- various variable names
         ['@variable.builtin'] = { link = 'Type' }, -- built-in variable names (e.g. `this`, `self`)
-        ['@variable.parameter.builtin'] = { link = 'Type' }, -- special parameters (e.g. `_`, `it`)
-        ['@variable.parameter'] = { fg = c.orange }, -- special parameters (e.g. `_`, `it`)
+        ['@variable.parameter'] = { link = 'Identifier' }, -- special parameters (e.g. `_`, `it`)
 
         ['@constant'] = { link = 'Constant' }, -- constant identifiers
         ['@constant.builtin'] = { link = 'Type' }, -- built-in constant values
         ['@constant.macro'] = { link = 'Macro' }, -- constants defined by the preprocessor
 
-        ['@module'] = { link = 'Structure' }, -- modules or namespaces
+        ['@module'] = { link = 'Include' }, -- modules or namespaces
         ['@module.builtin'] = { link = 'Type' }, -- built-in modules or namespaces
         ['@label'] = { link = 'Label' }, -- `GOTO` and other labels (e.g. `label:` in C), including heredoc labels
 
         ['@string'] = { link = 'String' }, -- string literals
+        ['@string.escape'] = { link = 'SpecialChar' }, -- escape sequences
+        ['@string.special'] = { link = 'SpecialChar' }, -- other special strings (e.g. dates)
+        ['@string.special.url'] = { bg = c.light_green, underline = true }, -- URIs (e.g. hyperlinks)
 
         ['@character'] = { link = 'Character' }, -- character literals
         ['@character.special'] = { link = 'SpecialChar' }, -- special characters (e.g. wildcards)
@@ -158,30 +160,34 @@ function M.get_groups(c)
         ['@number.float'] = { link = 'Float' }, -- floating-point number literals
 
         ['@type'] = { link = 'Type' }, -- type or class definitions and annotations
-        ['@type.builtin'] = { link = 'Type' }, -- built-in types
-        ['@type.definition'] = { link = 'Identifier' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
+        ['@type.definition'] = { link = 'Type' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
 
-        ['@attribute'] = { link = 'Macro' }, -- attribute annotations (e.g. Python decorators, Rust lifetimes)
-        ['@attribute.builtin'] = { link = 'Type' }, -- builtin annotations (e.g. `@property` in Python)
-        ['@property'] = { fg = c.cyan }, -- the key in key/value pairs
+        ['@attribute'] = { link = 'Type' }, -- attribute annotations (e.g. Python decorators, Rust lifetimes)
+        ['@property'] = { link = 'Identifier' }, -- the key in key/value pairs
 
         ['@function'] = { link = 'Function' }, -- function definitions
         ['@function.builtin'] = { link = 'Type' }, -- built-in functions
+        ['@function.call'] = { link = 'Special' }, -- function calls
 
-        -- ['@constructor'] = { link = 'Special' }, -- constructor calls and definitions
+        ['@function.method'] = { link = '@function' }, -- method definitions
+        ['@function.method.call'] = { link = '@function.call' }, -- method calls
+
+        ['@constructor'] = { link = 'Identifier' }, -- constructor calls and definitions
+
         ['@operator'] = { link = 'Operator' }, -- symbolic operators (e.g. `+`, `*`)
+
         ['@keyword'] = { link = 'Keyword' }, -- keywords not fitting into specific categories
+        ['@keyword.function'] = { bg = c.light_purple }, -- keywords that define a function (e.g. `func` in Go, `def` in Python)
 
         ['@punctuation'] = { link = 'Identifier' }, -- punctuation
         ['@punctuation.special'] = { link = 'SpecialChar' }, -- special symbols (e.g. `{}` in string interpolation)
 
         ['@comment'] = { link = 'Comment' }, -- line and block comments
-        ['@comment.documentation'] = { link = 'Comment' }, -- comments documenting code
 
-        ['@comment.error'] = { link = 'Error' }, -- error-type comments (e.g. `ERROR`, `FIXME`, `DEPRECATED`)
-        ['@comment.warning'] = { link = 'Todo' }, -- warning-type comments (e.g. `WARNING`, `FIX`, `HACK`)
-        ['@comment.todo'] = { link = 'Todo' }, -- todo-type comments (e.g. `TODO`, `WIP`)
-        ['@comment.note'] = { link = 'SpecialComment' }, -- note-type comments (e.g. `NOTE`, `INFO`, `XXX`)
+        ['@comment.error'] = { bg = c.light_red }, -- error-type comments (e.g. `ERROR`, `FIXME`, `DEPRECATED`)
+        ['@comment.warning'] = { bg = c.light_orange }, -- warning-type comments (e.g. `WARNING`, `FIX`, `HACK`)
+        ['@comment.todo'] = { bg = c.light_cyan }, -- todo-type comments (e.g. `TODO`, `WIP`)
+        ['@comment.note'] = { bg = c.light_blue }, -- note-type comments (e.g. `NOTE`, `INFO`, `XXX`)
 
         ['@markup.strong'] = { link = 'Bold' }, -- bold text
         ['@markup.italic'] = { link = 'Italic' }, -- italic text
@@ -197,17 +203,17 @@ function M.get_groups(c)
 
         ['@markup.raw'] = { link = 'String' }, -- literal or verbatim text (e.g. inline code)
 
-        ['@markup.list'] = { link = 'SpecialChar' }, -- list markers
+        ['@markup.list'] = { link = 'Identifier' }, -- list markers
         ['@markup.list.checked'] = { link = 'Comment' }, -- checked todo-style list markers
 
         ['@diff.plus'] = { link = 'Added' }, -- added text (for diff files)
         ['@diff.minus'] = { link = 'Removed' }, -- deleted text (for diff files)
         ['@diff.delta'] = { link = 'Changed' }, -- changed text (for diff files)
 
-        ['@tag'] = { link = 'Tag' }, -- XML-style tag names (e.g. in XML, HTML, etc.)
-        ['@tag.builtin'] = { link = 'Tag' }, -- builtin tag names (e.g. HTML5 tags)
+        ['@tag'] = { link = 'Label' }, -- XML-style tag names (e.g. in XML, HTML, etc.)
+        ['@tag.builtin'] = { link = 'Type' }, -- builtin tag names (e.g. HTML5 tags)
         ['@tag.attribute'] = { link = 'Identifier' }, -- XML-style tag attributes
-        ['@tag.delimiter'] = { link = 'Identifier' }, -- XML-style tag delimiters
+        ['@tag.delimiter'] = { link = 'Delimiter' }, -- XML-style tag delimiters
 
         -- vim.lsp
         LspReferenceText = { bg = c.light_purple }, -- Used for highlighting "text" references
@@ -219,40 +225,34 @@ function M.get_groups(c)
         LspCodeLensSeparator = { link = 'Comment' }, -- Used to color the separator between two or more code lenses.
         LspSignatureActiveParameter = { link = 'LspReferenceText' }, -- Used to highlight the active parameter in the signature help.
 
-        ['@lsp.type.class'] = { link = 'Identifier' }, -- Identifiers that declare or reference a class type
-        ['@lsp.type.comment'] = { link = 'Comment' }, -- Tokens that represent a comment
-        ['@lsp.type.decorator'] = { link = 'Identifier' }, -- Identifiers that declare or reference decorators and annotations
-        ['@lsp.type.enum'] = { link = 'Identifier' }, -- Identifiers that declare or reference an enumeration type
-        ['@lsp.type.enumMember'] = { link = 'Identifier' }, -- Identifiers that declare or reference an enumeration property, constant, or member
-        ['@lsp.type.event'] = { link = 'Identifier' }, -- Identifiers that declare an event property
-        ['@lsp.type.function'] = { link = 'Identifier' }, -- Identifiers that declare a function
-        ['@lsp.type.interface'] = { link = 'Identifier' }, -- Identifiers that declare or reference an interface type
-        ['@lsp.type.keyword'] = { link = 'Keyword' }, -- Tokens that represent a language keyword
-        ['@lsp.type.macro'] = { link = 'Identifier' }, -- Identifiers that declare a macro
-        ['@lsp.type.method'] = { link = 'Identifier' }, -- Identifiers that declare a member function or method
-        ['@lsp.type.modifier'] = { link = 'Storage' }, -- Tokens that represent a modifier
-        ['@lsp.type.namespace'] = { link = 'Identifier' }, -- Identifiers that declare or reference a namespace, module, or package
-        ['@lsp.type.number'] = { link = 'Number' }, -- Tokens that represent a number literal
-        ['@lsp.type.operator'] = { link = 'Operator' }, -- Tokens that represent an operator
-        ['@lsp.type.parameter'] = { link = 'Identifier' }, -- Identifiers that declare or reference a function or method parameters
-        ['@lsp.type.property'] = { link = 'Identifier' }, -- Identifiers that declare or reference a member property, member field, or member variable
-        ['@lsp.type.regexp'] = { link = 'String' }, -- Tokens that represent a regular expression literal
-        ['@lsp.type.string'] = { link = 'String' }, -- Tokens that represent a string literal
-        ['@lsp.type.struct'] = { link = 'Identifier' }, -- Identifiers that declare or reference a struct type
-        ['@lsp.type.type'] = { link = 'Identifier' }, -- Identifiers that declare or reference a type that is not covered above
-        ['@lsp.type.typeParameter'] = { link = 'Identifier' }, -- Identifiers that declare or reference a type parameter
-        ['@lsp.type.variable'] = { link = 'Identifier' }, -- Identifiers that declare or reference a local or global variable
-
-        ['@lsp.mod.deprecated'] = { link = 'Error' }, -- Symbols that should no longer be used
-        -- ['@lsp.mod.documentation'] = {}, -- Occurrences of symbols in documentation
-        -- ['@lsp.mod.abstract'] = {}, -- Types and member functions that are abstract
-        -- ['@lsp.mod.async'] = {}, -- Functions that are marked async
-        -- ['@lsp.mod.declaration'] = {}, -- Declarations of symbols
-        -- ['@lsp.mod.defaultLibrary'] = {}, -- Symbols that are part of the standard library
-        -- ['@lsp.mod.definition'] = {}, -- Definitions of symbols, for example, in header files
-        -- ['@lsp.mod.modification'] = {}, -- Variable references where the variable is assigned to
-        -- ['@lsp.mod.readonly'] = {}, -- Readonly variables and member fields (constants)
-        -- ['@lsp.mod.static'] = {}, -- Class members (static members)
+        ['@lsp.type.class'] = { link = '@type' },
+        ['@lsp.type.decorator'] = { link = '@function' },
+        ['@lsp.type.enum'] = { link = '@type' },
+        ['@lsp.type.enumMember'] = { link = '@constant' },
+        ['@lsp.type.function'] = { link = '@function.call' },
+        ['@lsp.type.interface'] = { link = '@type' },
+        ['@lsp.type.macro'] = { link = '@macro' },
+        ['@lsp.type.method'] = { link = '@function.call' },
+        ['@lsp.type.namespace'] = { link = '@namespace' },
+        ['@lsp.type.parameter'] = { link = '@parameter' },
+        ['@lsp.type.property'] = { link = '@property' },
+        ['@lsp.type.struct'] = { link = '@structure' },
+        ['@lsp.type.type'] = { link = '@type' },
+        ['@lsp.type.variable'] = { link = '@variable' },
+        ['@lsp.typemod.class.defaultLibrary'] = { link = '@type.builtin' },
+        ['@lsp.typemod.enum.defaultLibrary'] = { link = '@type.builtin' },
+        ['@lsp.typemod.enumMember.defaultLibrary'] = { link = '@constant.builtin' },
+        ['@lsp.typemod.function.declaration'] = { link = '@function' },
+        ['@lsp.typemod.function.defaultLibrary'] = { link = '@function.builtin' },
+        ['@lsp.typemod.keyword.async'] = { link = '@keyword.coroutine' },
+        ['@lsp.typemod.macro.defaultLibrary'] = { link = '@function.builtin' },
+        ['@lsp.typemod.method.defaultLibrary'] = { link = '@function.builtin' },
+        ['@lsp.typemod.method.declaration'] = { link = '@function' },
+        ['@lsp.typemod.operator.injected'] = { link = '@operator' },
+        ['@lsp.typemod.string.injected'] = { link = '@string' },
+        ['@lsp.typemod.type.defaultLibrary'] = { link = '@type.builtin' },
+        ['@lsp.typemod.variable.defaultLibrary'] = { link = '@variable.builtin' },
+        ['@lsp.typemod.variable.injected'] = { link = '@variable' },
 
         -- vim.diagnostic
         DiagnosticError = { link = 'ErrorMsg' },
