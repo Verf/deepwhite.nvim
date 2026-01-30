@@ -160,9 +160,11 @@ function M.get_groups(c)
         ['@number.float'] = { link = 'Float' }, -- floating-point number literals
 
         ['@type'] = { link = 'Type' }, -- type or class definitions and annotations
+        ['@type.builtin'] = { link = 'Type' }, -- built-in types
         ['@type.definition'] = { link = 'Type' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
 
         ['@attribute'] = { link = 'Type' }, -- attribute annotations (e.g. Python decorators, Rust lifetimes)
+        ['@attribute.builtin'] = { link = 'Type' }, -- builtin annotations (e.g. `@property` in Python)
         ['@property'] = { link = 'Identifier' }, -- the key in key/value pairs
 
         ['@function'] = { link = 'Function' }, -- function definitions
