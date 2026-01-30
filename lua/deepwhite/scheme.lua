@@ -104,20 +104,20 @@ function M.get_groups(c)
         Keyword = { link = 'Statement' }, -- any other keyword
         Exception = { link = 'Statement' }, -- try, catch, throw
 
-        PreProc = { link = 'Question' }, -- generic Preprocessor
-        Include = { link = 'Question' }, -- preprocessor #include
-        Define = { link = 'Question' }, -- preprocessor #define
-        Macro = { link = 'Question' }, -- same as Define
-        PreCondit = { link = 'Question' }, -- preprocessor #if, #else, #endif, etc.
+        PreProc = { link = 'Identifier' }, -- generic Preprocessor
+        Include = { link = 'Identifier' }, -- preprocessor #include
+        Define = { link = 'Identifier' }, -- preprocessor #define
+        Macro = { link = 'Identifier' }, -- same as Define
+        PreCondit = { link = 'Identifier' }, -- preprocessor #if, #else, #endif, etc.
 
         Type = { fg = c.pink }, -- int, long, char, etc.
-        Storage = { link = 'Type' }, --lass static, register, volatile, etc.
-        Structure = { link = 'Type' }, --struct, union, enum, etc.
+        Storage = { link = 'Type' }, -- lass static, register, volatile, etc.
+        Structure = { link = 'Type' }, -- struct, union, enum, etc.
         Typedef = { link = 'Type' }, -- a typedef
 
         Special = { link = 'SpecialKey' }, -- any special symbol
         SpecialChar = { link = 'SpecialKey' }, -- special character in a constant
-        Tag = { link = 'SpecialKey' }, -- you can use CTRL-] on this
+        Tag = { fg = c.orange }, -- you can use CTRL-] on this
         Delimiter = { link = 'Identifier' }, --character that needs attention
         SpecialComment = { link = 'SpecialKey' }, -- special things inside a comment
         Debug = { link = 'SpecialKey' }, -- debugging statements
@@ -136,27 +136,19 @@ function M.get_groups(c)
 
         -- :help treesitter-highlight-groups
         ['@variable'] = { link = 'Identifier' }, -- various variable names
-        ['@variable.builtin'] = { link = 'Special' }, -- built-in variable names (e.g. `this`, `self`)
-        ['@variable.parameter'] = { link = 'Identifier' }, -- parameters of a function
-        ['@variable.parameter.builtin'] = { link = 'Special' }, -- special parameters (e.g. `_`, `it`)
-        ['@variable.member'] = { link = 'Identifier' }, -- object and struct fields
+        ['@variable.builtin'] = { link = 'Type' }, -- built-in variable names (e.g. `this`, `self`)
+        ['@variable.parameter.builtin'] = { link = 'Type' }, -- special parameters (e.g. `_`, `it`)
+        ['@variable.parameter'] = { fg = c.orange }, -- special parameters (e.g. `_`, `it`)
 
         ['@constant'] = { link = 'Constant' }, -- constant identifiers
-        ['@constant.builtin'] = { link = 'Constant' }, -- built-in constant values
+        ['@constant.builtin'] = { link = 'Type' }, -- built-in constant values
         ['@constant.macro'] = { link = 'Macro' }, -- constants defined by the preprocessor
 
         ['@module'] = { link = 'Structure' }, -- modules or namespaces
-        ['@module.builtin'] = { link = 'Structure' }, -- built-in modules or namespaces
+        ['@module.builtin'] = { link = 'Type' }, -- built-in modules or namespaces
         ['@label'] = { link = 'Label' }, -- `GOTO` and other labels (e.g. `label:` in C), including heredoc labels
 
         ['@string'] = { link = 'String' }, -- string literals
-        ['@string.documentation'] = { link = 'Comment' }, -- string documenting code (e.g. Python docstrings)
-        ['@string.regexp'] = { link = 'SpecialChar' }, -- regular expressions
-        ['@string.escape'] = { link = 'SpecialChar' }, -- escape sequences
-        ['@string.special'] = { link = 'SpecialChar' }, -- other special strings (e.g. dates)
-        ['@string.special.symbol'] = { link = 'Identifier' }, -- symbols or atoms
-        ['@string.special.path'] = { link = 'Underlined' }, -- filenames
-        ['@string.special.url'] = { link = 'Underlined' }, -- URIs (e.g. hyperlinks)
 
         ['@character'] = { link = 'Character' }, -- character literals
         ['@character.special'] = { link = 'SpecialChar' }, -- special characters (e.g. wildcards)
@@ -170,41 +162,17 @@ function M.get_groups(c)
         ['@type.definition'] = { link = 'Identifier' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
 
         ['@attribute'] = { link = 'Macro' }, -- attribute annotations (e.g. Python decorators, Rust lifetimes)
-        ['@attribute.builtin'] = { link = 'Macro' }, -- builtin annotations (e.g. `@property` in Python)
-        ['@property'] = { link = 'Identifier' }, -- the key in key/value pairs
+        ['@attribute.builtin'] = { link = 'Type' }, -- builtin annotations (e.g. `@property` in Python)
+        ['@property'] = { fg = c.cyan }, -- the key in key/value pairs
 
         ['@function'] = { link = 'Function' }, -- function definitions
-        ['@function.builtin'] = { link = 'Special' }, -- built-in functions
-        ['@function.call'] = { link = 'Function' }, -- function calls
-        ['@function.macro'] = { link = 'Macro' }, -- preprocessor macros
+        ['@function.builtin'] = { link = 'Type' }, -- built-in functions
 
-        ['@function.method'] = { link = 'Function' }, -- method definitions
-        ['@function.method.call'] = { link = 'Function' }, -- method calls
-
-        ['@constructor'] = { link = 'Special' }, -- constructor calls and definitions
+        -- ['@constructor'] = { link = 'Special' }, -- constructor calls and definitions
         ['@operator'] = { link = 'Operator' }, -- symbolic operators (e.g. `+`, `*`)
-
         ['@keyword'] = { link = 'Keyword' }, -- keywords not fitting into specific categories
-        ['@keyword.coroutine'] = { link = 'Keyword' }, -- keywords related to coroutines (e.g. `go` in Go, `async/await` in Python)
-        ['@keyword.function'] = { bg = c.light_purple }, -- keywords that define a function (e.g. `func` in Go, `def` in Python)
-        ['@keyword.operator'] = { link = 'Operator' }, -- operators that are English words (e.g. `and`, `or`)
-        ['@keyword.import'] = { link = 'Include' }, -- keywords for including or exporting modules (e.g. `import`, `from` in Python)
-        ['@keyword.type'] = { link = 'Structure' }, -- keywords describing namespaces and composite types (e.g. `struct`, `enum`)
-        ['@keyword.modifier'] = { link = 'Storage' }, -- keywords modifying other constructs (e.g. `const`, `static`, `public`)
-        ['@keyword.repeat'] = { link = 'Repeat' }, -- keywords related to loops (e.g. `for`, `while`)
-        ['@keyword.return'] = { link = 'Statement' }, -- keywords like `return` and `yield`
-        ['@keyword.debug'] = { link = 'Debug' }, -- keywords related to debugging
-        ['@keyword.exception'] = { link = 'Exception' }, -- keywords related to exceptions (e.g. `throw`, `catch`)
-
-        ['@keyword.conditional'] = { link = 'Conditional' }, -- keywords related to conditionals (e.g. `if`, `else`)
-        ['@keyword.conditional.ternary'] = { link = 'Operator' }, -- ternary operator (e.g. `?`, `:`)
-
-        ['@keyword.directive'] = { link = 'PreProc' }, -- various preprocessor directives and shebangs
-        ['@keyword.directive.define'] = { link = 'Define' }, -- preprocessor definition directives
 
         ['@punctuation'] = { link = 'Identifier' }, -- punctuation
-        ['@punctuation.delimiter'] = { link = 'Identifier' }, -- delimiters (e.g. `;`, `.`, `,`)
-        ['@punctuation.bracket'] = { link = 'Identifier' }, -- brackets (e.g. `()`, `{}`, `[]`)
         ['@punctuation.special'] = { link = 'SpecialChar' }, -- special symbols (e.g. `{}` in string interpolation)
 
         ['@comment'] = { link = 'Comment' }, -- line and block comments
@@ -215,32 +183,22 @@ function M.get_groups(c)
         ['@comment.todo'] = { link = 'Todo' }, -- todo-type comments (e.g. `TODO`, `WIP`)
         ['@comment.note'] = { link = 'SpecialComment' }, -- note-type comments (e.g. `NOTE`, `INFO`, `XXX`)
 
-        ['@markup.strong'] = { link = 'SpecialChar' }, -- bold text
-        ['@markup.italic'] = { link = 'SpecialChar' }, -- italic text
-        ['@markup.strikethrough'] = { link = 'Comment' }, -- struck-through text
+        ['@markup.strong'] = { link = 'Bold' }, -- bold text
+        ['@markup.italic'] = { link = 'Italic' }, -- italic text
+        ['@markup.strikethrough'] = { link = 'Strikethrough' }, -- struck-through text
         ['@markup.underline'] = { link = 'Underlined' }, -- underlined text (only for literal underline markup!)
 
-        ['@markup.heading'] = { link = 'Structure' }, -- headings, titles (including markers)
-        ['@markup.heading.1'] = { link = 'Structure' }, -- top-level heading
-        ['@markup.heading.2'] = { link = 'Structure' }, -- section heading
-        ['@markup.heading.3'] = { link = 'Structure' }, -- subsection heading
-        ['@markup.heading.4'] = { link = 'Structure' }, -- and so on
-        ['@markup.heading.5'] = { link = 'Structure' }, -- and so forth
-        ['@markup.heading.6'] = { link = 'Structure' }, -- six levels ought to be enough for anybody
+        ['@markup.heading'] = { link = 'Title' }, -- headings, titles (including markers)
 
         ['@markup.quote'] = { link = 'Comment' }, -- block quotes
         ['@markup.math'] = { link = 'Special' }, -- math environments (e.g. `$ ... $` in LaTeX)
 
         ['@markup.link'] = { link = 'Underlined' }, -- text references, footnotes, citations, etc.
-        ['@markup.link.label'] = { link = 'SpecialChar' }, -- link, reference descriptions
-        ['@markup.link.url'] = { link = 'Underlined' }, -- URL-style links
 
         ['@markup.raw'] = { link = 'String' }, -- literal or verbatim text (e.g. inline code)
-        ['@markup.raw.block'] = { link = 'String' }, -- literal or verbatim text as a stand-alone block
 
         ['@markup.list'] = { link = 'SpecialChar' }, -- list markers
-        ['@markup.list.checked'] = { link = 'SpecialChar' }, -- checked todo-style list markers
-        ['@markup.list.unchecked'] = { link = 'SpecialChar' }, -- unchecked todo-style list markers
+        ['@markup.list.checked'] = { link = 'Comment' }, -- checked todo-style list markers
 
         ['@diff.plus'] = { link = 'Added' }, -- added text (for diff files)
         ['@diff.minus'] = { link = 'Removed' }, -- deleted text (for diff files)
