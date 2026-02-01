@@ -340,7 +340,7 @@ function M.get_groups(c)
         MiniDiffSignChange = { bg = c.light_orange }, -- "change" hunk lines visualization.
         MiniDiffSignDelete = { bg = c.light_red }, -- "delete" hunk lines visualization.
         MiniDiffOverAdd = { link = 'MiniDiffSignAdd' }, -- added buffer text shown in overlay.
-        MiniDiffOverChange = { link = 'MiniDiffSignChange' }, -- changed reference text shown in overlay.
+        MiniDiffOverChange = { link = 'CursorLine' }, -- changed reference text shown in overlay.
         MiniDiffOverChangeBuf = { link = 'MiniDiffSignChange' }, -- changed buffer text shown in overlay.
         MiniDiffOverContext = { link = 'CursorLine' }, -- context of a change shown in reference overlay.
         MiniDiffOverContextBuf = { link = 'MiniDiffSignChange' }, -- changed buffer text shown in overlay.
