@@ -336,15 +336,15 @@ function M.get_groups(c)
         MiniDepsTitleUpdate = { link = 'Added' },
 
         -- Mini Diff
-        MiniDiffOverAdd = { link = 'DiffAdd' }, -- Background highlight for added text
-        MiniDiffOverChange = { link = 'DiffChange' }, -- Background highlight for changed text
-        MiniDiffOverChangeBuf = { link = 'MiniDiffOverChange' },
-        MiniDiffOverContext = { link = 'CursorLine' },
-        MiniDiffOverContextBuf = { link = 'CursorLine' },
-        MiniDiffOverDelete = { link = 'DiffDelete' }, -- Background highlight for deleted text
-        MiniDiffSignAdd = { bg = c.light_green }, -- Darker green for the sign column symbol
-        MiniDiffSignChange = { bg = c.light_orange }, -- Orange for change symbol
-        MiniDiffSignDelete = { bg = c.light_red }, -- Red for delete symbol
+        MiniDiffSignAdd = { bg = c.light_green }, -- "add" hunk lines visualization.
+        MiniDiffSignChange = { bg = c.light_orange }, -- "change" hunk lines visualization.
+        MiniDiffSignDelete = { bg = c.light_red }, -- "delete" hunk lines visualization.
+        MiniDiffOverAdd = { link = 'MiniDiffSignAdd' }, -- added buffer text shown in overlay.
+        MiniDiffOverChange = { link = 'MiniDiffSignChange' }, -- changed reference text shown in overlay.
+        MiniDiffOverChangeBuf = { link = 'MiniDiffSignChange' }, -- changed buffer text shown in overlay.
+        MiniDiffOverContext = { link = 'CursorLine' }, -- context of a change shown in reference overlay.
+        MiniDiffOverContextBuf = { link = 'MiniDiffSignChange' }, -- changed buffer text shown in overlay.
+        MiniDiffOverDelete = { link = 'MiniDiffSignDelete' }, -- Background highlight for deleted text
 
         -- Mini Files
         MiniFilesBorder = { link = 'FloatBorder' },
