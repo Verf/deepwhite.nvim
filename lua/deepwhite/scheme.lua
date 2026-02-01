@@ -67,9 +67,9 @@ function M.get_groups(c)
         StatusLineNC = { link = 'LineNr' }, -- Status lines of not-current windows.
         StatusLineTerm = { link = 'StatusLine' }, -- Status line of |terminal| window.
         StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
-        TabLine = { fg = c.base7, bg = c.base0 }, -- Tab pages line, not active tab page label.
-        TabLineFill = { fg = c.base0, bg = c.base7 }, -- Tab pages line, where there are no labels.
-        TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
+        TabLine = { fg = c.base0, bg = c.base7 }, -- Tab pages line, not active tab page label.
+        TabLineFill = { link = 'TabLine' }, -- Tab pages line, where there are no labels.
+        TabLineSel = { fg = c.base0, bg = c.base3 }, -- Tab pages line, active tab page label.
         Title = { fg = c.base0, bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
@@ -453,15 +453,15 @@ function M.get_groups(c)
         MiniSurround = { link = 'IncSearch' }, -- Highlight surrounding chars
 
         -- Mini Tabline
-        MiniTablineCurrent = { link = 'TabLineSel' },
-        MiniTablineVisible = { link = 'TabLineSel' },
-        MiniTablineHidden = { link = 'TabLine' },
-        MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base7, bold = true, italic = true },
-        MiniTablineModifiedHidden = { link = 'MiniTablineModifiedCurrent' },
-        MiniTablineModifiedVisible = { fg = c.base7, bg = c.base0, italic = true },
-        MiniTablineFill = { link = 'TabLineFill' },
-        MiniTablineTabpagesection = { link = 'Search' },
-        MiniTablineTrunc = { link = 'Comment' },
+        MiniTablineCurrent = { link = 'TabLineSel' }, -- buffer is current (has cursor in it).
+        MiniTablineVisible = { link = 'TabLine' }, -- buffer is visible (displayed in some window).
+        MiniTablineHidden = { link = 'TabLine' }, -- buffer is hidden (not displayed).
+        MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base3, bold = true, italic = true }, -- buffer is modified and current.
+        MiniTablineModifiedHidden = { link = 'MiniTablineModifiedCurrent' }, -- buffer is modified and visible.
+        MiniTablineModifiedVisible = { fg = c.base0, bg = c.base7, italic = true }, -- buffer is modified and hidden.
+        MiniTablineFill = { link = 'TabLineFill' }, -- unused right space of tabline.
+        MiniTablineTabpagesection = { link = 'Search' }, -- section with tabpage information.
+        MiniTablineTrunc = { link = 'Comment' }, -- truncation symbols indicating more left/right tabs.
 
         -- Mini Test
         MiniTestEmphasis = { bold = true },
