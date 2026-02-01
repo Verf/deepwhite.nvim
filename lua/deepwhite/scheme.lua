@@ -68,7 +68,7 @@ function M.get_groups(c)
         StatusLineTerm = { link = 'StatusLine' }, -- Status line of |terminal| window.
         StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
         TabLine = { fg = c.base0, bg = c.base6 }, -- Tab pages line, not active tab page label.
-        TabLineFill = { link = 'TabLine' }, -- Tab pages line, where there are no labels.
+        TabLineFill = { bg = c.base7 }, -- Tab pages line, where there are no labels.
         TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
         Title = { fg = c.base0, bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
