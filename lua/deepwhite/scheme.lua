@@ -69,7 +69,7 @@ function M.get_groups(c)
         StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
         TabLine = { fg = c.base0, bg = c.base7 }, -- Tab pages line, not active tab page label.
         TabLineFill = { link = 'TabLine' }, -- Tab pages line, where there are no labels.
-        TabLineSel = { fg = c.base0, bg = c.base3 }, -- Tab pages line, active tab page label.
+        TabLineSel = { fg = c.base0, bg = c.base5 }, -- Tab pages line, active tab page label.
         Title = { fg = c.base0, bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
@@ -456,7 +456,7 @@ function M.get_groups(c)
         MiniTablineCurrent = { link = 'TabLineSel' }, -- buffer is current (has cursor in it).
         MiniTablineVisible = { link = 'TabLine' }, -- buffer is visible (displayed in some window).
         MiniTablineHidden = { link = 'TabLine' }, -- buffer is hidden (not displayed).
-        MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base3, bold = true, italic = true }, -- buffer is modified and current.
+        MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base5, bold = true, italic = true }, -- buffer is modified and current.
         MiniTablineModifiedHidden = { link = 'MiniTablineModifiedCurrent' }, -- buffer is modified and visible.
         MiniTablineModifiedVisible = { fg = c.base0, bg = c.base7, italic = true }, -- buffer is modified and hidden.
         MiniTablineFill = { link = 'TabLineFill' }, -- unused right space of tabline.
