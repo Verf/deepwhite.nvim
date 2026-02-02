@@ -457,8 +457,8 @@ function M.get_groups(c)
         MiniTablineVisible = { link = 'TabLine' }, -- buffer is visible (displayed in some window).
         MiniTablineHidden = { link = 'TabLine' }, -- buffer is hidden (not displayed).
         MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base7, bold = true, italic = true }, -- buffer is modified and current.
-        MiniTablineModifiedHidden = { link = 'MiniTablineModifiedCurrent' }, -- buffer is modified and visible.
-        MiniTablineModifiedVisible = { fg = c.base0, bg = c.base6, italic = true }, -- buffer is modified and hidden.
+        MiniTablineModifiedVisible = { fg = c.base0, bg = c.base6, italic = true }, -- buffer is modified and visible.
+        MiniTablineModifiedHidden = { fg = c.base0, bg = c.base6, italic = true }, -- buffer is modified and hidden.
         MiniTablineFill = { link = 'TabLineFill' }, -- unused right space of tabline.
         MiniTablineTabpagesection = { link = 'Search' }, -- section with tabpage information.
         MiniTablineTrunc = { link = 'Comment' }, -- truncation symbols indicating more left/right tabs.
