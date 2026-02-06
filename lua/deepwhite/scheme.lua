@@ -293,6 +293,13 @@ function M.get_groups(c)
         DiagnosticUnnecessary = { link = 'Comment' },
 
         -- Plugins
+        -- Git
+        GitStaged = { bg = c.light_green },
+        GitModified = { bg = c.light_orange },
+        GitDeleted = { bg = c.light_red },
+        GitRenamed = { bg = c.light_cyan },
+        GitUntracked = { link = 'Normal' },
+        GitIgnored = { link = 'Comment' },
         -- Mini Animate
         MiniAnimateCursor = { link = 'Cursor' },
         MiniAnimateNormalFloat = { link = 'NormalFloat' },
@@ -594,6 +601,18 @@ function M.get_groups(c)
         DapUIStoppedThread = { link = 'DapUIBreakpointsPath' },
         DapUIDecoration = { link = 'DapUIBreakpointsPath' },
         DapUIModifiedValue = { fg = c.cyan, bold = true },
+
+        -- fff.nvim
+        FFFileScore = { fg = c.cyan },
+        FFFGitStaged = { link = 'GitStaged' },
+        FFFGitModified = { link = 'GitModified' },
+        FFFGitDeleted = { link = 'GitDeleted' },
+        FFFGitRenamed = { link = 'GitRenamed' },
+        FFFGitUntracked = { link = 'GitUntracked' },
+        FFFGitIgnored = { link = 'GitIgnored' },
+        FFFGitSignStaged = { link = 'GitStaged' },
+        FFFGitSignDeleted = { link = 'GitDeleted' },
+        FFFGitSignIgnored = { link = 'GitIgnored' },
     }
 end
 
