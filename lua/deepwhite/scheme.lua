@@ -603,7 +603,6 @@ function M.get_groups(c)
         DapUIModifiedValue = { fg = c.cyan, bold = true },
 
         -- fff.nvim
-        FFFileScore = { fg = c.cyan },
         FFFGitStaged = { link = 'GitStaged' },
         FFFGitModified = { link = 'GitModified' },
         FFFGitDeleted = { link = 'GitDeleted' },
