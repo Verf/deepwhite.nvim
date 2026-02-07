@@ -300,16 +300,17 @@ function M.get_groups(c)
         GitRenamed = { bg = c.light_cyan },
         GitUntracked = { link = 'Normal' },
         GitIgnored = { link = 'Comment' },
+
         -- Mini Animate
         MiniAnimateCursor = { link = 'Cursor' },
         MiniAnimateNormalFloat = { link = 'NormalFloat' },
 
         -- Mini Clue
         MiniClueBorder = { link = 'FloatBorder' },
-        MiniClueDescGroup = { link = 'Title' }, -- Group names (e.g. "+lsp")
-        MiniClueDescSingle = { link = 'NormalFloat' }, -- Normal descriptions
-        MiniClueNextKey = { link = 'SpecialKey' }, -- The key to press
-        MiniClueNextKeyWithPostkeys = { link = 'WarningMsg' }, -- Keys that need more keys
+        MiniClueDescGroup = { link = 'Title' },
+        MiniClueDescSingle = { link = 'NormalFloat' },
+        MiniClueNextKey = { link = 'SpecialKey' },
+        MiniClueNextKeyWithPostkeys = { link = 'WarningMsg' },
         MiniClueSeparator = { link = 'WinSeparator' },
         MiniClueTitle = { link = 'FloatTitle' },
 
@@ -334,7 +335,7 @@ function M.get_groups(c)
         MiniDepsChangeAdded = { link = 'Added' },
         MiniDepsChangeRemoved = { link = 'Removed' },
         MiniDepsHint = { link = 'Comment' },
-        MiniDepsInfo = { link = 'Special' },
+        MiniDepsInfo = { link = 'Normal' },
         MiniDepsMsgBreaking = { link = 'ErrorMsg' },
         MiniDepsPlaceholder = { link = 'Comment' },
         MiniDepsTitle = { link = 'Title' },
@@ -420,7 +421,7 @@ function M.get_groups(c)
         MiniPickNormal = { link = 'NormalFloat' },
         MiniPickPreviewLine = { link = 'CursorLine' },
         MiniPickPreviewRegion = { link = 'IncSearch' },
-        MiniPickPrompt = { link = 'Title' }, -- The prompt text ("> ")
+        MiniPickPrompt = { link = 'Title' },
         MiniPickPromptCaret = { link = 'Cursor' },
         MiniPickPromptPrefix = { link = 'Special' },
 
@@ -522,7 +523,7 @@ function M.get_groups(c)
         CmpItemAbbrMatch = { link = 'Identifier' },
         CmpItemAbbrMatchFuzzy = { link = 'CmpItemAbbrMatch' },
 
-        CmpItemKindText = { fg = c.base0 },
+        CmpItemKindText = { link = 'Pmenu' },
         CmpItemKindSnippet = { fg = c.base2 },
         CmpItemKindConstant = { fg = c.blue },
         CmpItemKindVariable = { fg = c.blue },
