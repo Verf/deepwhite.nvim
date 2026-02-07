@@ -434,16 +434,16 @@ function M.get_groups(c)
         -- Mini Starter
         MiniStarterCurrent = { link = 'CursorLine' },
         MiniStarterFooter = { link = 'Comment' },
-        MiniStarterHeader = { link = 'Title' }, -- Big header
+        MiniStarterHeader = { link = 'Title' },
         MiniStarterInactive = { link = 'Comment' },
         MiniStarterItem = { link = 'Normal' },
         MiniStarterItemBullet = { link = 'Delimiter' },
-        MiniStarterItemPrefix = { link = 'WarningMsg' }, -- Shortcut key
+        MiniStarterItemPrefix = { link = 'WarningMsg' },
         MiniStarterQuery = { link = 'Special' },
-        MiniStarterSection = { link = 'Special' }, -- Group headers
+        MiniStarterSection = { link = 'Special' },
 
         -- Mini Statusline
-        MiniStatuslineModeNormal = { fg = c.base0, bg = c.light_purple, bold = true }, -- Strong contrast
+        MiniStatuslineModeNormal = { fg = c.base0, bg = c.light_purple, bold = true },
         MiniStatuslineModeInsert = { fg = c.base0, bg = c.light_green, bold = true },
         MiniStatuslineModeVisual = { fg = c.base0, bg = c.light_cyan, bold = true },
         MiniStatuslineModeReplace = { fg = c.base0, bg = c.light_orange, bold = true },
@@ -451,10 +451,10 @@ function M.get_groups(c)
         MiniStatuslineModeOther = { fg = c.base0, bg = c.light_blue, bold = true },
 
         MiniStatuslineDevinfo = { link = 'Normal' },
-        MiniStatuslineFileinfo = { link = 'Normal' },
         MiniStatuslineFilename = { link = 'Normal' },
+        MiniStatuslineFileinfo = { link = 'Normal' },
 
-        MiniStatuslineInactive = { link = 'Comment' },
+        MiniStatuslineInactive = { fg = c.base3 },
 
         -- Mini Surround
         MiniSurround = { link = 'IncSearch' }, -- Highlight surrounding chars
