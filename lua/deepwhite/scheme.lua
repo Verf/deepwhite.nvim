@@ -226,7 +226,7 @@ function M.get_groups(c)
         LspSignatureActiveParameter = { link = 'LspReferenceText' }, -- Used to highlight the active parameter in the signature help.
 
         ['@lsp.type.class'] = { link = '@type' },
-        ['@lsp.type.decorator'] = { link = '@function' },
+        ['@lsp.type.decorator'] = { link = '@type' },
         ['@lsp.type.enum'] = { link = '@type' },
         ['@lsp.type.enumMember'] = { link = '@constant' },
         ['@lsp.type.function'] = { link = '@function.call' },
@@ -238,7 +238,7 @@ function M.get_groups(c)
         ['@lsp.type.property'] = { link = '@property' },
         ['@lsp.type.struct'] = { link = '@structure' },
         ['@lsp.type.type'] = { link = '@type' },
-        ['@lsp.type.variable'] = { link = '@variable' },
+        ['@lsp.type.variable'] = { link = '@type' },
         ['@lsp.typemod.class.defaultLibrary'] = { link = '@type.builtin' },
         ['@lsp.typemod.enum.defaultLibrary'] = { link = '@type.builtin' },
         ['@lsp.typemod.enumMember.defaultLibrary'] = { link = '@constant.builtin' },
