@@ -238,7 +238,7 @@ function M.get_groups(c)
         ['@lsp.type.property'] = { link = '@property' },
         ['@lsp.type.struct'] = { link = '@structure' },
         ['@lsp.type.type'] = { link = '@type' },
-        ['@lsp.type.variable'] = { link = '@type' },
+        ['@lsp.type.variable'] = { link = '@variable' },
         ['@lsp.typemod.class.defaultLibrary'] = { link = '@type.builtin' },
         ['@lsp.typemod.enum.defaultLibrary'] = { link = '@type.builtin' },
         ['@lsp.typemod.enumMember.defaultLibrary'] = { link = '@constant.builtin' },
