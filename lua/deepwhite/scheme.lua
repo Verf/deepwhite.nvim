@@ -70,7 +70,7 @@ function M.get_groups(c)
         TabLine = { fg = c.base0, bg = c.base6 }, -- Tab pages line, not active tab page label.
         TabLineFill = { bg = c.base7 }, -- Tab pages line, where there are no labels.
         TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
-        Title = { fg = c.base0, bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
+        Title = { bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
         WarningMsg = { fg = c.orange }, -- Warning messages.
@@ -196,12 +196,12 @@ function M.get_groups(c)
 
         ['@markup.heading'] = { link = 'Title' }, -- headings, titles (including markers)
 
-        ['@markup.quote'] = { link = 'Comment' }, -- block quotes
+        ['@markup.quote'] = { link = 'Identifier' }, -- block quotes
         ['@markup.math'] = { link = 'Special' }, -- math environments (e.g. `$ ... $` in LaTeX)
 
         ['@markup.link'] = { link = 'Underlined' }, -- text references, footnotes, citations, etc.
 
-        ['@markup.raw'] = { link = 'String' }, -- literal or verbatim text (e.g. inline code)
+        ['@markup.raw'] = { link = 'Identifier' }, -- literal or verbatim text (e.g. inline code)
 
         ['@markup.list'] = { link = 'Identifier' }, -- list markers
         ['@markup.list.checked'] = { link = 'Comment' }, -- checked todo-style list markers
@@ -291,6 +291,10 @@ function M.get_groups(c)
         DiagnosticSignOk = { link = 'DiagnosticOk' },
         DiagnosticDeprecated = { strikethrough = true },
         DiagnosticUnnecessary = { link = 'Comment' },
+
+        -- markdown
+        markdownListMarker = { link = 'Identifier' },
+        markdownOrderedListMarker = { link = 'Identifier' },
 
         -- Plugins
         -- Git
@@ -613,6 +617,44 @@ function M.get_groups(c)
         FFFGitSignStaged = { link = 'GitStaged' },
         FFFGitSignDeleted = { link = 'GitDeleted' },
         FFFGitSignIgnored = { link = 'GitIgnored' },
+
+        -- render-markdown.nvim
+        RenderMarkdownH1Bg = { bg = c.light_red },
+        RenderMarkdownH2Bg = { bg = c.light_pink },
+        RenderMarkdownH3Bg = { bg = c.light_purple },
+        RenderMarkdownH4Bg = { bg = c.light_blue },
+        RenderMarkdownH5Bg = { bg = c.light_cyan },
+        RenderMarkdownH6Bg = { bg = c.light_orange },
+
+        -- markview.nvim
+        MarkviewPalette0 = { fg = c.base0, bg = c.base6 },
+        MarkviewPalette0Fg = { fg = c.base0 },
+        MarkviewPalette0Bg = { bg = c.base6 },
+        MarkviewPalette0Sign = { link = 'MarkviewPalette0Fg' },
+        MarkviewPalette1 = { fg = c.base0, bg = c.light_red },
+        MarkviewPalette1Fg = { fg = c.base0 },
+        MarkviewPalette1Bg = { bg = c.light_red },
+        MarkviewPalette1Sign = { link = 'MarkviewPalette1Fg' },
+        MarkviewPalette2 = { fg = c.base0, bg = c.light_pink },
+        MarkviewPalette2Fg = { fg = c.base0 },
+        MarkviewPalette2Bg = { bg = c.light_pink },
+        MarkviewPalette2Sign = { link = 'MarkviewPalette2Fg' },
+        MarkviewPalette3 = { fg = c.base0, bg = c.light_purple },
+        MarkviewPalette3Fg = { fg = c.base0 },
+        MarkviewPalette3Bg = { bg = c.light_purple },
+        MarkviewPalette3Sign = { link = 'MarkviewPalette3Fg' },
+        MarkviewPalette4 = { fg = c.base0, bg = c.light_blue },
+        MarkviewPalette4Fg = { fg = c.base0 },
+        MarkviewPalette4Bg = { bg = c.light_blue },
+        MarkviewPalette4Sign = { link = 'MarkviewPalette4Fg' },
+        MarkviewPalette5 = { fg = c.base0, bg = c.light_cyan },
+        MarkviewPalette5Fg = { fg = c.base0 },
+        MarkviewPalette5Bg = { bg = c.light_cyan },
+        MarkviewPalette5Sign = { link = 'MarkviewPalette5Fg' },
+        MarkviewPalette6 = { fg = c.base0, bg = c.light_orange },
+        MarkviewPalette6Fg = { fg = c.base0 },
+        MarkviewPalette6Bg = { bg = c.light_orange },
+        MarkviewPalette6Sign = { link = 'MarkviewPalette6Fg' },
     }
 end
 
