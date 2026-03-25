@@ -30,10 +30,10 @@ function M.get_colors(options)
         pink = '#A6006F', -- hsv(320, 100%, 65%)
         red = '#A60000', -- hsv(360, 100%, 65%)
 
-        diff_add = '#89FA89', -- hsv(120, 45%, 98%)
-        diff_change = '#FAFA89', -- hsv(60, 45%, 98%)
-        diff_delete = '#FA8989', -- hsv(360, 45%, 98%)
-        diff_text = '#FAAF64', -- hsv(30, 60%, 98%)
+        diff_add = '#64FA64', -- hsv(120, 60%, 98%)
+        diff_change = '#FAAF64', -- hsv(30, 60%, 98%)
+        diff_delete = '#FA6464', -- hsv(360, 60%, 98%)
+        diff_text = '#FAFA64', -- hsv(60, 60%, 98%)
 
         iris = '#907aa9',
         muted = '#9893a5',

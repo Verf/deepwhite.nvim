@@ -655,6 +655,11 @@ function M.get_groups(c)
         MarkviewPalette6Fg = { fg = c.base0 },
         MarkviewPalette6Bg = { bg = c.light_orange },
         MarkviewPalette6Sign = { link = 'MarkviewPalette6Fg' },
+
+        -- gitsigns.nvim
+        GitSignsAdd = { fg = c.diff_add },
+        GitSignsChange = { fg = c.diff_change },
+        GitSignsDelete = { fg = c.diff_delete },
     }
 end
 
