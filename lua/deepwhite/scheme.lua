@@ -12,9 +12,9 @@ function M.get_groups(c)
         CursorColumn = { bg = c.base6 }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
         CursorLine = { bg = c.base6 }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
         Directory = { link = 'SpecialKey' }, -- Directory names (and other special names in listings).
-        DiffAdd = { bg = c.diff_add }, -- Diff mode: Added line. |diff.txt|
-        DiffChange = { bg = c.diff_change }, -- Diff mode: Changed line. |diff.txt|
-        DiffDelete = { bg = c.diff_delete }, -- Diff mode: Deleted line. |diff.txt|
+        DiffAdd = { bg = c.diff_add_bg }, -- Diff mode: Added line. |diff.txt|
+        DiffChange = { bg = c.diff_change_bg }, -- Diff mode: Changed line. |diff.txt|
+        DiffDelete = { bg = c.diff_delete_bg }, -- Diff mode: Deleted line. |diff.txt|
         DiffText = { bg = c.diff_text }, -- Diff mode: Changed text within a changed line. |diff.txt|
         EndOfBuffer = { fg = c.base6 }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
         TermCursor = { link = 'Cursor' }, -- Cursor in a focused terminal.

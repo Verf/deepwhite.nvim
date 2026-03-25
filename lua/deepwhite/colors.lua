@@ -33,7 +33,12 @@ function M.get_colors(options)
         diff_add = '#64FA64', -- hsv(120, 60%, 98%)
         diff_change = '#FAAF64', -- hsv(30, 60%, 98%)
         diff_delete = '#FA6464', -- hsv(360, 60%, 98%)
-        diff_text = '#FAFA64', -- hsv(60, 60%, 98%)
+
+        diff_add_bg = '#AFFAAF', -- hsv(120, 30%, 98%)
+        diff_change_bg = '#FAD4AF', -- hsv(30, 30%, 98%)
+        diff_delete_bg = '#FAAFAF', -- hsv(360, 30%, 98%)
+
+        diff_text = '#FA8919', -- hsv(60, 90%, 98%)
 
         iris = '#907aa9',
         muted = '#9893a5',
