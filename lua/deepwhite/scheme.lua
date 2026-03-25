@@ -20,8 +20,8 @@ function M.get_groups(c)
         TermCursor = { link = 'Cursor' }, -- Cursor in a focused terminal.
         ErrorMsg = { fg = c.red }, -- Error messages on the command line.
         WinSeparator = { fg = c.base0 }, -- Separators between window splits.
-        Folded = { fg = c.base3, bg = c.base6 }, -- Line used for closed folds.
-        FoldColumn = { link = 'LineNr' }, -- 'foldcolumn'
+        Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
+        FoldColumn = { fg = 'NONE', bg = 'NONE' }, -- 'foldcolumn'
         SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
         IncSearch = { link = 'Search' }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
         Substitute = { link = 'Search' }, -- |:substitute| replacement text highlighting.
