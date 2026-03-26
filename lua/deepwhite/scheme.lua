@@ -2,8 +2,14 @@ local M = {}
 
 function M.get_groups(c)
     return {
+        -- basic
+        Normal = { fg = c.base0, bg = c.base7 },
+        Bold = { bold = true },
+        Italic = { italic = true },
+        Underlined = { underline = true },
+        Strikethrough = { strikethrough = true },
         -- :help highlight-groups highlight-default
-        ColorColumn = { bg = c.base7 }, -- Used for the columns set with 'colorcolumn'.
+        ColorColumn = { bg = c.base5 }, -- Used for the columns set with 'colorcolumn'.
         Conceal = { fg = c.base5 }, -- Placeholder characters substituted for concealed text (see 'conceallevel').
         CurSearch = { link = 'Search' }, -- Current match for the last search pattern (see 'hlsearch').
         Cursor = { bg = c.base2 }, -- Character under the cursor.
@@ -37,7 +43,6 @@ function M.get_groups(c)
         MsgSeparator = { bg = c.base3 }, -- Separator for scrolled messages |msgsep|.
         MoreMsg = { link = 'ModeMsg' }, -- |more-prompt|
         NonText = { fg = c.base5 }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text.
-        Normal = { fg = c.base0, bg = c.base7 }, -- Normal text.
         NormalFloat = { link = 'Normal' }, -- Normal text in floating windows.
         FloatBorder = { fg = c.base0 }, -- Border of floating windows.
         FloatTitle = { fg = c.base0 }, -- Title of floating windows.
@@ -121,8 +126,6 @@ function M.get_groups(c)
         Delimiter = { link = 'Identifier' }, --character that needs attention
         SpecialComment = { link = 'SpecialKey' }, -- special things inside a comment
         Debug = { link = 'SpecialKey' }, -- debugging statements
-
-        Underlined = { underline = true }, --text that stands out, HTML links
 
         Ignore = { fg = c.base7 }, -- left blank, hidden  |hl-Ignore|
 
