@@ -486,19 +486,10 @@ function M.get_groups(c)
         -- Mini Trailspace
         MiniTrailspace = { link = 'Error' },
 
-        -- Lspsaga
+        -- nvimdev/lspsaga.nvim
         RenameNormal = { link = 'Normal' },
 
-        -- rainbow
-        TSRainbowRed = { fg = c.red },
-        TSRainbowOrange = { fg = c.orange },
-        TSRainbowYellow = { fg = c.yellow },
-        TSRainbowGreen = { fg = c.green },
-        TSRainbowCyan = { fg = c.cyan },
-        TSRainbowBlue = { fg = c.blue },
-        TSRainbowViolet = { fg = c.purple },
-
-        -- rainbow-delimiters
+        -- hiphish/rainbow-delimiters.nvim
         RainbowDelimiterRed = { fg = c.red },
         RainbowDelimiterYellow = { fg = c.yellow },
         RainbowDelimiterBlue = { fg = c.blue },
@@ -507,7 +498,7 @@ function M.get_groups(c)
         RainbowDelimiterViolet = { fg = c.purple },
         RainbowDelimiterCyan = { fg = c.cyan },
 
-        -- nvim-notify
+        -- rcarriga/nvim-notify
         NotifyERRORBorder = { fg = c.base0 },
         NotifyWARNBorder = { fg = c.base0 },
         NotifyINFOBorder = { fg = c.base0 },
@@ -524,7 +515,7 @@ function M.get_groups(c)
         NotifyDEBUGIcon = { link = 'NotifyDEBUGTitle' },
         NotifyTRACEIcon = { link = 'NotifyTRACETitle' },
 
-        -- nvim-cmp
+        -- hrsh7th/nvim-cmp
         CmpItemAbbr = { link = 'Comment' },
         CmpItemAbbrDeprecated = { link = 'Visual' },
         CmpItemAbbrMatch = { link = 'Identifier' },
@@ -543,7 +534,7 @@ function M.get_groups(c)
         CmpItemKindModule = { link = 'CmpItemKindClass' },
         CmpItemKindStruct = { link = 'CmpItemKindClass' },
 
-        -- barbar
+        -- romgrk/barbar.nvim
         BufferCurrent = { link = 'TabLineSel' },
         BufferCurrentIndex = { link = 'TabLineSel' },
         BufferCurrentMod = { fg = c.orange },
@@ -564,23 +555,19 @@ function M.get_groups(c)
         BufferOffset = { link = 'TabLineSel' },
         BufferScrollArrow = { link = 'TabLineSel' },
 
-        -- noice.nvim
-        NoiceCmdlinePopupTitle = { fg = c.base0, bold = true },
-        NoiceCmdlinePopupBorder = { fg = c.base0 },
-
-        -- Neogit
+        -- neogitorg/neogit
         NeogitDiffAdd = { bg = c.light_green },
         NeogitDiffAddHighlight = { link = 'NeogitDiffAdd' },
         NeogitDiffDelete = { bg = c.light_red },
         NeogitDiffDeleteHighlight = { link = 'NeogitDiffDelete' },
         NeogitHunkHeader = { link = 'NeogitHunkHeaderHighlight' },
 
-        -- Diffview
+        -- sindrets/diffview.nvim
         DiffviewDiffAdd = { bg = c.light_green },
         DiffviewDiffDelete = { bg = c.light_red },
         DiffviewDiffChange = { bg = c.light_orange },
 
-        -- modicator.nvim
+        -- mawkler/modicator.nvim
         NormalMode = { link = 'Normal' },
         InsertMode = { bold = true },
         VisualMode = { link = 'Visual' },
@@ -610,7 +597,7 @@ function M.get_groups(c)
         DapUIDecoration = { link = 'DapUIBreakpointsPath' },
         DapUIModifiedValue = { fg = c.cyan, bold = true },
 
-        -- fff.nvim
+        -- dmtrKovalenko/fff.nvim
         FFFGitStaged = { link = 'GitStaged' },
         FFFGitModified = { link = 'GitModified' },
         FFFGitDeleted = { link = 'GitDeleted' },
@@ -621,7 +608,7 @@ function M.get_groups(c)
         FFFGitSignDeleted = { link = 'GitDeleted' },
         FFFGitSignIgnored = { link = 'GitIgnored' },
 
-        -- render-markdown.nvim
+        -- MeanderingProgrammer/render-markdown.nvim
         RenderMarkdownH1Bg = { bg = c.light_red },
         RenderMarkdownH2Bg = { bg = c.light_pink },
         RenderMarkdownH3Bg = { bg = c.light_purple },
@@ -629,7 +616,7 @@ function M.get_groups(c)
         RenderMarkdownH5Bg = { bg = c.light_cyan },
         RenderMarkdownH6Bg = { bg = c.light_orange },
 
-        -- markview.nvim
+        -- OXY2DEV/markview.nvim
         MarkviewPalette0 = { fg = c.base0, bg = c.base6 },
         MarkviewPalette0Fg = { fg = c.base0 },
         MarkviewPalette0Bg = { bg = c.base6 },
@@ -659,10 +646,14 @@ function M.get_groups(c)
         MarkviewPalette6Bg = { bg = c.light_orange },
         MarkviewPalette6Sign = { link = 'MarkviewPalette6Fg' },
 
-        -- gitsigns.nvim
+        -- lewis6991/gitsigns.nvim
         GitSignsAdd = { fg = c.diff_add },
         GitSignsChange = { fg = c.diff_change },
         GitSignsDelete = { fg = c.diff_delete },
+
+        -- lukas-reineke/indent-blankline.nvim
+        IblScope = { fg = c.base2 },
+        IblIndent = { fg = c.base4 },
     }
 end
 
