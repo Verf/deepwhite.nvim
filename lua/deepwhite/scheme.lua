@@ -29,8 +29,8 @@ function M.get_groups(c)
         Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
         FoldColumn = { fg = 'NONE', bg = 'NONE' }, -- 'foldcolumn'
         SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
-        IncSearch = { link = 'Search' }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
-        Substitute = { link = 'Search' }, -- |:substitute| replacement text highlighting.
+        IncSearch = { fg = c.red, bold = true }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
+        Substitute = { link = 'IncSearch' }, -- |:substitute| replacement text highlighting.
         LineNr = { fg = c.base2 }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
         LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
         LineNrBelow = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, below the cursor line.
@@ -61,7 +61,7 @@ function M.get_groups(c)
         ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
         Question = { bold = true }, -- |hit-enter| prompt and yes/no questions.
         QuickFixLine = { bold = true }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-        Search = { fg = c.base0, bg = c.light_yellow }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+        Search = { bg = c.light_yellow }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
         SnippetTabstop = { link = 'Normal' }, -- Tabstops in snippets. |vim.snippet|
         SpecialKey = { fg = c.blue }, -- Unprintable characters: Text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
         SpellBad = { fg = c.base0, undercurl = true }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
@@ -596,17 +596,6 @@ function M.get_groups(c)
         DapUIStoppedThread = { link = 'DapUIBreakpointsPath' },
         DapUIDecoration = { link = 'DapUIBreakpointsPath' },
         DapUIModifiedValue = { fg = c.cyan, bold = true },
-
-        -- dmtrKovalenko/fff.nvim
-        FFFGitStaged = { link = 'GitStaged' },
-        FFFGitModified = { link = 'GitModified' },
-        FFFGitDeleted = { link = 'GitDeleted' },
-        FFFGitRenamed = { link = 'GitRenamed' },
-        FFFGitUntracked = { link = 'GitUntracked' },
-        FFFGitIgnored = { link = 'GitIgnored' },
-        FFFGitSignStaged = { link = 'GitStaged' },
-        FFFGitSignDeleted = { link = 'GitDeleted' },
-        FFFGitSignIgnored = { link = 'GitIgnored' },
 
         -- MeanderingProgrammer/render-markdown.nvim
         RenderMarkdownH1Bg = { bg = c.light_red },
