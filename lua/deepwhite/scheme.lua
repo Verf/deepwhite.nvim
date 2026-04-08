@@ -643,6 +643,18 @@ function M.get_groups(c)
         -- lukas-reineke/indent-blankline.nvim
         IblScope = { fg = c.base2 },
         IblIndent = { fg = c.base4 },
+
+        -- which-key
+        WhichKeyGroup = { link = 'Bold' },
+        WhichKeyIconAzure = { fg = c.cyan },
+        WhichKeyIconBlue = { fg = c.blue },
+        WhichKeyIconCyan = { fg = c.cyan },
+        WhichKeyIconGreen = { fg = c.green },
+        WhichKeyIconGrey = { fg = c.base3 },
+        WhichKeyIconOrange = { fg = c.orange },
+        WhichKeyIconPurple = { fg = c.purple },
+        WhichKeyIconRed = { fg = c.red },
+        WhichKeyIconYellow = { fg = c.yellow },
     }
 end
 
