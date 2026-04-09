@@ -49,13 +49,13 @@ function M.get_groups(c)
         FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
         NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
         Pmenu = { fg = c.base0, bg = c.base6 }, -- Popup menu: Normal item.
-        PmenuSel = { fg = c.base0, bg = c.base3 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
+        PmenuSel = { bg = c.base5 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
         PmenuKind = { link = 'Pmenu' }, -- Popup menu: Normal item "kind".
         PmenuKindSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "kind".
         PmenuExtra = { link = 'Pmenu' }, -- Popup menu: Normal item "extra text".
         PmenuExtraSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "extra text".
         PmenuSbar = { bg = c.base7 }, -- Popup menu: Scrollbar.
-        PmenuThumb = { bg = c.base3 }, -- Popup menu: Thumb of the scrollbar.
+        PmenuThumb = { bg = c.base4 }, -- Popup menu: Thumb of the scrollbar.
         PmenuMatch = { link = 'Pmenu' }, -- Popup menu: Matched text in normal item. Combined with |hl-Pmenu|.
         PmenuMatchSel = { link = 'PmenuSel' }, -- Popup menu: Matched text in selected item. Combined with |hl-PmenuMatch| and |hl-PmenuSel|.
         ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
