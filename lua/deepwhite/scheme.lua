@@ -654,7 +654,7 @@ function M.get_groups(c)
         WhichKeyIconOrange = { fg = c.orange },
         WhichKeyIconPurple = { fg = c.purple },
         WhichKeyIconRed = { fg = c.red },
-        WhichKeyIconYellow = { fg = c.yellow },
+        WhichKeyIconYellow = { fg = c.orange },
     }
 end
 
