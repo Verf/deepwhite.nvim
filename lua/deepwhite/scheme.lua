@@ -8,10 +8,14 @@ function M.get_groups(c)
         Italic = { italic = true },
         Underlined = { underline = true },
         Strikethrough = { strikethrough = true },
-        -- :help highlight-groups highlight-default
+        -- search & substitute
+        Search = { fg = c.base0, bg = c.light_orange }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+        CurSearch = { fg = c.base0, bg = c.light_pink, bold = true }, -- Current match for the last search pattern (see 'hlsearch').
+        IncSearch = { fg = c.base0, bg = c.light_pink }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
+        Substitute = { fg = c.base7, bg = c.orange }, -- |:substitute| replacement text highlighting.
+        -- other :help highlight-groups highlight-default
         ColorColumn = { bg = c.base5 }, -- Used for the columns set with 'colorcolumn'.
         Conceal = { fg = c.base5 }, -- Placeholder characters substituted for concealed text (see 'conceallevel').
-        CurSearch = { link = 'Search' }, -- Current match for the last search pattern (see 'hlsearch').
         Cursor = { bg = c.base2 }, -- Character under the cursor.
         lCursor = { link = 'Cursor' }, -- Character under the cursor when |language-mapping| is used (see 'guicursor').
         CursorIM = { link = 'Cursor' }, -- Like Cursor, but used when in IME mode. *CursorIM*
@@ -29,8 +33,6 @@ function M.get_groups(c)
         Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
         FoldColumn = { fg = 'NONE', bg = 'NONE' }, -- 'foldcolumn'
         SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
-        IncSearch = { fg = c.red, bold = true }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
-        Substitute = { link = 'IncSearch' }, -- |:substitute| replacement text highlighting.
         LineNr = { fg = c.base2 }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
         LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
         LineNrBelow = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, below the cursor line.
@@ -61,7 +63,6 @@ function M.get_groups(c)
         ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
         Question = { bold = true }, -- |hit-enter| prompt and yes/no questions.
         QuickFixLine = { bold = true }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-        Search = { bg = c.light_yellow }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
         SnippetTabstop = { link = 'Normal' }, -- Tabstops in snippets. |vim.snippet|
         SpecialKey = { fg = c.blue }, -- Unprintable characters: Text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
         SpellBad = { fg = c.base0, undercurl = true }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
