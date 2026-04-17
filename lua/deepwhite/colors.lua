@@ -10,7 +10,6 @@ function M.get_colors(options)
         base5 = '#CCCBC6', -- hsv(50, 3%, 80%)
         base6 = '#E6E4DF', -- hsv(43, 3%, 90%)
         base7 = '#FAF2EB', -- hsv(28, 6%, 98%)
-        base8 = '#FAF4F0', -- hsv(24, 4%, 98%)
 
         light_orange = '#FAE1C8', -- hsv(30, 20%, 98%)
         light_yellow = '#FAFAC8', -- hsv(60, 20%, 98%)

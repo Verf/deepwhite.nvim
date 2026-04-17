@@ -220,7 +220,7 @@ function M.get_groups(c)
         ['@tag.delimiter'] = { link = 'Delimiter' }, -- XML-style tag delimiters
 
         -- vim.lsp
-        LspReferenceText = { bg = c.light_purple }, -- Used for highlighting "text" references
+        LspReferenceText = { link = 'Underlined' }, -- Used for highlighting "text" references
         LspReferenceRead = { link = 'LspReferenceText' }, -- Used for highlighting "read" references
         LspReferenceWrite = { link = 'LspReferenceText' }, -- Used for highlighting "write" references
         LspReferenceTarget = { link = 'LspReferenceText' }, -- Used for highlighting reference targets (e.g. in a hover range)
@@ -656,6 +656,9 @@ function M.get_groups(c)
         WhichKeyIconPurple = { fg = c.purple },
         WhichKeyIconRed = { fg = c.red },
         WhichKeyIconYellow = { fg = c.orange },
+
+        -- Snacks.nvim
+        SnacksPickerDir = { link = 'Comment' },
     }
 end
 
