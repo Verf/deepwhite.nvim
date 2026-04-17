@@ -1,0 +1,142 @@
+colors:
+  base0: '1A1918' # hsv(30, 8%, 10%)
+  base1: '595855' # hsv(45, 4%, 35%)
+  base2: '807E79' # hsv(43, 5%, 50%)
+  base3: '999791' # hsv(45, 5%, 60%)
+  base4: 'B3B1AD' # hsv(40, 3%, 70%)
+  base5: 'CCCBC6' # hsv(50, 3%, 80%)
+  base6: 'E6E4DF' # hsv(43, 3%, 90%)
+  base7: 'FAF2EB' # hsv(28, 6%, 98%)
+  base8: 'FAF4F0' # hsv(24, 4%, 98%)
+  light_orange: 'FAE1C8' # hsv(30, 20%, 98%)
+  light_yellow: 'FAFAC8' # hsv(60, 20%, 98%)
+  light_cyan: 'C8FAFA' # hsv(180, 20%, 98%)
+  light_green: 'D4FAD4' # hsv(120, 15%, 98%)
+  light_blue: 'D4D4FA' # hsv(240, 15%, 98%)
+  light_purple: 'EDD4FA' # hsv(280, 15%, 98%)
+  light_pink: 'FAD4ED' # hsv(320, 15%, 98%)
+  light_red: 'FAD4D4' # hsv(360, 15%, 98%)
+  orange: 'F27900' # hsv(30, 100%, 95%)
+  yellow: 'F2F200' # hsv(60, 100%, 95%)
+  cyan: '00A6A6' # hsv(180, 100%, 65%)
+  green: '00A600' # hsv(120, 100%, 65%)
+  blue: '0000A6' # hsv(240, 100%, 65%)
+  purple: '6F00A6' # hsv(280, 100%, 65%)
+  magenta: 'A6006F' # hsv(320, 100%, 65%)
+  red: 'A60000' # hsv(360, 100%, 65%)
+
+core:
+  normal_text: {}
+
+  regular_file: {}
+
+  reset_to_normal: {}
+
+  directory:
+    foreground: blue
+
+  symlink:
+    foreground: cyan
+    font-style: bold
+
+  multi_hard_link: {}
+
+  fifo:
+    foreground: orange
+    background: base8
+
+  socket:
+    foreground: magenta
+    font-style: bold
+
+  door:
+    foreground: magenta
+    font-style: bold
+
+  block_device:
+    foreground: orange
+    background: base8
+    font-style: bold
+
+  character_device:
+    foreground: orange
+    background: base8
+    font-style: bold
+
+  broken_symlink:
+    foreground: red
+    background: base8
+    font-style: bold
+
+  missing_symlink_target: {}
+
+  setuid:
+    foreground: base0
+    background: red
+
+  setgid:
+    foreground: base0
+    background: light_yellow
+
+  file_with_capability:
+    foreground: base0
+    background: light_red
+
+  sticky_other_writable:
+    foreground: base0
+    background: light_green
+
+  other_writable:
+    foreground: blue
+    background: light_green
+
+  sticky:
+    foreground: base0
+    background: base8
+
+  executable_file:
+    foreground: green
+    font-style: bold
+
+text:
+  special:
+    font-style: bold
+
+  todo:
+    font-style: bold
+
+  licenses: {}
+
+  configuration:
+    font-style: regular
+
+  other: {}
+
+markup:
+  font-style: regular
+
+programming:
+  source:
+    font-style: regular
+
+  tooling:
+    font-style: regular
+
+media:
+  font-style: regular
+
+office:
+  font-style: regular
+
+archives:
+  font-style: regular
+
+executable:
+  font-style: regular
+
+  windows:
+    background: light_yellow
+    font-style: bold
+
+unimportant:
+  font-style: faint
