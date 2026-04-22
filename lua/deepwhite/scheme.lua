@@ -393,12 +393,10 @@ function M.get_groups(c)
         MiniIndentscopeSymbol = { fg = c.base4 }, -- Subtle vertical line
         MiniIndentscopeSymbolOff = { fg = c.base6 }, -- Very subtle for inactive
 
-        -- Mini Jump & Jump2d
-        MiniJump = { fg = c.red, bold = true }, -- Background highlight for jump target
-        MiniJump2dSpot = { link = 'MiniJump' }, -- highlighting of jump spot's next step
-        MiniJump2dSpotUnique = { link = 'MiniJump' }, -- highlighting of jump spot's next step if it has unique label
-        MiniJump2dSpotAhead = { fg = c.orange }, -- highlighting of jump spot's future steps
-        MiniJump2dDim = { link = 'Comment' }, -- highlighting of lines with at least one jump spot
+        -- Mini Jump
+        MiniJump = { link = "CurSearch" }, -- all possible cursor positions
+        -- Mini Jump2d
+        MiniJump2dSpot = { link = 'IncSearch' }, -- highlighting of jump spot's next step
 
         -- Mini Map
         MiniMapNormal = { link = 'Normal' },
