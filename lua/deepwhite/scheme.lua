@@ -394,9 +394,10 @@ function M.get_groups(c)
         MiniIndentscopeSymbolOff = { fg = c.base6 }, -- Very subtle for inactive
 
         -- Mini Jump
-        MiniJump = { link = "CurSearch" }, -- all possible cursor positions
+        MiniJump = { link = 'Substitute' }, -- all possible cursor positions
         -- Mini Jump2d
-        MiniJump2dSpot = { link = 'IncSearch' }, -- highlighting of jump spot's next step
+        MiniJump2dSpot = { fg = c.base0, bg = c.bright_cyan }, -- highlighting of jump spot's next step
+        MiniJump2dSpotAhead = { fg = c.base0, bg = c.light_cyan }, --highlighting of jump spot's future steps
 
         -- Mini Map
         MiniMapNormal = { link = 'Normal' },
@@ -422,8 +423,8 @@ function M.get_groups(c)
         MiniPickIconDirectory = { link = 'Directory' },
         MiniPickIconFile = { link = 'NormalFloat' },
         MiniPickMatchCurrent = { link = 'CursorLine' },
-        MiniPickMatchMarked = { link = 'Visual' },
-        MiniPickMatchRanges = { link = 'Search' },
+        MiniPickMatchMarked = { bg = c.light_orange },
+        MiniPickMatchRanges = { fg = c.red, bold = true },
         MiniPickNormal = { link = 'NormalFloat' },
         MiniPickPreviewLine = { link = 'CursorLine' },
         MiniPickPreviewRegion = { link = 'IncSearch' },
@@ -433,9 +434,9 @@ function M.get_groups(c)
 
         -- Mini Snippets
         MiniSnippetsCurrent = { link = 'Search' },
-        MiniSnippetsCurrentReplace = { link = 'IncSearch' },
+        MiniSnippetsCurrentReplace = { link = 'Substitute' },
         MiniSnippetsFinal = { link = 'Special' },
-        MiniSnippetsUnvisited = { link = 'SpecialKey' },
+        MiniSnippetsUnvisited = { link = 'Special' },
         MiniSnippetsVisited = { link = 'Comment' },
 
         -- Mini Starter
