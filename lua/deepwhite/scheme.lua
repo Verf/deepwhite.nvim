@@ -658,6 +658,10 @@ function M.get_groups(c)
 
         -- Snacks.nvim
         SnacksPickerDir = { link = 'Comment' },
+
+        -- orgmode.nvim
+        ['@org.keyword.todo'] = { bg = c.bright_red, bold = true },
+        ['@org.keyword.done'] = { bg = c.bright_green, bold = true },
     }
 end
 
