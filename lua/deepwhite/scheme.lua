@@ -662,8 +662,7 @@ function M.get_groups(c)
         -- orgmode.nvim
         ['@org.keyword.todo'] = { fg = c.base0, bg = c.bright_red, bold = true },
         ['@org.keyword.done'] = { fg = c.base0, bg = c.bright_green, bold = true },
-        ['@org.agenda.deadline'] = { link = 'Normal' },
-        ['@org.agenda.deadline.upcoming'] = { fg = c.bright_red },
+        ['@org.agenda.deadline'] = { fg = c.base0 },
     }
 end
 
