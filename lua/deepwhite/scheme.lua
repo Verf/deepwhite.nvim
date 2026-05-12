@@ -660,8 +660,10 @@ function M.get_groups(c)
         SnacksPickerDir = { link = 'Comment' },
 
         -- orgmode.nvim
-        ['@org.keyword.todo'] = { bg = c.bright_red, bold = true },
-        ['@org.keyword.done'] = { bg = c.bright_green, bold = true },
+        ['@org.keyword.todo'] = { fg = c.base0, bg = c.bright_red, bold = true },
+        ['@org.keyword.done'] = { fg = c.base0, bg = c.bright_green, bold = true },
+        ['@org.agenda.deadline'] = { link = 'Normal' },
+        ['@org.agenda.deadline.upcoming'] = { fg = c.bright_red },
     }
 end
 
