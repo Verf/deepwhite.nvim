@@ -663,6 +663,7 @@ function M.get_groups(c)
         ['@org.keyword.todo'] = { fg = c.base0, bg = c.bright_red, bold = true },
         ['@org.keyword.done'] = { fg = c.base0, bg = c.bright_green, bold = true },
         ['@org.agenda.deadline'] = { fg = c.base0 },
+        ['@org.agenda.schedule'] = { fg = c.base0 },
     }
 end
 
