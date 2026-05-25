@@ -132,7 +132,7 @@ function M.get_groups(c)
 
         Error = { bg = c.light_red }, -- any erroneous construct
 
-        Todo = { bg = c.light_green }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+        Todo = { bg = c.light_red }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
         Added = { link = 'DiffAdd' }, -- added line in a diff
         Changed = { link = 'DiffChange' }, -- changed line in a diff
@@ -598,12 +598,12 @@ function M.get_groups(c)
         DapUIModifiedValue = { fg = c.cyan, bold = true },
 
         -- MeanderingProgrammer/render-markdown.nvim
-        RenderMarkdownH1Bg = { bg = c.light_red },
-        RenderMarkdownH2Bg = { bg = c.light_pink },
-        RenderMarkdownH3Bg = { bg = c.light_purple },
-        RenderMarkdownH4Bg = { bg = c.light_blue },
-        RenderMarkdownH5Bg = { bg = c.light_cyan },
-        RenderMarkdownH6Bg = { bg = c.light_orange },
+        RenderMarkdownH1Bg = { link = 'Bold' },
+        RenderMarkdownH2Bg = { link = 'Bold' },
+        RenderMarkdownH3Bg = { link = 'Bold' },
+        RenderMarkdownH4Bg = { link = 'Bold' },
+        RenderMarkdownH5Bg = { link = 'Bold' },
+        RenderMarkdownH6Bg = { link = 'Bold' },
 
         -- OXY2DEV/markview.nvim
         MarkviewPalette0 = { fg = c.base0, bg = c.base6 },
