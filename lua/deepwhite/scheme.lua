@@ -14,7 +14,7 @@ function M.get_groups(c)
         IncSearch = { fg = c.base0, bg = c.light_pink }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
         Substitute = { fg = c.base7, bg = c.orange }, -- |:substitute| replacement text highlighting.
         -- other :help highlight-groups highlight-default
-        ColorColumn = { bg = c.base5 }, -- Used for the columns set with 'colorcolumn'.
+        ColorColumn = { bg = c.base8 }, -- Used for the columns set with 'colorcolumn'.
         Conceal = { fg = c.base5 }, -- Placeholder characters substituted for concealed text (see 'conceallevel').
         Cursor = { bg = c.base2 }, -- Character under the cursor.
         lCursor = { link = 'Cursor' }, -- Character under the cursor when |language-mapping| is used (see 'guicursor').
