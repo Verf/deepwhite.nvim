@@ -31,12 +31,12 @@ function M.get_groups(c)
         ErrorMsg = { fg = c.red }, -- Error messages on the command line.
         WinSeparator = { fg = c.base0 }, -- Separators between window splits.
         Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
-        FoldColumn = { fg = 'NONE', bg = 'NONE' }, -- 'foldcolumn'
-        SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
         LineNr = { fg = c.base2 }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+        FoldColumn = { link = 'LineNr' }, -- 'foldcolumn'
+        SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
         LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
         LineNrBelow = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, below the cursor line.
-        CursorLineNr = { fg = c.base2, bg = c.base6 }, -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
+        CursorLineNr = { link="CursorLine" }, -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
         CursorLineFold = { link = 'CursorLineNr' }, -- Like FoldColumn when 'cursorline' is set for the cursor line.
         CursorLineSign = { link = 'CursorLineNr' }, -- Like SignColumn when 'cursorline' is set for the cursor line.
         MatchParen = { fg = c.red, underline = true }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
