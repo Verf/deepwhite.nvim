@@ -45,13 +45,15 @@ function M.get_groups(c)
         MsgSeparator = { bg = c.base3 }, -- Separator for scrolled messages |msgsep|.
         MoreMsg = { link = 'ModeMsg' }, -- |more-prompt|
         NonText = { fg = c.base5 }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text.
-        NormalFloat = { link = 'Normal' }, -- Normal text in floating windows.
+        NormalFloat = { bg = c.base8 }, -- Normal text in floating windows.
         FloatBorder = { fg = c.base0 }, -- Border of floating windows.
         FloatTitle = { fg = c.base0 }, -- Title of floating windows.
         FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
+        FloatShadow = { bg = c.base5, blend = 90 }, -- Drop shadow for floating windows (border='shadow').
+        FloatShadowThrough = { bg = c.base5, blend = 100 }, -- Opaque shadow for 'through' regions.
         NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
-        Pmenu = { fg = c.base0, bg = c.base6 }, -- Popup menu: Normal item.
-        PmenuSel = { bg = c.base5 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
+        Pmenu = { link = "Normal" }, -- Popup menu: Normal item.
+        PmenuSel = { bg = c.base6 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
         PmenuKind = { link = 'Pmenu' }, -- Popup menu: Normal item "kind".
         PmenuKindSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "kind".
         PmenuExtra = { link = 'Pmenu' }, -- Popup menu: Normal item "extra text".
