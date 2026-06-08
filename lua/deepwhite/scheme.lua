@@ -45,12 +45,12 @@ function M.get_groups(c)
         MsgSeparator = { bg = c.base3 }, -- Separator for scrolled messages |msgsep|.
         MoreMsg = { link = 'ModeMsg' }, -- |more-prompt|
         NonText = { fg = c.base5 }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text.
-        NormalFloat = { bg = c.base8 }, -- Normal text in floating windows.
+        NormalFloat = { link = "Normal" }, -- Normal text in floating windows.
         FloatBorder = { fg = c.base0 }, -- Border of floating windows.
         FloatTitle = { fg = c.base0 }, -- Title of floating windows.
         FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
-        FloatShadow = { bg = c.base5, blend = 90 }, -- Drop shadow for floating windows (border='shadow').
-        FloatShadowThrough = { bg = c.base5, blend = 100 }, -- Opaque shadow for 'through' regions.
+        FloatShadow = { fg = c.base0, blend = 80 }, -- Drop shadow for floating windows (border='shadow').
+        FloatShadowThrough = { fg = c.base0, blend = 100 }, -- Opaque shadow for 'through' regions.
         NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
         Pmenu = { link = "Normal" }, -- Popup menu: Normal item.
         PmenuSel = { bg = c.base6 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
@@ -75,7 +75,7 @@ function M.get_groups(c)
         StatusLineNC = { link = 'LineNr' }, -- Status lines of not-current windows.
         StatusLineTerm = { link = 'StatusLine' }, -- Status line of |terminal| window.
         StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
-        TabLine = { fg = c.base0, bg = c.base6 }, -- Tab pages line, not active tab page label.
+        TabLine = { fg = c.base7, bg = c.base2 }, -- Tab pages line, not active tab page label.
         TabLineFill = { bg = c.base7 }, -- Tab pages line, where there are no labels.
         TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
         Title = { bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
