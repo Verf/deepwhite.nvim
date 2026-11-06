@@ -51,11 +51,34 @@ function M.get_colors(options)
 
         iris = '#907aa9',
         muted = '#9893a5',
+
+        -- Information foregrounds: keep the light/bright palette for background accents.
+        comment = '#66635D',
+        warning = '#A64B00',
+        hint = '#006E73',
+        success = '#216F21',
+        yellow_fg = '#806000',
     }
     if options.low_blue_light then
         colors.base7 = '#FAFAFA' -- hsv(60, 0%, 98%)
     end
+    colors.git_add = colors.success
+    colors.git_change = colors.warning
+    colors.git_delete = colors.red
+
+    if options.on_colors then
+        local ok, err = xpcall(function() options.on_colors(colors) end, debug.traceback)
+        if not ok then error('deepwhite.nvim: on_colors failed: ' .. tostring(err), 0) end
+    end
     return colors
+end
+
+-- ANSI slots 0-15, stored at Lua indices 1-16. Even white must be readable on a light background.
+function M.get_terminal_colors(c)
+    return {
+        c.base0, c.red, c.success, c.yellow_fg, c.blue, c.purple, c.hint, c.base1,
+        c.comment, c.red, c.success, c.yellow_fg, c.blue, c.purple, c.hint, c.base0,
+    }
 end
 
 return M

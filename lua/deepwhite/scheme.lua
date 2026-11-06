@@ -12,7 +12,7 @@ function M.get_groups(c)
         Search = { fg = c.base0, bg = c.light_orange }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
         CurSearch = { fg = c.base0, bg = c.light_pink, bold = true }, -- Current match for the last search pattern (see 'hlsearch').
         IncSearch = { fg = c.base0, bg = c.light_pink }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
-        Substitute = { fg = c.base7, bg = c.orange }, -- |:substitute| replacement text highlighting.
+        Substitute = { fg = c.base7, bg = c.warning }, -- |:substitute| replacement text highlighting.
         -- other :help highlight-groups highlight-default
         ColorColumn = { bg = c.base8 }, -- Used for the columns set with 'colorcolumn'.
         Conceal = { fg = c.base5 }, -- Placeholder characters substituted for concealed text (see 'conceallevel').
@@ -31,7 +31,7 @@ function M.get_groups(c)
         ErrorMsg = { fg = c.red }, -- Error messages on the command line.
         WinSeparator = { fg = c.base0 }, -- Separators between window splits.
         Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
-        LineNr = { fg = c.base2 }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+        LineNr = { fg = c.comment }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
         FoldColumn = { link = 'LineNr' }, -- 'foldcolumn'
         SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
         LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
@@ -49,8 +49,8 @@ function M.get_groups(c)
         FloatBorder = { fg = c.base0 }, -- Border of floating windows.
         FloatTitle = { fg = c.base0 }, -- Title of floating windows.
         FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
-        FloatShadow = { fg = c.base0, blend = 80 }, -- Drop shadow for floating windows (border='shadow').
-        FloatShadowThrough = { fg = c.base0, blend = 100 }, -- Opaque shadow for 'through' regions.
+        FloatShadow = { bg = c.base0, blend = 80 }, -- Drop shadow for floating windows (border='shadow').
+        FloatShadowThrough = { bg = c.base0, blend = 100 }, -- Shadow corners for border='shadow'.
         NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
         Pmenu = { link = "Normal" }, -- Popup menu: Normal item.
         PmenuSel = { bg = c.base6 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
@@ -81,7 +81,7 @@ function M.get_groups(c)
         Title = { bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
         Visual = { bg = c.base5 }, -- Visual mode selection.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
-        WarningMsg = { fg = c.orange }, -- Warning messages.
+        WarningMsg = { fg = c.warning }, -- Warning messages.
         Whitespace = { fg = c.base5 }, -- "nbsp", "space", "tab", "multispace", "lead" and "trail" in 'listchars'.
         WildMenu = { bg = c.base4 }, -- Current match in 'wildmenu' completion.
         WinBar = { link = 'StatusLine' }, -- Window bar of current window.
@@ -93,7 +93,7 @@ function M.get_groups(c)
         Tooltip = { link = 'Pmenu' },
 
         -- suggested
-        Comment = { fg = c.base3 }, -- any comment
+        Comment = { fg = c.comment }, -- any comment
 
         Constant = { fg = c.base0, bg = c.light_blue }, -- any constant
         String = { fg = c.base0, bg = c.light_green }, -- a string constant: "this is a string"
@@ -119,13 +119,13 @@ function M.get_groups(c)
         PreCondit = { link = 'Identifier' }, -- preprocessor #if, #else, #endif, etc.
 
         Type = { fg = c.pink }, -- int, long, char, etc.
-        Storage = { link = 'Type' }, -- lass static, register, volatile, etc.
+        StorageClass = { link = 'Type' }, -- static, register, volatile, etc.
         Structure = { link = 'Type' }, -- struct, union, enum, etc.
         Typedef = { link = 'Type' }, -- a typedef
 
         Special = { link = 'SpecialKey' }, -- any special symbol
         SpecialChar = { link = 'SpecialKey' }, -- special character in a constant
-        Tag = { fg = c.orange }, -- you can use CTRL-] on this
+        Tag = { fg = c.warning }, -- you can use CTRL-] on this
         Delimiter = { link = 'Identifier' }, --character that needs attention
         SpecialComment = { link = 'SpecialKey' }, -- special things inside a comment
         Debug = { link = 'SpecialKey' }, -- debugging statements
@@ -237,12 +237,12 @@ function M.get_groups(c)
         ['@lsp.type.enumMember'] = { link = '@constant' },
         ['@lsp.type.function'] = { link = '@function.call' },
         ['@lsp.type.interface'] = { link = '@type' },
-        ['@lsp.type.macro'] = { link = '@macro' },
+        ['@lsp.type.macro'] = { link = '@constant.macro' },
         ['@lsp.type.method'] = { link = '@function.call' },
-        ['@lsp.type.namespace'] = { link = '@namespace' },
-        ['@lsp.type.parameter'] = { link = '@parameter' },
+        ['@lsp.type.namespace'] = { link = '@module' },
+        ['@lsp.type.parameter'] = { link = '@variable.parameter' },
         ['@lsp.type.property'] = { link = '@property' },
-        ['@lsp.type.struct'] = { link = '@structure' },
+        ['@lsp.type.struct'] = { link = '@type' },
         ['@lsp.type.type'] = { link = '@type' },
         ['@lsp.type.variable'] = { link = '@variable' },
         ['@lsp.typemod.class.defaultLibrary'] = { link = '@type.builtin' },
@@ -264,8 +264,8 @@ function M.get_groups(c)
         DiagnosticError = { link = 'ErrorMsg' },
         DiagnosticWarn = { link = 'WarningMsg' },
         DiagnosticInfo = { fg = c.blue },
-        DiagnosticHint = { fg = c.cyan },
-        DiagnosticOk = { fg = c.green },
+        DiagnosticHint = { fg = c.hint },
+        DiagnosticOk = { fg = c.success },
 
         DiagnosticVirtualTextError = { link = 'DiagnosticError' },
         DiagnosticVirtualTextWarn = { link = 'DiagnosticWarn' },
@@ -280,10 +280,10 @@ function M.get_groups(c)
         DiagnosticVirtualLinesOk = { link = 'DiagnosticVirtualTextOk' },
 
         DiagnosticUnderlineError = { sp = c.red, undercurl = true },
-        DiagnosticUnderlineWarn = { sp = c.orange, undercurl = true },
+        DiagnosticUnderlineWarn = { sp = c.warning, undercurl = true },
         DiagnosticUnderlineInfo = { sp = c.blue, undercurl = true },
-        DiagnosticUnderlineHint = { sp = c.cyan, undercurl = true },
-        DiagnosticUnderlineOk = { sp = c.green, undercurl = true },
+        DiagnosticUnderlineHint = { sp = c.hint, undercurl = true },
+        DiagnosticUnderlineOk = { sp = c.success, undercurl = true },
 
         DiagnosticFloatingError = { link = 'DiagnosticError' },
         DiagnosticFloatingWarn = { link = 'DiagnosticWarn' },
@@ -354,42 +354,42 @@ function M.get_groups(c)
         MiniDepsTitleUpdate = { link = 'Added' },
 
         -- Mini Diff
-        MiniDiffSignAdd = { fg = c.green }, -- "add" hunk lines visualization.
-        MiniDiffSignChange = { fg = c.orange }, -- "change" hunk lines visualization.
-        MiniDiffSignDelete = { fg = c.red }, -- "delete" hunk lines visualization.
+        MiniDiffSignAdd = { link = 'GitSignsAdd' }, -- "add" hunk lines visualization.
+        MiniDiffSignChange = { link = 'GitSignsChange' }, -- "change" hunk lines visualization.
+        MiniDiffSignDelete = { link = 'GitSignsDelete' }, -- "delete" hunk lines visualization.
         MiniDiffOverAdd = { bg = c.light_green }, -- added buffer text shown in overlay.
-        MiniDiffOverChange = { fg = c.orange, bg = c.light_orange }, -- changed reference text shown in overlay.
+        MiniDiffOverChange = { fg = c.warning, bg = c.light_orange }, -- changed reference text shown in overlay.
         MiniDiffOverChangeBuf = { bg = c.light_orange }, -- changed buffer text shown in overlay.
         MiniDiffOverContext = { bg = c.light_orange }, -- context of a change shown in reference overlay.
-        MiniDiffOverContextBuf = { bg = light_orange }, -- changed buffer text shown in overlay.
-        MiniDiffOverDelete = { bg = light_red }, -- Background highlight for deleted text
+        MiniDiffOverContextBuf = { bg = c.light_orange }, -- changed buffer text shown in overlay.
+        MiniDiffOverDelete = { bg = c.light_red }, -- Background highlight for deleted text
 
         -- Mini Files
         MiniFilesBorder = { link = 'FloatBorder' },
-        MiniFilesBorderModified = { link = 'Special' },
-        MiniFilesCursorLine = { link = 'CursorLine' },
-        MiniFilesDirectory = { link = 'Directory' },
+        MiniFilesBorderModified = { link = 'DiagnosticWarn' },
+        MiniFilesCursorLine = { bg = c.base6, bold = true },
+        MiniFilesDirectory = { fg = c.hint, bold = true },
         MiniFilesFile = { link = 'NormalFloat' },
         MiniFilesNormal = { link = 'NormalFloat' },
-        MiniFilesTitle = { link = 'FloatTitle' },
-        MiniFilesTitleFocused = { link = 'Title' },
+        MiniFilesTitle = { fg = c.comment },
+        MiniFilesTitleFocused = { fg = c.base0, bold = true },
 
         -- Mini Hipatterns
         MiniHipatternsFixme = { fg = c.base7, bg = c.red, bold = true },
-        MiniHipatternsHack = { fg = c.base7, bg = c.orange, bold = true },
+        MiniHipatternsHack = { fg = c.base7, bg = c.warning, bold = true },
         MiniHipatternsNote = { fg = c.base7, bg = c.blue, bold = true },
         MiniHipatternsTodo = { link = 'Todo' },
 
         -- Mini Icons
         MiniIconsAzure = { fg = c.blue },
         MiniIconsBlue = { fg = c.blue },
-        MiniIconsCyan = { fg = c.cyan },
-        MiniIconsGreen = { fg = c.green },
-        MiniIconsGrey = { fg = c.base3 },
-        MiniIconsOrange = { fg = c.orange },
+        MiniIconsCyan = { fg = c.hint },
+        MiniIconsGreen = { fg = c.success },
+        MiniIconsGrey = { fg = c.comment },
+        MiniIconsOrange = { fg = c.warning },
         MiniIconsPurple = { fg = c.purple },
         MiniIconsRed = { fg = c.red },
-        MiniIconsYellow = { fg = c.orange }, -- Yellow text on light bg is hard to read, mapped to orange
+        MiniIconsYellow = { fg = c.yellow_fg }, -- Dark ochre stays readable on a light background
 
         -- Mini Indentscope
         MiniIndentscopeSymbol = { fg = c.base4 }, -- Subtle vertical line
@@ -419,20 +419,21 @@ function M.get_groups(c)
         -- Mini Pick
         MiniPickBorder = { link = 'FloatBorder' },
         MiniPickBorderBusy = { link = 'DiagnosticInfo' },
-        MiniPickBorderText = { link = 'FloatTitle' },
+        MiniPickBorderText = { fg = c.comment },
         MiniPickCursor = { link = 'Cursor' },
         MiniPickHeader = { link = 'Title' },
-        MiniPickIconDirectory = { link = 'Directory' },
+        MiniPickIconDirectory = { link = 'MiniFilesDirectory' },
         MiniPickIconFile = { link = 'NormalFloat' },
-        MiniPickMatchCurrent = { link = 'CursorLine' },
-        MiniPickMatchMarked = { bg = c.light_orange },
-        MiniPickMatchRanges = { fg = c.red, bold = true },
+        -- Keep row foregrounds unset so query ranges and file icons retain their colors.
+        MiniPickMatchCurrent = { bg = c.base6, bold = true },
+        MiniPickMatchMarked = { bg = c.light_orange, underline = true },
+        MiniPickMatchRanges = { fg = c.hint, bold = true },
         MiniPickNormal = { link = 'NormalFloat' },
         MiniPickPreviewLine = { link = 'CursorLine' },
-        MiniPickPreviewRegion = { link = 'IncSearch' },
-        MiniPickPrompt = { link = 'Title' },
-        MiniPickPromptCaret = { link = 'Cursor' },
-        MiniPickPromptPrefix = { link = 'Special' },
+        MiniPickPreviewRegion = { fg = c.base0, bg = c.light_cyan, bold = true, underline = true },
+        MiniPickPrompt = { fg = c.base0, bold = true },
+        MiniPickPromptCaret = { link = 'MiniPickPromptPrefix' },
+        MiniPickPromptPrefix = { fg = c.hint, bold = true },
 
         -- Mini Snippets
         MiniSnippetsCurrent = { link = 'Search' },
@@ -464,7 +465,7 @@ function M.get_groups(c)
         MiniStatuslineFilename = { link = 'Normal' },
         MiniStatuslineFileinfo = { link = 'Normal' },
 
-        MiniStatuslineInactive = { fg = c.base3 },
+        MiniStatuslineInactive = { fg = c.comment },
 
         -- Mini Surround
         MiniSurround = { link = 'IncSearch' }, -- Highlight surrounding chars
@@ -483,7 +484,7 @@ function M.get_groups(c)
         -- Mini Test
         MiniTestEmphasis = { bold = true },
         MiniTestFail = { fg = c.red, bold = true },
-        MiniTestPass = { fg = c.green, bold = true },
+        MiniTestPass = { fg = c.success, bold = true },
 
         -- Mini Trailspace
         MiniTrailspace = { link = 'Error' },
@@ -493,12 +494,12 @@ function M.get_groups(c)
 
         -- hiphish/rainbow-delimiters.nvim
         RainbowDelimiterRed = { fg = c.red },
-        RainbowDelimiterYellow = { fg = c.yellow },
+        RainbowDelimiterYellow = { fg = c.yellow_fg },
         RainbowDelimiterBlue = { fg = c.blue },
-        RainbowDelimiterOrange = { fg = c.orange },
-        RainbowDelimiterGreen = { fg = c.green },
+        RainbowDelimiterOrange = { fg = c.warning },
+        RainbowDelimiterGreen = { fg = c.success },
         RainbowDelimiterViolet = { fg = c.purple },
-        RainbowDelimiterCyan = { fg = c.cyan },
+        RainbowDelimiterCyan = { fg = c.hint },
 
         -- rcarriga/nvim-notify
         NotifyERRORBorder = { fg = c.base0 },
@@ -507,8 +508,8 @@ function M.get_groups(c)
         NotifyDEBUGBorder = { fg = c.base0 },
         NotifyTRACEBorder = { fg = c.base0 },
         NotifyERRORTitle = { fg = c.red },
-        NotifyWARNTitle = { fg = c.orange },
-        NotifyINFOTitle = { fg = c.green },
+        NotifyWARNTitle = { fg = c.warning },
+        NotifyINFOTitle = { fg = c.success },
         NotifyDEBUGTitle = { fg = c.blue },
         NotifyTRACETitle = { fg = c.purple },
         NotifyERRORIcon = { link = 'NotifyERRORTitle' },
@@ -519,15 +520,15 @@ function M.get_groups(c)
 
         -- hrsh7th/nvim-cmp
         CmpItemAbbr = { link = 'Comment' },
-        CmpItemAbbrDeprecated = { link = 'Visual' },
+        CmpItemAbbrDeprecated = { link = 'DiagnosticDeprecated' },
         CmpItemAbbrMatch = { link = 'Identifier' },
         CmpItemAbbrMatchFuzzy = { link = 'CmpItemAbbrMatch' },
 
         CmpItemKindText = { link = 'Pmenu' },
-        CmpItemKindSnippet = { fg = c.base2 },
+        CmpItemKindSnippet = { fg = c.comment },
         CmpItemKindConstant = { fg = c.blue },
         CmpItemKindVariable = { fg = c.blue },
-        CmpItemKindKeyword = { fg = c.orange },
+        CmpItemKindKeyword = { fg = c.warning },
         CmpItemKindMethod = { fg = c.purple },
         CmpItemKindFunction = { link = 'CmpItemKindMethod' },
         CmpItemKindConstructor = { link = 'CmpItemKindMethod' },
@@ -539,7 +540,7 @@ function M.get_groups(c)
         -- romgrk/barbar.nvim
         BufferCurrent = { link = 'TabLineSel' },
         BufferCurrentIndex = { link = 'TabLineSel' },
-        BufferCurrentMod = { fg = c.orange },
+        BufferCurrentMod = { fg = c.warning },
         BufferCurrentSign = { fg = c.base7 },
         BufferCurrentTarget = { fg = c.red },
         BufferInactive = { link = 'TabLine' },
@@ -583,21 +584,21 @@ function M.get_groups(c)
         DapUIVariable = { link = 'Normal' },
         DapUIValue = { link = 'Normal' },
         DapUIFrameName = { link = 'Normal' },
-        DapUIThread = { fg = c.orange },
+        DapUIThread = { fg = c.warning },
         DapUIWatchesValue = { link = 'DapUIThread' },
         DapUIBreakpointsInfo = { link = 'DapUIThread' },
-        DapUIBreakpointsCurrentLine = { fg = c.orange, bold = true },
+        DapUIBreakpointsCurrentLine = { fg = c.warning, bold = true },
         DapUIWatchesError = { link = 'DapUIWatchesEmpty' },
         DapUIBreakpointsDisabledLine = { fg = c.muted },
-        DapUISource = { fg = c.iris },
-        DapUIBreakpointsPath = { fg = c.cyan },
+        DapUISource = { fg = c.purple },
+        DapUIBreakpointsPath = { fg = c.hint },
         DapUIScope = { link = 'DapUIBreakpointsPath' },
         DapUILineNumber = { link = 'DapUIBreakpointsPath' },
         DapUIBreakpointsLine = { link = 'DapUIBreakpointsPath' },
         DapUIFloatBorder = { link = 'DapUIBreakpointsPath' },
         DapUIStoppedThread = { link = 'DapUIBreakpointsPath' },
         DapUIDecoration = { link = 'DapUIBreakpointsPath' },
-        DapUIModifiedValue = { fg = c.cyan, bold = true },
+        DapUIModifiedValue = { fg = c.hint, bold = true },
 
         -- MeanderingProgrammer/render-markdown.nvim
         RenderMarkdownH1Bg = { link = 'Bold' },
@@ -638,9 +639,9 @@ function M.get_groups(c)
         MarkviewPalette6Sign = { link = 'MarkviewPalette6Fg' },
 
         -- lewis6991/gitsigns.nvim
-        GitSignsAdd = { fg = c.diff_add },
-        GitSignsChange = { fg = c.diff_change },
-        GitSignsDelete = { fg = c.diff_delete },
+        GitSignsAdd = { fg = c.git_add },
+        GitSignsChange = { fg = c.git_change },
+        GitSignsDelete = { fg = c.git_delete },
 
         -- lukas-reineke/indent-blankline.nvim
         IblScope = { fg = c.base2 },
@@ -648,15 +649,15 @@ function M.get_groups(c)
 
         -- which-key
         WhichKeyGroup = { link = 'Bold' },
-        WhichKeyIconAzure = { fg = c.cyan },
+        WhichKeyIconAzure = { fg = c.hint },
         WhichKeyIconBlue = { fg = c.blue },
-        WhichKeyIconCyan = { fg = c.cyan },
-        WhichKeyIconGreen = { fg = c.green },
-        WhichKeyIconGrey = { fg = c.base3 },
-        WhichKeyIconOrange = { fg = c.orange },
+        WhichKeyIconCyan = { fg = c.hint },
+        WhichKeyIconGreen = { fg = c.success },
+        WhichKeyIconGrey = { fg = c.comment },
+        WhichKeyIconOrange = { fg = c.warning },
         WhichKeyIconPurple = { fg = c.purple },
         WhichKeyIconRed = { fg = c.red },
-        WhichKeyIconYellow = { fg = c.orange },
+        WhichKeyIconYellow = { fg = c.yellow_fg },
 
         -- Snacks.nvim
         SnacksPickerDir = { link = 'Comment' },
