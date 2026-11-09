@@ -25,7 +25,7 @@ function M.get_groups(c)
         DiffAdd = { bg = c.diff_add_bg }, -- Diff mode: Added line. |diff.txt|
         DiffChange = { bg = c.diff_change_bg }, -- Diff mode: Changed line. |diff.txt|
         DiffDelete = { bg = c.diff_delete_bg }, -- Diff mode: Deleted line. |diff.txt|
-        DiffText = { bg = c.diff_text }, -- Diff mode: Changed text within a changed line. |diff.txt|
+        DiffText = { fg = c.base0, bg = c.diff_text }, -- Keep changed text readable over the stronger background. |diff.txt|
         EndOfBuffer = { fg = c.base6 }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
         TermCursor = { link = 'Cursor' }, -- Cursor in a focused terminal.
         ErrorMsg = { fg = c.red }, -- Error messages on the command line.
@@ -60,8 +60,8 @@ function M.get_groups(c)
         PmenuExtraSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "extra text".
         PmenuSbar = { bg = c.base7 }, -- Popup menu: Scrollbar.
         PmenuThumb = { bg = c.base4 }, -- Popup menu: Thumb of the scrollbar.
-        PmenuMatch = { link = 'Pmenu' }, -- Popup menu: Matched text in normal item. Combined with |hl-Pmenu|.
-        PmenuMatchSel = { link = 'PmenuSel' }, -- Popup menu: Matched text in selected item. Combined with |hl-PmenuMatch| and |hl-PmenuSel|.
+        PmenuMatch = { fg = c.hint, bold = true }, -- Emphasize matches without replacing the menu background.
+        PmenuMatchSel = { link = 'PmenuMatch' }, -- Keep the match accent on the selected item's background.
         ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
         Question = { bold = true }, -- |hit-enter| prompt and yes/no questions.
         QuickFixLine = { bold = true }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
@@ -332,11 +332,6 @@ function M.get_groups(c)
         MiniCmdlinePeekSign = { link = 'SignColumn' },
         MiniCmdlinePeekTitle = { link = 'FloatTitle' },
 
-        -- Mini Completion
-        MiniCompletionActiveParameter = { link = 'Underlined' },
-        MiniCompletionDeprecated = { link = 'DiagnosticDeprecated' },
-        MiniCompletionInfoBorderOutdated = { link = 'DiagnosticFloatingWarn' },
-
         -- Mini Cursorword
         MiniCursorword = { underline = true }, -- Subtle highlight for word under cursor
         MiniCursorwordCurrent = { link = 'Cursor' }, -- Or leave empty to just show cursor
@@ -358,10 +353,8 @@ function M.get_groups(c)
         MiniDiffSignChange = { link = 'GitSignsChange' }, -- "change" hunk lines visualization.
         MiniDiffSignDelete = { link = 'GitSignsDelete' }, -- "delete" hunk lines visualization.
         MiniDiffOverAdd = { bg = c.light_green }, -- added buffer text shown in overlay.
-        MiniDiffOverChange = { fg = c.warning, bg = c.light_orange }, -- changed reference text shown in overlay.
-        MiniDiffOverChangeBuf = { bg = c.light_orange }, -- changed buffer text shown in overlay.
+        -- Changed spans inherit DiffText; buffer context stays unstyled via module defaults.
         MiniDiffOverContext = { bg = c.light_orange }, -- context of a change shown in reference overlay.
-        MiniDiffOverContextBuf = { bg = c.light_orange }, -- changed buffer text shown in overlay.
         MiniDiffOverDelete = { bg = c.light_red }, -- Background highlight for deleted text
 
         -- Mini Files

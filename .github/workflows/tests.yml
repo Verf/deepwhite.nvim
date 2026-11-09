@@ -1,0 +1,40 @@
+name: Tests
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    name: Core / Neovim ${{ matrix.neovim }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - neovim: '0.7.0'
+            release: download/v0.7.0
+            archive: nvim-linux64
+          - neovim: stable
+            release: latest/download
+            archive: nvim-linux-x86_64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official Neovim release
+        env:
+          NVIM_RELEASE: ${{ matrix.release }}
+          NVIM_ARCHIVE: ${{ matrix.archive }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/neovim"
+          curl --fail --location --silent --show-error --max-time 120 \
+            "https://github.com/neovim/neovim/releases/$NVIM_RELEASE/$NVIM_ARCHIVE.tar.gz" \
+            -o "$RUNNER_TEMP/neovim.tar.gz"
+          tar -xzf "$RUNNER_TEMP/neovim.tar.gz" --strip-components=1 -C "$RUNNER_TEMP/neovim"
+          echo "$RUNNER_TEMP/neovim/bin" >> "$GITHUB_PATH"
+      - name: Run core regression suite
+        run: |
+          nvim --version
+          # The second command fails if an uncaught Lua error prevents the runner from exiting.
+          nvim --headless -u NONE -i NONE -n -c 'luafile tests/run.lua' -c 'cquit 1'

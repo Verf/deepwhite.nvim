@@ -1,20 +1,21 @@
 ! DeepWhite colors for Xresources
+! Readable ANSI palette: nominal white slots are dark on this light background.
 ! Upstream: https://github.com/Verf/deepwhite.nvim/blob/main/extra/deepwhite_xresources.Xresources
 *background: #FAF2EB
 *foreground: #1A1918
 *color0: #1A1918
 *color1: #A60000
-*color2: #00A600
-*color3: #F2F200
+*color2: #216F21
+*color3: #806000
 *color4: #0000A6
 *color5: #6F00A6
-*color6: #00A6A6
-*color7: #FAFAFA
-*color8: #1A1918
+*color6: #006E73
+*color7: #595855
+*color8: #66635D
 *color9: #A60000
-*color10: #00A600
-*color11: #F2F200
+*color10: #216F21
+*color11: #806000
 *color12: #0000A6
 *color13: #6F00A6
-*color14: #00A6A6
-*color15: #FAFAFA
+*color14: #006E73
+*color15: #1A1918

@@ -14,6 +14,13 @@ function M.load()
     local ok, err = xpcall(function() config.options.on_highlights(groups, colors) end, debug.traceback)
     if not ok then error('deepwhite.nvim: on_highlights failed: ' .. tostring(err), 0) end
 
+    -- Neovim 0.7 rejects @ capture names (including link targets) with W18.
+    if vim.fn.has('nvim-0.8') == 0 then
+        for name, def in pairs(groups) do
+            if name:sub(1, 1) == '@' or (def.link and def.link:sub(1, 1) == '@') then groups[name] = nil end
+        end
+    end
+
     -- Prepare user overrides before clearing the active theme, so callback errors leave it intact.
     vim.cmd [[hi clear]]
     vim.g.colors_name = 'deepwhite'

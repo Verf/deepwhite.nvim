@@ -24,6 +24,10 @@ colors:
   purple: '6F00A6' # hsv(280, 100%, 65%)
   magenta: 'A6006F' # hsv(320, 100%, 65%)
   red: 'A60000' # hsv(360, 100%, 65%)
+  # Readable foreground roles shared with DeepWhite; keep the existing background tints.
+  hint: '006E73'
+  success: '216F21'
+  warning: 'A64B00'
 
 core:
   normal_text: {}
@@ -36,13 +40,13 @@ core:
     foreground: blue
 
   symlink:
-    foreground: cyan
+    foreground: hint
     font-style: bold
 
   multi_hard_link: {}
 
   fifo:
-    foreground: orange
+    foreground: warning
     background: base8
 
   socket:
@@ -54,12 +58,12 @@ core:
     font-style: bold
 
   block_device:
-    foreground: orange
+    foreground: warning
     background: base8
     font-style: bold
 
   character_device:
-    foreground: orange
+    foreground: warning
     background: base8
     font-style: bold
 
@@ -71,7 +75,7 @@ core:
   missing_symlink_target: {}
 
   setuid:
-    foreground: base0
+    foreground: base7
     background: red
 
   setgid:
@@ -95,7 +99,7 @@ core:
     background: base8
 
   executable_file:
-    foreground: green
+    foreground: success
     font-style: bold
 
 text:
