@@ -79,7 +79,7 @@ function M.get_groups(c)
         TabLineFill = { bg = c.base7 }, -- Tab pages line, where there are no labels.
         TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
         Title = { bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
-        Visual = { bg = c.base5 }, -- Visual mode selection.
+        Visual = { fg = c.base0, bg = c.base5 }, -- Keep selected comments and other muted text readable.
         VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
         WarningMsg = { fg = c.warning }, -- Warning messages.
         Whitespace = { fg = c.base5 }, -- "nbsp", "space", "tab", "multispace", "lead" and "trail" in 'listchars'.
@@ -510,6 +510,12 @@ function M.get_groups(c)
         NotifyINFOIcon = { link = 'NotifyINFOTitle' },
         NotifyDEBUGIcon = { link = 'NotifyDEBUGTitle' },
         NotifyTRACEIcon = { link = 'NotifyTRACETitle' },
+
+        -- esmuellert/codediff.nvim: signs need foregrounds, not the pastel diff backgrounds.
+        CodeDiffGutterInsert = { link = 'GitSignsAdd' },
+        CodeDiffGutterDelete = { link = 'GitSignsDelete' },
+        CodeDiffGutterInsertNumber = { link = 'GitSignsAdd' },
+        CodeDiffGutterDeleteNumber = { link = 'GitSignsDelete' },
 
         -- hrsh7th/nvim-cmp
         CmpItemAbbr = { link = 'Comment' },

@@ -156,6 +156,25 @@ test('lualine preserves fillchars', function()
     if not ok then error(err, 0) end
 end)
 
+test('visual selection uses a readable foreground instead of retaining muted syntax', function()
+    eq(hl('Visual').fg, hex(colors().base0))
+    eq(hl('Visual').bg, hex(colors().base5))
+end)
+
+test('codediff gutters follow shared Git foreground roles', function()
+    for _, row in ipairs {
+        { 'CodeDiffGutterInsert', 'GitSignsAdd' }, { 'CodeDiffGutterDelete', 'GitSignsDelete' },
+        { 'CodeDiffGutterInsertNumber', 'GitSignsAdd' }, { 'CodeDiffGutterDeleteNumber', 'GitSignsDelete' },
+    } do
+        eq(hl(row[1]), hl(row[2]))
+        eq(hl(row[1]).bg, nil)
+    end
+    theme.setup { on_colors = function(c) c.git_add = '#123456' end }
+    vim.cmd 'colorscheme deepwhite'
+    eq(hl('CodeDiffGutterInsert').fg, hex('#123456'))
+    eq(hl('CodeDiffGutterInsertNumber').fg, hex('#123456'))
+end)
+
 test('standard syntax and deprecated completion', function()
     eq(hl('StorageClass'), hl('Type'))
     eq(hl('CmpItemAbbrDeprecated').strikethrough, true)
@@ -417,7 +436,7 @@ for _, cold in ipairs { false, true } do
             'Normal', 'Comment', '@comment', 'LineNr', 'LspInlayHint', 'LspCodeLens',
             'WarningMsg', 'Tag', 'DiagnosticError', 'DiagnosticWarn', 'DiagnosticInfo', 'DiagnosticHint', 'DiagnosticOk',
             'DiagnosticVirtualTextWarn', 'DiagnosticVirtualLinesHint', 'DiagnosticFloatingOk',
-            'DiffText', 'MiniHipatternsHack', 'Substitute', 'RainbowDelimiterYellow',
+            'DiffText', 'Visual', 'MiniHipatternsHack', 'Substitute', 'RainbowDelimiterYellow',
             'CmpItemAbbr', 'CmpItemKindSnippet', 'CmpItemKindKeyword', 'NotifyWARNTitle', 'DapUISource',
         } do
             if name:sub(1, 1) ~= '@' or has_captures then readable(name, 4.5) end
@@ -474,6 +493,7 @@ for _, cold in ipairs { false, true } do
         for _, name in ipairs {
             'MiniIconsCyan', 'MiniIconsGreen', 'MiniIconsOrange', 'MiniIconsYellow',
             'WhichKeyIconCyan', 'WhichKeyIconGreen', 'WhichKeyIconYellow',
+            'CodeDiffGutterInsert', 'CodeDiffGutterDelete', 'CodeDiffGutterInsertNumber', 'CodeDiffGutterDeleteNumber',
         } do
             readable(name, 3)
         end

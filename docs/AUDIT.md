@@ -6,7 +6,11 @@
 - 对标：TokyoNight Day、Catppuccin Latte、Kanagawa Lotus、Rosé Pine Dawn 的官方资料；不是下载量排名，也不是同环境性能横评。
 - 原始审计交付：审计结果与实施方案；审计时没有修改主题实现或配色。
 
-> **后续实施状态：阶段 1、2 已落地。** 已修复 MiniDiff、四类 LSP 链接、阴影背景、lualine 选项副作用、Windows Terminal 色槽及配置顺序，新增可读信息前景、覆盖回调和默认关闭的 Neovim 终端色。使用方法和正式测试命令见 [README](../README.md)。以下问题清单和运行数据保留为原始审计基线，不表示这些问题仍全部存在。阶段 3 已按 mini.nvim 工作流推进：MiniPick / MiniFiles 的匹配、当前项、标记项、目录层级和待同步边框已调整，并通过真实上游模块的附加 UI 检查（暖白、冷白各一组场景），命令及固定版本见 README。其他插件扩展暂缓；阶段 4 的 extras 生成与完整 CI/历史版本矩阵尚未实施，也未完成用户实际终端字体与图标的人工截图验收。
+> **后续实施状态：阶段 1、2 的代码修复已落地；阶段 3 按实际工作流推进。** 已修复 MiniDiff、四类 LSP 链接、阴影背景、lualine 选项副作用、Windows Terminal 色槽及配置顺序，新增可读信息前景、覆盖回调和默认关闭的 Neovim 终端色。以下问题清单和运行数据保留为原始审计基线，不表示这些问题仍全部存在。
+>
+> **P2-03 当前范围：** mini.pick / mini.files 导航、mini.completion / LSP 浮窗、mini.diff 已有真实模块 UI 检查；本轮进一步验证了 CodeDiff、render-markdown、multicursor、which-key modern 和 mini.cmdline。修复共享 `Visual` 的选中注释对比度，以及 CodeDiff 可选 gutter 标记／行号的浅色前景。CodeDiff 默认派生背景仍会降低注释可读性，已提供并验证公开 `highlights` 配置方案；**该部分必须合并 README 中的配置，不是主题自动修复**。其他已检插件场景沿用合适的默认链接，无需新增覆盖。未使用的 Blink / Telescope / fzf-lua / Neo-tree / Noice / Trouble / Lazy / Mason 不列为本轮目标。
+>
+> **维护与验收：** 已有最低版本 0.7.0／最新 stable 的核心 CI 配置，extras 已统一 ANSI 槽位并有回归检查，当前明确采用手工维护而非生成器。本轮在 Neovim 0.12.6 上实际通过 56 项核心检查、66 项附加 UI 检查，两种背景均覆盖；命令、插件固定版本和测试边界见 [README](../README.md)。尚无 extras 生成器、Lua 静态／格式检查流水线、编辑器 help 和贡献说明；没有逐一验证所有中间 Neovim 版本，本轮未重跑 0.7 或远端 CI。实验性 UI2、CodeDiff 完整 Git／冲突操作，以及用户实际终端字体与图标的人工截图验收不在本轮验证范围。
 
 ## 一、结论
 

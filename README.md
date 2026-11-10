@@ -231,6 +231,52 @@ The dedicated MiniDiff sign links are intentional: this theme's native `Added` /
 groups style line backgrounds, while signs need readable foregrounds from the shared Git color roles.
 The theme does not configure MiniDiff's source, mappings, priority, or overlay toggle.
 
+### CodeDiff
+
+CodeDiff derives line backgrounds from `DiffAdd` / `DiffDelete`, but its default character backgrounds
+are darker derivatives that retain syntax foregrounds. With DeepWhite's default comment foreground,
+comments on those changed spans fall below the 4.5:1 target; deleted-line context also needs a lighter
+background. Merge this into your existing CodeDiff setup for readable comment contexts and word changes:
+
+```lua
+require('codediff').setup({
+    highlights = {
+        line_delete = '#FAE1E1',
+        char_insert = 'DiffText',
+        char_delete = 'DiffText',
+    },
+})
+```
+
+The lighter red line background preserves readable comments. Changed words on both sides use the
+stronger orange `DiffText` background and dark foreground, following native diff/MiniDiff semantics.
+The literal deletion color belongs to CodeDiff's configuration and is not changed by `on_colors`.
+CodeDiff reapplies these choices after theme reload; customizing `DiffText` also customizes these spans.
+Do not try to override `CodeDiffCharInsert` / `CodeDiffCharDelete` only in `on_highlights`: CodeDiff
+rebuilds them after the theme loads. DeepWhite does not configure CodeDiff or install an ordering hook.
+**The comment-readability fix requires the configuration above; it is not automatic.**
+
+For CodeDiff's optional `diff.gutter_signs`, DeepWhite provides readable foreground-only sign and
+line-number links to `GitSignsAdd` / `GitSignsDelete`, instead of deriving foregrounds from pastel
+backgrounds. Native status/conflict links are retained. The theme does not enable gutter signs or
+change CodeDiff mappings, layout, Git operations or conflict actions.
+
+### Markdown, multicursor and workflow hints
+
+render-markdown keeps its default links for code blocks, links, lists, checkboxes, quotes and tables.
+DeepWhite's six existing heading-background overrides keep titles bold without introducing diff colors.
+The UI test below covers retained code fences, no language banner, no Setext rendering, visible HTML
+comments and disabled LaTeX; it does not certify every render-markdown option.
+
+multicursor keeps its default cursor, selection and match-preview groups. `Visual` now supplies a dark
+foreground as well as a gray background so selected comments remain readable in ordinary and additional
+selections. Selected syntax foreground colors are intentionally replaced. Enabled/disabled cursors retain
+the upstream solid/dotted sign distinction; no extra multicursor color scheme is needed.
+
+which-key's modern preset and mini.cmdline's range-preview window also use their existing/default links.
+Their checked text, titles, borders and line numbers need no additional plugin-specific overrides.
+Experimental Neovim UI2 message windows are not included in these plugin UI checks.
+
 ### Statusline and tabline
 
 ```lua
@@ -323,6 +369,48 @@ filesystem fixtures, or user configuration are involved. It was validated with t
 The test uses experimental `nvim__inspect_cell()` on the default UI grid to compare rendered colors and
 styles, rather than internal attribute IDs; its helper may need adjustment for future Neovim versions.
 It does not exercise MiniDiff's Git source or certify other Neovim versions.
+
+Three more optional attached-UI checks cover the additional workflow plugins:
+
+```sh
+DEEPWHITE_CODEDIFF=/path/to/codediff.nvim nvim --headless -u NONE -i NONE -n -l tests/codediff.lua
+
+DEEPWHITE_MARKDOWN=/path/to/render-markdown.nvim \
+DEEPWHITE_TREESITTER=/path/to/nvim-treesitter/runtime \
+nvim --headless -u NONE -i NONE -n -l tests/markdown.lua
+
+DEEPWHITE_MULTICURSOR=/path/to/multicursor.nvim \
+DEEPWHITE_WHICHKEY=/path/to/which-key.nvim \
+DEEPWHITE_MINI=/path/to/mini.nvim \
+nvim --headless -u NONE -i NONE -n -l tests/workflow.lua
+```
+
+- **CodeDiff:** actual native diff computation and rendering into in-memory buffers, default plain-text
+  line/word differences, the documented comment-readability recipe, optional gutter signs/numbers, and
+  customization after theme reload. Its native diff library must already be installed; auto-installation
+  is disabled. This does not exercise Git sources, full explorer/history views or conflict actions.
+- **Markdown:** real rendering and Treesitter highlighting for headings, links, code, lists, checkboxes,
+  quotes and tables, plus insert/normal-mode transitions. Requires installed `markdown`, `markdown_inline`
+  and `lua` parsers. `DEEPWHITE_TREESITTER` optionally supplies queries; `DEEPWHITE_PARSERS` can point to
+  another runtime with `parser/*.so`. No parsers are downloaded by the test.
+- **Workflow:** actual enabled/disabled multicursors, match preview, selections over comments, which-key
+  modern menus and mini.cmdline range previews. Omitting `DEEPWHITE_MINI` skips mini.cmdline/icon checks.
+
+All three cover both backgrounds and accept `DEEPWHITE_TEST` as a test-name substring filter. They use
+screen attributes or experimental cell inspection to check composed styles, not just group existence;
+the helpers may need adjustment for future Neovim versions. They do not read your personal configuration.
+
+Latest local verification used Neovim **0.12.6**, with **56 core checks and 66 optional UI checks passing**.
+Plugin revisions for this verification (including the three earlier mini.nvim suites):
+
+| Plugin | Revision |
+| --- | --- |
+| mini.nvim | `f9ac12d7cbd2563cfc2cce9a8152fc8df2ad0d6f` |
+| codediff.nvim | `09d9ebef2cc5a5c04db7a349cd6c61bdf84ecc8e` |
+| render-markdown.nvim | `9c235bedc4f96145e63fcad5b78cd78bce8822c4` |
+| nvim-treesitter queries | `19bdfc04f40ed2ccb3340591d125f759b0406875` |
+| multicursor.nvim | `c574bfc1f7e63dfea3e64b8453c9f7c660127238` |
+| which-key.nvim | `3aab2147e74890957785941f0c1ad87d0a44c15a` |
 
 These checks do not certify the rendering of your terminal's fonts or Nerd Font icons; the navigation
 UI test uses ASCII file prefixes to avoid requiring a particular font.
