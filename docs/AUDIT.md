@@ -8,9 +8,13 @@
 
 > **后续实施状态：阶段 1、2 的代码修复已落地；阶段 3 按实际工作流推进。** 已修复 MiniDiff、四类 LSP 链接、阴影背景、lualine 选项副作用、Windows Terminal 色槽及配置顺序，新增可读信息前景、覆盖回调和默认关闭的 Neovim 终端色。以下问题清单和运行数据保留为原始审计基线，不表示这些问题仍全部存在。
 >
-> **P2-03 当前范围：** mini.pick / mini.files 导航、mini.completion / LSP 浮窗、mini.diff 已有真实模块 UI 检查；本轮进一步验证了 CodeDiff、render-markdown、multicursor、which-key modern 和 mini.cmdline。修复共享 `Visual` 的选中注释对比度，以及 CodeDiff 可选 gutter 标记／行号的浅色前景。CodeDiff 默认派生背景仍会降低注释可读性，已提供并验证公开 `highlights` 配置方案；**该部分必须合并 README 中的配置，不是主题自动修复**。其他已检插件场景沿用合适的默认链接，无需新增覆盖。未使用的 Blink / Telescope / fzf-lua / Neo-tree / Noice / Trouble / Lazy / Mason 不列为本轮目标。
+> **P2-03 当前范围：** mini.pick / mini.files 导航、mini.completion / LSP 浮窗、mini.diff 已有真实模块 UI 检查；本轮进一步验证了 CodeDiff、render-markdown、multicursor、which-key modern 和 mini.cmdline。修复共享 `Visual` 的选中注释对比度，以及 CodeDiff 可选 gutter 标记／行号的浅色前景。CodeDiff 默认派生背景仍会降低注释可读性，已提供并验证公开 `highlights` 配置方案；**该部分需要合并 README 中的配置，不是主题自动修复**。当前个人配置已主动应用该方案，并验证原有按键、延迟加载及主题重载保持正常。其他已检插件场景沿用合适的默认链接，无需新增覆盖。未使用的 Blink / Telescope / fzf-lua / Neo-tree / Noice / Trouble / Lazy / Mason 不列为本轮目标。
 >
-> **维护与验收：** 已有最低版本 0.7.0／最新 stable 的核心 CI 配置，extras 已统一 ANSI 槽位并有回归检查，当前明确采用手工维护而非生成器。本轮在 Neovim 0.12.6 上实际通过 56 项核心检查、66 项附加 UI 检查，两种背景均覆盖；命令、插件固定版本和测试边界见 [README](../README.md)。尚无 extras 生成器、Lua 静态／格式检查流水线、编辑器 help 和贡献说明；没有逐一验证所有中间 Neovim 版本，本轮未重跑 0.7 或远端 CI。实验性 UI2、CodeDiff 完整 Git／冲突操作，以及用户实际终端字体与图标的人工截图验收不在本轮验证范围。
+> **维护与验收：** 已有最低版本 0.7.0／最新 stable 的核心 CI；提交 `37cfd73` 的[两个远端作业均已确认成功](https://github.com/Verf/deepwhite.nvim/actions/runs/42795989440)。现新增 Luacheck 语法／全局变量检查、`doc/deepwhite.txt`、`CONTRIBUTING.md`，并将帮助标签／跳转测试加入同一版本矩阵。另已按现有 `.stylua.toml` 统一 Lua 格式，固定 StyLua 2.6.0 的 pre-commit 自动格式化与 AST 校验，并增加全仓格式 CI 门禁。真实提交测试确认：格式化会暂停提交，不自动暂存，原有未暂存修改得到保留。格式整理后重新验证：Luacheck 1.1.2 检查 15 个 Lua 文件无告警；0.12.6 核心 56 项、附加 UI 66 项，0.7.0 核心 52 项，以及两个版本各 13 项帮助检查全部通过。新增维护／格式作业的远端执行结果以对应提交的 CI 状态为准。命令、插件固定版本和边界见 [README](../README.md) 与贡献说明。
+>
+> **Extras 生成与扩展：** 已新增纯 Lua 生成器 `scripts/generate_extras.lua`，从默认 palette／ANSI 映射生成全部 11 份 extras，不加载用户配置或回调；`--check` 能只读检测缺失和漂移。原有五份文件的解析语义保持不变，新增 Ghostty、Alacritty、Rio、Warp、foot 1.26+、iTerm2，现覆盖 10 类终端配置及 vivid。格式按[官方规范与安装说明](TERMINALS.md)核对，尤其保留 vivid 的三处有意背景差异，采用 foot 新的 `[colors-light]`，不向 Warp 输出未支持的独立选区字段。JSON/TOML/YAML/INI/plist 独立解析共 11 项通过；核心检查更新为 0.12.6 的 58 项、0.7.0 的 54 项，帮助测试各 13 项，Luacheck 检查 16 个 Lua 文件无告警，格式检查通过。66 项插件 UI 的既有结果继续有效，本轮未重复运行未受影响的场景。生成检查和独立格式验证已加入 CI 配置，远端执行结果以对应提交的工作流状态为准。
+>
+> **剩余边界：** 初始 Luacheck 范围不包括未使用变量、table 字段名或字符串内的 Lua；样式由独立的 StyLua 门禁负责。没有逐一验证所有中间 Neovim 版本。新增终端预设已完成文件格式和颜色语义验证，但未在各应用二进制／GUI 中逐一验收。实验性 UI2、CodeDiff 完整 Git／冲突操作，以及用户实际终端字体与图标的人工截图验收仍未覆盖。
 
 ## 一、结论
 

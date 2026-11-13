@@ -6,6 +6,51 @@ permissions:
   contents: read
 
 jobs:
+  format:
+    name: Lua / formatting
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pre-commit
+        run: python -m pip install pre-commit==3.6.2
+      - name: Check repository formatting
+        run: pre-commit run --all-files --show-diff-on-failure
+
+  extras:
+    name: Extras / serialized formats
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install YAML parser
+        run: python -m pip install PyYAML==6.0.1
+      - name: Check serialized terminal themes
+        run: python tests/extras_formats.py
+
+  lint:
+    name: Lua / syntax and globals
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends lua5.1 lua-check
+      - name: Check Lua syntax and globals
+        run: |
+          luacheck --version
+          luacheck lua colors tests scripts
+      - name: Check generated extras
+        run: lua5.1 scripts/generate_extras.lua --check
+
   core:
     name: Core / Neovim ${{ matrix.neovim }}
     runs-on: ubuntu-latest
@@ -38,3 +83,5 @@ jobs:
           nvim --version
           # The second command fails if an uncaught Lua error prevents the runner from exiting.
           nvim --headless -u NONE -i NONE -n -c 'luafile tests/run.lua' -c 'cquit 1'
+      - name: Check editor help
+        run: nvim --headless -u NONE -i NONE -n -c 'luafile tests/help.lua' -c 'cquit 1'

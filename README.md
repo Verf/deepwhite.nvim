@@ -53,6 +53,9 @@ use {
 
 No `setup()` call is needed if you want the defaults: `:colorscheme deepwhite` is enough.
 
+Editor help is available at `:help deepwhite`. Plugin managers normally generate its tags;
+for a manual installation, run `:helptags /path/to/deepwhite.nvim/doc` once.
+
 ## Configuration
 
 Defaults (use this directly if you do not configure the theme through your plugin manager):
@@ -134,8 +137,9 @@ certification for all plugins, terminal filters or user overrides.
 
 ### External terminal presets
 
-The files in `extra/` use the warm `#FAF2EB` background. Kitty, WezTerm, Windows Terminal and Xresources
-share all 16 slots with the default `get_terminal_colors()` mapping used by `terminal_colors = true`.
+The generated files in `extra/` use the warm `#FAF2EB` background. Supported terminals now include
+**Ghostty, Alacritty, Rio, Warp, foot and iTerm2**, alongside Kitty, WezTerm, Windows Terminal and Xresources.
+All terminal presets share the default `get_terminal_colors()` slots used by `terminal_colors = true`.
 Green, yellow and cyan use the readable `success`, `yellow_fg` and `hint` roles. Nominal ANSI white
 slots 7 and 15 deliberately use dark grays (`#595855` / `#1A1918`) so white foreground text does not
 vanish on the light background; bright black uses `comment` (`#66635D`).
@@ -146,7 +150,17 @@ vanish on the light background; bright black uses `comment` (`#66635D`).
 | `deepwhite_wezterm.toml` | Place in a WezTerm color-scheme directory and select `deepwhite` |
 | `deepwhite_windows_terminal.json` | Add this scheme object to Windows Terminal's `schemes` array and select it for a profile |
 | `deepwhite_xresources.Xresources` | Merge into your existing Xresources configuration |
+| `deepwhite_ghostty.conf` | Install as `ghostty/themes/deepwhite` and select `theme = deepwhite`, or use its absolute path |
+| `deepwhite_alacritty.toml` | Import through `[general].import` in current Alacritty TOML configuration |
+| `deepwhite_rio.toml` | Install as `rio/themes/deepwhite.toml` and select top-level `theme = "deepwhite"` |
+| `deepwhite_warp.yaml` | Add to Warp's custom-theme directory and select **DeepWhite** |
+| `deepwhite_foot.ini` | Include from foot 1.26+ and select `initial-color-theme=light` |
+| `deepwhite.itermcolors` | Import through iTerm2 Profiles → Colors → Color Presets |
 | `vivid_themes_deepwhite.yml` | Generate `LS_COLORS` with `vivid generate /path/to/vivid_themes_deepwhite.yml` |
+
+See [terminal installation and format notes](docs/TERMINALS.md) for exact paths, configuration snippets,
+official sources and validation boundaries. In particular, foot's new `[colors-light]` format replaces
+the removed `[colors]` name, and Warp's public theme format cannot specify independent selection colors.
 
 The vivid theme uses readable foreground roles for symlinks, executables and device/FIFO entries.
 Setuid files retain a red background but use light text. Its existing subtle background tints remain:
@@ -157,7 +171,140 @@ These are static warm-background presets: `on_colors` and `low_blue_light` do no
 Tests target at least 4.5:1 for all 16 ANSI foregrounds against the configured default background and
 for vivid's explicit text styles using these presets. This does not guarantee arbitrary ANSI
 foreground/background combinations, reverse-video applications, transparent backgrounds, or terminals'
-color transformations. The files are maintained directly, with regression checks rather than a generator.
+color transformations.
+
+Do not edit generated extras directly. From the repository root, use Lua 5.1+ / LuaJIT:
+
+```sh
+lua scripts/generate_extras.lua
+lua scripts/generate_extras.lua --check
+```
+
+The generator reads the pure default Lua palette without loading user configuration or executing hooks.
+`--check` is read-only and fails on stale/missing outputs; CI checks both generation consistency and
+serialized JSON/TOML/YAML/INI/plist formats. Neovim with `-l` support can also run this script; see the guide.
+
+#### Installation quick starts
+
+Use the files from `extra/` in your checkout; replace `/absolute/path/to/deepwhite.nvim` below with
+its real path. Create destination directories when needed. Merge snippets into your existing
+configuration sections/tables rather than replacing the whole configuration or duplicating sections.
+
+##### Kitty
+
+Add this to your `kitty.conf`, then reload the configuration or restart Kitty:
+
+```conf
+include /absolute/path/to/deepwhite.nvim/extra/deepwhite_kitty.conf
+```
+
+##### WezTerm
+
+Copy `extra/deepwhite_wezterm.toml` into `~/.config/wezterm/colors/` on Linux/macOS, or the `colors/`
+directory beside `wezterm.exe` on Windows. Set this on your existing Lua configuration table before
+returning it:
+
+```lua
+config.color_scheme = 'deepwhite'
+```
+
+For another theme directory, add it to `config.color_scheme_dirs`; see the
+[official color-scheme guide](https://wezterm.org/config/appearance.html#defining-a-color-scheme-in-a-separate-file).
+
+##### Windows Terminal
+
+Open **Settings → Open JSON file**, and add the complete object from
+`extra/deepwhite_windows_terminal.json` to the existing `schemes` array. Then choose **deepwhite**
+under **Profiles → your profile → Appearance → Color scheme**, and save. Do not replace `settings.json`
+with the theme object.
+
+##### Xresources
+
+Merge the preset into the current X session:
+
+```sh
+xrdb -merge /absolute/path/to/deepwhite.nvim/extra/deepwhite_xresources.Xresources
+```
+
+For persistence, include the preset from your usual Xresources file and load it during X session startup.
+
+##### Ghostty
+
+Copy `extra/deepwhite_ghostty.conf` to `~/.config/ghostty/themes/deepwhite` (or the corresponding
+`$XDG_CONFIG_HOME/ghostty/themes/deepwhite` path). Add this to `config.ghostty` or your existing
+Ghostty `config` file, then reload the configuration:
+
+```ini
+theme = deepwhite
+```
+
+##### Alacritty
+
+Copy `extra/deepwhite_alacritty.toml` to `~/.config/alacritty/themes/deepwhite.toml`. Add its path to
+the `[general]` import array in your `alacritty.toml`, preserving any other imports:
+
+```toml
+[general]
+import = ["~/.config/alacritty/themes/deepwhite.toml"]
+```
+
+On Windows, use a suitable local theme path; the main config is normally
+`%APPDATA%\alacritty\alacritty.toml`.
+
+##### Rio
+
+Copy `extra/deepwhite_rio.toml` to `themes/deepwhite.toml` inside your Rio configuration directory:
+`~/.config/rio` on macOS, `${XDG_CONFIG_HOME:-$HOME/.config}/rio` on Linux, or
+`%USERPROFILE%\AppData\Local\rio` on Windows (`RIO_CONFIG_HOME` overrides these). Set this at the
+**top level** of its `config.toml`, before any table headers:
+
+```toml
+theme = "deepwhite"
+```
+
+##### Warp
+
+Copy `extra/deepwhite_warp.yaml` into your platform's theme directory:
+
+- macOS: `~/.warp/themes/`
+- Linux: `${XDG_DATA_HOME:-$HOME/.local/share}/warp-terminal/themes/`
+- Windows: `%APPDATA%\warp\Warp\data\themes\`
+
+Choose **DeepWhite** in **Settings → Appearance → Themes**, or through **Open Theme Picker**.
+
+##### foot
+
+For **foot 1.26+**, copy `extra/deepwhite_foot.ini` to `~/.config/foot/themes/deepwhite.ini`.
+Merge these entries into the `[main]` section of your `foot.ini`, preserving other includes:
+
+```ini
+[main]
+include=~/.config/foot/themes/deepwhite.ini
+initial-color-theme=light
+```
+
+The preset uses `[colors-light]`; do not rename it to the obsolete `[colors]` section.
+
+##### iTerm2
+
+Open **Settings → Profiles → Colors → Color Presets… → Import…**, import
+`extra/deepwhite.itermcolors`, then select **deepwhite** from **Color Presets…** for the intended
+profile. Enable **Use custom color for selected text** to use the exported selection foreground.
+
+##### vivid
+
+Install vivid and assign its generated output to `LS_COLORS` in your shell startup file, for tools
+that honor `LS_COLORS`. For Bash/Zsh:
+
+```sh
+export LS_COLORS="$(vivid generate /absolute/path/to/deepwhite.nvim/extra/vivid_themes_deepwhite.yml)"
+```
+
+For Fish:
+
+```fish
+set -gx LS_COLORS (vivid generate /absolute/path/to/deepwhite.nvim/extra/vivid_themes_deepwhite.yml)
+```
 
 ### Plugin integration policy
 
@@ -327,10 +474,37 @@ uncaught Lua errors that prevent the runner from exiting normally. To run an aff
 DEEPWHITE_TEST='lualine preserves' nvim --headless -u NONE -i NONE -n -c 'luafile tests/run.lua' -c 'cquit 1'
 ```
 
-[The CI workflow](.github/workflows/tests.yml) runs this core suite on Linux with Neovim **0.7.0** and the
-**latest official stable release** for pushes, pull requests, and manual runs. The stable job follows
-new releases; the locally verified stable version for this change is 0.12.6. Plugin UI tests remain
-separate, optional checks rather than part of the minimum-version compatibility promise.
+Check editor help independently (generates tags in a temporary copy, not in the checkout):
+
+```sh
+nvim --headless -u NONE -i NONE -n -c 'luafile tests/help.lua' -c 'cquit 1'
+```
+
+With Luacheck installed, check Lua syntax and global-variable correctness:
+
+```sh
+luacheck lua colors tests scripts
+```
+
+The initial Luacheck scope deliberately excludes unused-variable/style rules and Lua embedded in strings.
+Formatting is enforced separately using StyLua **2.6.0**, pinned in `.pre-commit-config.yaml`.
+Install [pre-commit](https://pre-commit.com/) and enable automatic formatting once per checkout:
+
+```sh
+pre-commit install --install-hooks
+pre-commit run --all-files --show-diff-on-failure
+```
+
+On each commit, staged Lua files and `.luacheckrc` are formatted with AST verification. If files change,
+the commit stops for review and explicit restaging; the hook never silently runs `git add`.
+The first hook setup downloads its formatter into an isolated cache, not into the runtime plugin.
+See [CONTRIBUTING.md](CONTRIBUTING.md#automatic-formatting-before-commits) for details.
+
+[The CI workflow](.github/workflows/tests.yml) runs the core and help suites on Linux with Neovim
+**0.7.0** and the **latest official stable release**, plus separate Luacheck/generation, full-tree formatting
+and serialized-extra jobs, for pushes, pull requests, and manual runs. The stable job follows new releases; the locally verified stable version
+for this change is 0.12.6. Plugin UI tests remain separate, optional checks rather than part of the
+minimum-version compatibility promise.
 
 An optional integration test uses **real mini.pick and mini.files modules** in an embedded Neovim
 with an attached UI. Point it at your mini.nvim runtime directory (no automatic downloads):
@@ -400,7 +574,9 @@ All three cover both backgrounds and accept `DEEPWHITE_TEST` as a test-name subs
 screen attributes or experimental cell inspection to check composed styles, not just group existence;
 the helpers may need adjustment for future Neovim versions. They do not read your personal configuration.
 
-Latest local verification used Neovim **0.12.6**, with **56 core checks and 66 optional UI checks passing**.
+Latest core verification used Neovim **0.12.6** (58 checks) and **0.7.0** (54 checks), including extras
+generation checks; both versions also passed 13 help checks. The 66 optional UI checks passed before
+this extras-only change; runtime highlights and those plugin tests have not changed since that run.
 Plugin revisions for this verification (including the three earlier mini.nvim suites):
 
 | Plugin | Revision |
@@ -562,4 +738,5 @@ Previous:
         opts.tabline = { BufferLine, Align, TabPages }
     end,
 }
+```
 </details>

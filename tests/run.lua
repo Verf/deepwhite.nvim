@@ -580,6 +580,41 @@ for _, cold in ipairs { false, true } do
 end
 
 local extras = dofile 'tests/extra.lua'
+local generator = dofile 'scripts/generate_extras.lua'
+test('generated extras are deterministic and ignore active user configuration', function()
+    local expected = generator.render()
+    eq(#vim.tbl_keys(expected), 11)
+    theme.setup {
+        low_blue_light = true,
+        on_colors = function() error 'Extras must not execute user color hooks' end,
+        on_highlights = function() error 'Extras must not execute user highlight hooks' end,
+    }
+    eq(generator.render(), expected)
+    eq(generator.write(true), {})
+end)
+
+test('extras check detects drift and missing files without writing', function()
+    local directory = vim.fn.tempname()
+    vim.fn.mkdir(directory, 'p')
+    local ok, err = pcall(function()
+        for name, content in pairs(generator.render()) do
+            local file = assert(io.open(directory .. '/' .. name, 'wb'))
+            assert(file:write(content))
+            assert(file:close())
+        end
+        assert(vim.fn.writefile({ 'deliberate drift' }, directory .. '/deepwhite_kitty.conf') == 0)
+        assert(vim.fn.delete(directory .. '/deepwhite_warp.yaml') == 0)
+        local changed = { 'deepwhite_kitty.conf', 'deepwhite_warp.yaml' }
+        eq(generator.write(true, directory), changed)
+        eq(vim.fn.readfile(directory .. '/deepwhite_kitty.conf'), { 'deliberate drift' })
+        eq(vim.fn.filereadable(directory .. '/deepwhite_warp.yaml'), 0)
+        eq(generator.write(false, directory), changed)
+        eq(generator.write(true, directory), {})
+    end)
+    vim.fn.delete(directory, 'rf')
+    if not ok then error(err, 0) end
+end)
+
 for _, name in ipairs { 'Kitty', 'WezTerm', 'Windows Terminal', 'Xresources' } do
     test(name .. ' ANSI slots', function()
         local data, c = extras.terminals[name](), colors()

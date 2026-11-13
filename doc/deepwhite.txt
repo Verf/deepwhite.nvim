@@ -1,0 +1,240 @@
+*deepwhite.txt*                 A readable, pastel light theme for Neovim
+
+DeepWhite                                                      *deepwhite*
+                                                              *deepwhite.nvim*
+
+==============================================================================
+CONTENTS                                                  *deepwhite-contents*
+
+    1. Quick start ................................ |deepwhite-quickstart|
+    2. Configuration .............................. |deepwhite-setup|
+    3. Options .................................... |deepwhite-options|
+    4. Color and highlight overrides .............. |deepwhite-overrides|
+    5. Terminal colors ........................... |deepwhite-terminal-colors|
+    6. Plugin integration ......................... |deepwhite-integrations|
+    7. Troubleshooting ........................... |deepwhite-troubleshooting|
+    8. Development ................................ |deepwhite-development|
+
+==============================================================================
+1. QUICK START                                          *deepwhite-quickstart*
+
+Requires Neovim 0.7+ and a truecolor terminal. Install Verf/deepwhite.nvim
+with your plugin manager, or put it on 'runtimepath'. No setup is required
+for the defaults: >vim
+    colorscheme deepwhite
+<
+Configure the theme BEFORE loading it: >lua
+    require('deepwhite').setup({ low_blue_light = true })
+    vim.cmd('colorscheme deepwhite')
+<
+The theme sets 'background' to "light" and enables 'termguicolors'. It does
+not provide a dark variant. An undercurl-capable terminal is recommended
+for diagnostic underlines.
+
+Modern @ capture names are applied on Neovim 0.8+. On 0.7, the theme omits
+these groups and links targeting them, avoiding invalid-name warnings; it
+does not provide legacy TS* aliases. Semantic tokens and newer UI features
+still require a Neovim version implementing them. Plugins have their own
+version requirements, independent of the theme's core support.
+
+==============================================================================
+2. CONFIGURATION                                             *deepwhite-setup*
+
+Defaults: >lua
+    require('deepwhite').setup({
+        low_blue_light = false,
+        terminal_colors = false,
+        on_colors = function(colors) end,
+        on_highlights = function(groups, colors) end,
+    })
+    vim.cmd('colorscheme deepwhite')
+<
+setup() incrementally updates previous options. Omitted options, including
+callbacks, are retained; setup() and setup({}) do not reset them. Calling
+setup() does not reload the theme. Apply changes with :colorscheme deepwhite.
+Replace a previous callback with an empty function to remove its effect.
+
+The boolean options require booleans; hooks require functions. Invalid
+types report an error without updating the saved options.
+
+==============================================================================
+3. OPTIONS                                                 *deepwhite-options*
+
+low_blue_light ~
+    Default: false. Selects neutral/cooler #FAFAFA instead of warm #FAF2EB.
+    This compensates for an external warm filter; it does NOT reduce blue
+    light by itself or provide a medical eye-care guarantee.
+
+terminal_colors ~
+    Default: false. Opt in to Neovim terminal ANSI colors. See
+    |deepwhite-terminal-colors| for persistence and external preset limits.
+
+on_colors(colors) ~
+    Default: empty function. Mutate a fresh palette after the background
+    option is applied, before highlight groups and terminal colors are made.
+    Original base*, light_* and bright_* colors remain available.
+
+on_highlights(groups, colors) ~
+    Default: empty function. Mutate or replace highlight definitions before
+    they are applied. Definitions use |nvim_set_hl()| attributes.
+
+==============================================================================
+4. COLOR AND HIGHLIGHT OVERRIDES                         *deepwhite-overrides*
+
+Order on every load:
+    palette -> background option -> on_colors -> groups -> on_highlights
+    -> apply highlights -> optional terminal colors
+
+Hooks mutate their arguments; return values are ignored. For example: >lua
+    require('deepwhite').setup({
+        on_colors = function(colors)
+            colors.comment = '#595855'
+            colors.warning = '#884400'
+            colors.git_change = colors.warning
+        end,
+        on_highlights = function(groups, colors)
+            groups.Comment.italic = true
+            groups.DiagnosticWarn = { fg = colors.warning, bold = true }
+        end,
+    })
+    vim.cmd('colorscheme deepwhite')
+<
+Information foreground roles:
+    comment     Comments, inlay hints and line numbers
+    warning     Warnings and orange information accents
+    hint        Hints and cyan information accents
+    success     OK diagnostics and green information accents
+    yellow_fg   Yellow information accents and ANSI yellow
+    git_add     Added Git signs
+    git_change  Changed Git signs
+    git_delete  Deleted Git signs
+
+The git_* roles are values initialized BEFORE on_colors, not live aliases.
+If a warning override should change Git signs too, set git_change explicitly.
+Change comment rather than base3 to customize comment text.
+
+A link takes precedence over other attributes. Replace the whole definition
+when changing a linked group's color: >lua
+    require('deepwhite').setup({
+        on_highlights = function(groups)
+            groups.Comment = { link = 'Type' }
+            groups.DiagnosticHint = { fg = '#005566' }
+        end,
+    })
+    vim.cmd('colorscheme deepwhite')
+<
+Hooks run on each load. Importing the lualine theme also evaluates on_colors,
+but not on_highlights. Keep callbacks focused on their arguments. Hook
+errors include their name and traceback and occur before active highlights
+are cleared. Other malformed highlight definitions can still fail to apply.
+
+Default information text targets >= 4.5:1 contrast, and critical Git signs
+>= 3:1, on both normal backgrounds. This is a design target, not a guarantee
+for all syntax combinations, plugins, filters or user overrides. Visual
+selection supplies a dark foreground to keep selected comments readable.
+
+==============================================================================
+5. TERMINAL COLORS                                *deepwhite-terminal-colors*
+
+With terminal_colors = true, the theme sets vim.g.terminal_color_0 through
+vim.g.terminal_color_15. The default false leaves existing values untouched.
+Turning it off later does NOT restore or clear previously set colors.
+Enable it before opening |terminal| buffers; existing ones may need reopening.
+Nominal ANSI white slots deliberately use dark foregrounds on a light theme.
+
+External presets in extra/ are generated warm-background files for Kitty,
+WezTerm, Windows Terminal, Xresources, Ghostty, Alacritty, Rio, Warp, foot,
+iTerm2 and vivid. Neither low_blue_light nor on_colors rewrites them.
+See docs/TERMINALS.md for installation paths and current format boundaries.
+
+From the repository root, generate/check with Lua 5.1+ or LuaJIT: >sh
+    lua scripts/generate_extras.lua
+    lua scripts/generate_extras.lua --check
+<
+The script reads only the default palette and does not execute user hooks.
+Check mode is read-only and fails on missing/stale files. Edit the palette
+or generator, not the output files. foot requires the colors-light format
+(1.26+). Warp has no documented separate selection-color fields.
+Contrast targets do not cover arbitrary ANSI foreground/background pairs,
+reverse-video applications, transparent backgrounds or terminal filters.
+
+==============================================================================
+6. PLUGIN INTEGRATION                                 *deepwhite-integrations*
+
+The theme does not load or configure plugins. It prefers native/default
+links and adds plugin-specific groups only for demonstrated mismatches.
+
+mini.nvim ~
+    mini.pick, mini.files, mini.completion and mini.diff have attached-UI
+    regression checks. Shared native groups style completion, LSP floats
+    and changed diff spans. Customize DiffText to change MiniDiff's changed
+    spans; the theme does not set sources, mappings or overlay toggles.
+
+CodeDiff ~
+    CodeDiff's default derived backgrounds can make comments low-contrast.
+    Merge this into your existing plugin setup for readable comment context
+    and changed words; this adjustment is NOT enabled automatically: >lua
+        require('codediff').setup({
+            highlights = {
+                line_delete = '#FAE1E1',
+                char_insert = 'DiffText',
+                char_delete = 'DiffText',
+            },
+        })
+<
+    CodeDiff rebuilds its character groups after theme loads. Configure its
+    public highlights options instead of only overriding those groups in
+    on_highlights. The literal deletion color is not changed by on_colors.
+    Optional gutter signs/numbers use readable Git foregrounds; the theme
+    does not enable them or change plugin mappings, layout or Git actions.
+
+Other workflow UI ~
+    render-markdown, multicursor, which-key modern and mini.cmdline have
+    scenario-based UI checks. Existing/default links are retained where
+    appropriate. This is not a promise for every plugin option or version.
+
+lualine ~
+    Select theme = 'deepwhite' in lualine's options. Importing the theme
+    does not change 'fillchars'. Previous horizontal-line decoration is
+    optional and belongs in user configuration: >lua
+        vim.opt_global.fillchars:append({ stl = '─', stlnc = '─' })
+        vim.opt_local.fillchars:append({ stl = '─', stlnc = '─' })
+<
+==============================================================================
+7. TROUBLESHOOTING                                 *deepwhite-troubleshooting*
+
+Options appear ineffective ~
+    Call setup before :colorscheme deepwhite, or reload the colorscheme
+    after setup. Check whether another plugin overrides the same groups.
+
+An override has no visible effect ~
+    Check for a link in the group definition and replace the definition
+    instead of adding fg/bg alongside link. Use :highlight {group-name}
+    to inspect the applied style. See |deepwhite-overrides|.
+
+Terminal colors or text look different ~
+    Distinguish Neovim terminal_colors from external terminal presets.
+    Check transparency, warm filters, truecolor and font/undercurl support.
+    Automated UI checks do not certify actual terminal fonts or icons.
+
+Missing help tags after manual installation ~
+    Run :helptags /path/to/deepwhite.nvim/doc, then :help deepwhite.
+    Plugin managers normally generate these tags during installation.
+
+==============================================================================
+8. DEVELOPMENT                                         *deepwhite-development*
+
+See CONTRIBUTING.md for development checks and README.md for full optional
+UI commands, tested plugin revisions and their boundaries. Core CI checks
+Neovim 0.7.0 and the latest official stable release; optional plugin UI
+checks require modern Neovim and are not the 0.7 compatibility promise.
+
+Install the repository's Git hook with `pre-commit install --install-hooks`.
+It uses pinned StyLua formatting; modified files must be reviewed and
+restaged before retrying a commit. Formatting CI checks the whole tree.
+
+Report the Neovim version, terminal/GUI and font, background option, plugin
+versions and a minimal configuration when reporting a rendering issue.
+Do not include credentials or unrelated private configuration.
+
+vim:tw=78:ts=8:noet:ft=help:norl:
