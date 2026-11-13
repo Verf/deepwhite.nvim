@@ -8,16 +8,14 @@ local config = require 'deepwhite.config'
 local defaults = vim.deepcopy(config.options)
 local filter = vim.env.DEEPWHITE_TEST
 local passed, failed = 0, 0
-local has_captures = vim.fn.has('nvim-0.8') == 1
+local has_captures = vim.fn.has 'nvim-0.8' == 1
 
 local function eq(actual, expected)
     assert(vim.deep_equal(actual, expected), 'expected ' .. vim.inspect(expected) .. ', got ' .. vim.inspect(actual))
 end
 
 local function hl(name)
-    if vim.api.nvim_get_hl then
-        return vim.api.nvim_get_hl(0, { name = name, link = false, create = false })
-    end
+    if vim.api.nvim_get_hl then return vim.api.nvim_get_hl(0, { name = name, link = false, create = false }) end
     -- Neovim 0.7/0.8 use long color keys and can return a non-string sentinel for an empty group.
     local result, keys = {}, { foreground = 'fg', background = 'bg', special = 'sp' }
     for key, value in pairs(vim.api.nvim_get_hl_by_name(name, true)) do
@@ -52,9 +50,7 @@ local function test(name, fn)
     end
 end
 
-test('theme load emits no warnings', function()
-    eq(vim.fn.execute('messages'), '')
-end)
+test('theme load emits no warnings', function() eq(vim.fn.execute 'messages', '') end)
 
 test('capture overrides follow runtime support without warnings', function()
     theme.setup {
@@ -65,13 +61,13 @@ test('capture overrides follow runtime support without warnings', function()
     }
     vim.cmd 'messages clear'
     vim.cmd 'colorscheme deepwhite'
-    eq(vim.fn.execute('messages'), '')
+    eq(vim.fn.execute 'messages', '')
     if has_captures then
-        eq(hl('@deepwhite.test').fg, hex('#112233'))
-        eq(hl('DeepwhiteCaptureLink'), hl('@type'))
+        eq(hl('@deepwhite.test').fg, hex '#112233')
+        eq(hl 'DeepwhiteCaptureLink', hl '@type')
     else
-        eq(vim.fn.hlexists('@deepwhite.test'), 0)
-        eq(vim.fn.hlexists('DeepwhiteCaptureLink'), 0)
+        eq(vim.fn.hlexists '@deepwhite.test', 0)
+        eq(vim.fn.hlexists 'DeepwhiteCaptureLink', 0)
     end
 end)
 
@@ -79,13 +75,14 @@ test('default load', function()
     eq(vim.g.colors_name, 'deepwhite')
     eq(vim.o.background, 'light')
     eq(vim.o.termguicolors, true)
-    eq(hl('Normal').fg, hex('#1A1918'))
-    eq(hl('Normal').bg, hex('#FAF2EB'))
+    eq(hl('Normal').fg, hex '#1A1918')
+    eq(hl('Normal').bg, hex '#FAF2EB')
 end)
 
-test('mini diff keeps soft deletion background', function()
-    eq(hl('MiniDiffOverDelete').bg, hex(colors().light_red))
-end)
+test(
+    'mini diff keeps soft deletion background',
+    function() eq(hl('MiniDiffOverDelete').bg, hex(colors().light_red)) end
+)
 
 test('mini diff delegates changed spans and buffer context to module defaults', function()
     local groups = require('deepwhite.scheme').get_groups(colors())
@@ -123,7 +120,7 @@ end
 test('cold background reload', function()
     theme.setup { low_blue_light = true }
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('Normal').bg, hex('#FAFAFA'))
+    eq(hl('Normal').bg, hex '#FAFAFA')
 end)
 
 test('theme switch and repeated load', function()
@@ -132,10 +129,10 @@ test('theme switch and repeated load', function()
     theme.setup { low_blue_light = false }
     vim.cmd 'colorscheme default'
     vim.cmd 'colorscheme deepwhite'
-    local first = hl('Normal')
-    eq(first.bg, hex('#FAF2EB'))
+    local first = hl 'Normal'
+    eq(first.bg, hex '#FAF2EB')
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('Normal'), first)
+    eq(hl 'Normal', first)
 end)
 
 test('lualine preserves fillchars', function()
@@ -163,20 +160,22 @@ end)
 
 test('codediff gutters follow shared Git foreground roles', function()
     for _, row in ipairs {
-        { 'CodeDiffGutterInsert', 'GitSignsAdd' }, { 'CodeDiffGutterDelete', 'GitSignsDelete' },
-        { 'CodeDiffGutterInsertNumber', 'GitSignsAdd' }, { 'CodeDiffGutterDeleteNumber', 'GitSignsDelete' },
+        { 'CodeDiffGutterInsert', 'GitSignsAdd' },
+        { 'CodeDiffGutterDelete', 'GitSignsDelete' },
+        { 'CodeDiffGutterInsertNumber', 'GitSignsAdd' },
+        { 'CodeDiffGutterDeleteNumber', 'GitSignsDelete' },
     } do
         eq(hl(row[1]), hl(row[2]))
         eq(hl(row[1]).bg, nil)
     end
     theme.setup { on_colors = function(c) c.git_add = '#123456' end }
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('CodeDiffGutterInsert').fg, hex('#123456'))
-    eq(hl('CodeDiffGutterInsertNumber').fg, hex('#123456'))
+    eq(hl('CodeDiffGutterInsert').fg, hex '#123456')
+    eq(hl('CodeDiffGutterInsertNumber').fg, hex '#123456')
 end)
 
 test('standard syntax and deprecated completion', function()
-    eq(hl('StorageClass'), hl('Type'))
+    eq(hl 'StorageClass', hl 'Type')
     eq(hl('CmpItemAbbrDeprecated').strikethrough, true)
     eq(hl('CmpItemAbbrDeprecated').bg, nil)
 end)
@@ -188,14 +187,14 @@ test('setup incrementally updates options without reloading', function()
     eq(config.options.low_blue_light, true)
     eq(config.options.terminal_colors, true)
     eq(config.options.on_colors, callback)
-    local before = hl('Normal')
+    local before = hl 'Normal'
     theme.setup()
     theme.setup {}
     eq(config.options.on_colors, callback)
-    eq(hl('Normal'), before)
+    eq(hl 'Normal', before)
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('Normal').bg, hex('#FAFAFA'))
-    eq(hl('Comment').fg, hex('#123456'))
+    eq(hl('Normal').bg, hex '#FAFAFA')
+    eq(hl('Comment').fg, hex '#123456')
 end)
 
 test('invalid config types do not change options', function()
@@ -207,7 +206,10 @@ test('invalid config types do not change options', function()
         eq(config.options, before)
     end
     for key, value in pairs {
-        low_blue_light = 'yes', terminal_colors = 1, on_colors = {}, on_highlights = false,
+        low_blue_light = 'yes',
+        terminal_colors = 1,
+        on_colors = {},
+        on_highlights = false,
     } do
         local ok, err = pcall(theme.setup, { [key] = value })
         eq(ok, false)
@@ -254,13 +256,13 @@ test('color and highlight hooks order and reload', function()
         trace = {}
         vim.cmd 'colorscheme deepwhite'
         eq(trace, { 'colors', 'highlights' })
-        eq(hl('Normal').fg, hex('#202122'))
-        eq(hl('Comment').fg, hex('#884400'))
+        eq(hl('Normal').fg, hex '#202122')
+        eq(hl('Comment').fg, hex '#884400')
         eq(hl('Comment').italic, true)
-        eq(hl('DeepwhiteTest'), hl('Comment'))
-        eq(hl('DiagnosticWarn').fg, hex('#773300'))
+        eq(hl 'DeepwhiteTest', hl 'Comment')
+        eq(hl('DiagnosticWarn').fg, hex '#773300')
         eq(hl('DiagnosticWarn').bold, true)
-        eq(hl('GitSignsChange').fg, hex('#884400'))
+        eq(hl('GitSignsChange').fg, hex '#884400')
     end
 end)
 
@@ -272,22 +274,22 @@ test('highlight hook honors link replacement and removal', function()
         end,
     }
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('Comment'), hl('Type'))
-    eq(hl('DiagnosticHint'), {})
+    eq(hl 'Comment', hl 'Type')
+    eq(hl 'DiagnosticHint', {})
 end)
 
 for _, hook in ipairs { 'on_colors', 'on_highlights' } do
     test(hook .. ' error preserves active highlights', function()
-        local normal = hl('Normal')
+        local normal = hl 'Normal'
         vim.api.nvim_set_hl(0, 'DeepwhiteSentinel', { fg = '#123456' })
-        theme.setup { [hook] = function() error('callback failed deliberately') end }
+        theme.setup { [hook] = function() error 'callback failed deliberately' end }
         local ok, err = pcall(vim.cmd, 'colorscheme deepwhite')
         eq(ok, false)
         assert(err:find('deepwhite.nvim: ' .. hook .. ' failed:', 1, true), err)
         assert(err:find('callback failed deliberately', 1, true), err)
         assert(err:find('stack traceback', 1, true), err)
-        eq(hl('Normal'), normal)
-        eq(hl('DeepwhiteSentinel').fg, hex('#123456'))
+        eq(hl 'Normal', normal)
+        eq(hl('DeepwhiteSentinel').fg, hex '#123456')
     end)
 end
 
@@ -305,9 +307,13 @@ end)
 
 test('terminal colors are opt-in and false leaves user values intact', function()
     eq(defaults.terminal_colors, false)
-    for i = 0, 15 do vim.g['terminal_color_' .. i] = '#123456' end
+    for i = 0, 15 do
+        vim.g['terminal_color_' .. i] = '#123456'
+    end
     vim.cmd 'colorscheme deepwhite'
-    for i = 0, 15 do eq(vim.g['terminal_color_' .. i], '#123456') end
+    for i = 0, 15 do
+        eq(vim.g['terminal_color_' .. i], '#123456')
+    end
     theme.setup { terminal_colors = true }
     vim.cmd 'colorscheme deepwhite'
     theme.setup { terminal_colors = false }
@@ -326,19 +332,42 @@ test('terminal ANSI slots follow overridden palette', function()
     vim.cmd 'colorscheme deepwhite'
     local c = colors()
     local expected = {
-        c.base0, c.red, c.success, c.yellow_fg, c.blue, c.purple, '#005566', c.base1,
-        c.comment, c.red, c.success, c.yellow_fg, c.blue, c.purple, '#005566', c.base0,
+        c.base0,
+        c.red,
+        c.success,
+        c.yellow_fg,
+        c.blue,
+        c.purple,
+        '#005566',
+        c.base1,
+        c.comment,
+        c.red,
+        c.success,
+        c.yellow_fg,
+        c.blue,
+        c.purple,
+        '#005566',
+        c.base0,
     }
-    for i, value in ipairs(expected) do eq(vim.g['terminal_color_' .. (i - 1)], value) end
-    eq(hl('DiagnosticHint').fg, hex('#005566'))
+    for i, value in ipairs(expected) do
+        eq(vim.g['terminal_color_' .. (i - 1)], value)
+    end
+    eq(hl('DiagnosticHint').fg, hex '#005566')
 end)
 
 test('paper and pastel backgrounds are preserved', function()
     for _, row in ipairs {
-        { 'Normal', '#FAF2EB' }, { 'ColorColumn', '#FAF6EB' }, { 'CursorLine', '#E6E4DF' },
-        { 'Constant', '#D4D4FA' }, { 'String', '#D4FAD4' }, { 'Statement', '#FAE1C8' },
-        { '@keyword.function', '#EDD4FA' }, { 'Visual', '#CCCBC6' },
-        { 'DiffAdd', '#AFFAAF' }, { 'DiffChange', '#FAD4AF' }, { 'DiffDelete', '#FAAFAF' },
+        { 'Normal', '#FAF2EB' },
+        { 'ColorColumn', '#FAF6EB' },
+        { 'CursorLine', '#E6E4DF' },
+        { 'Constant', '#D4D4FA' },
+        { 'String', '#D4FAD4' },
+        { 'Statement', '#FAE1C8' },
+        { '@keyword.function', '#EDD4FA' },
+        { 'Visual', '#CCCBC6' },
+        { 'DiffAdd', '#AFFAAF' },
+        { 'DiffChange', '#FAD4AF' },
+        { 'DiffDelete', '#FAAFAF' },
     } do
         if row[1]:sub(1, 1) ~= '@' or has_captures then eq(hl(row[1]).bg, hex(row[2])) end
     end
@@ -348,14 +377,16 @@ test('native completion match accent preserves selection background', function()
     eq(hl('PmenuMatch').fg, hex(colors().hint))
     eq(hl('PmenuMatch').bold, true)
     eq(hl('PmenuMatch').bg, nil)
-    eq(hl('PmenuMatchSel'), hl('PmenuMatch'))
+    eq(hl 'PmenuMatchSel', hl 'PmenuMatch')
     eq(hl('PmenuSel').bg, hex(colors().base6))
 end)
 
 test('mini completion delegates to native highlight defaults', function()
     local groups = require('deepwhite.scheme').get_groups(colors())
     for _, name in ipairs {
-        'MiniCompletionActiveParameter', 'MiniCompletionDeprecated', 'MiniCompletionInfoBorderOutdated',
+        'MiniCompletionActiveParameter',
+        'MiniCompletionDeprecated',
+        'MiniCompletionInfoBorderOutdated',
     } do
         eq(groups[name], nil)
     end
@@ -365,7 +396,7 @@ end)
 
 test('mini navigation current and marked states', function()
     local c = colors()
-    eq(hl('MiniPickMatchCurrent'), hl('MiniFilesCursorLine'))
+    eq(hl 'MiniPickMatchCurrent', hl 'MiniFilesCursorLine')
     eq(hl('MiniPickMatchCurrent').bg, hex(c.base6))
     eq(hl('MiniPickMatchCurrent').bold, true)
     eq(hl('MiniPickMatchMarked').bg, hex(c.light_orange))
@@ -379,7 +410,7 @@ test('mini picker match and prompt accents', function()
     eq(hl('MiniPickMatchRanges').fg, hex(colors().hint))
     eq(hl('MiniPickMatchRanges').bold, true)
     eq(hl('MiniPickMatchRanges').bg, nil)
-    eq(hl('MiniPickPromptCaret'), hl('MiniPickPromptPrefix'))
+    eq(hl 'MiniPickPromptCaret', hl 'MiniPickPromptPrefix')
     eq(hl('MiniPickPromptCaret').fg, hex(colors().hint))
     eq(hl('MiniPickPrompt').fg, hex(colors().base0))
     eq(hl('MiniPickPreviewRegion').bg, hex(colors().light_cyan))
@@ -387,13 +418,13 @@ test('mini picker match and prompt accents', function()
 end)
 
 test('mini files hierarchy and pending edit warning', function()
-    eq(hl('MiniFilesBorderModified'), hl('DiagnosticWarn'))
+    eq(hl 'MiniFilesBorderModified', hl 'DiagnosticWarn')
     eq(hl('MiniFilesTitle').fg, hex(colors().comment))
     eq(hl('MiniFilesTitleFocused').fg, hex(colors().base0))
     eq(hl('MiniFilesTitleFocused').bold, true)
-    eq(hl('MiniPickIconDirectory'), hl('MiniFilesDirectory'))
+    eq(hl 'MiniPickIconDirectory', hl 'MiniFilesDirectory')
     eq(hl('MiniFilesDirectory').bold, true)
-    eq(hl('MiniFilesFile'), hl('NormalFloat'))
+    eq(hl 'MiniFilesFile', hl 'NormalFloat')
 end)
 
 test('mini navigation honors user overrides', function()
@@ -402,10 +433,10 @@ test('mini navigation honors user overrides', function()
         on_highlights = function(groups) groups.MiniFilesTitleFocused = { fg = '#112233' } end,
     }
     vim.cmd 'colorscheme deepwhite'
-    eq(hl('MiniPickMatchRanges').fg, hex('#005566'))
-    eq(hl('MiniFilesDirectory').fg, hex('#005566'))
-    eq(hl('MiniPickIconDirectory'), hl('MiniFilesDirectory'))
-    eq(hl('MiniFilesTitleFocused').fg, hex('#112233'))
+    eq(hl('MiniPickMatchRanges').fg, hex '#005566')
+    eq(hl('MiniFilesDirectory').fg, hex '#005566')
+    eq(hl 'MiniPickIconDirectory', hl 'MiniFilesDirectory')
+    eq(hl('MiniFilesTitleFocused').fg, hex '#112233')
 end)
 
 local function luminance(rgb)
@@ -422,7 +453,7 @@ local function contrast(fg, bg)
 end
 
 local function readable(name, minimum)
-    local group, normal = hl(name), hl('Normal')
+    local group, normal = hl(name), hl 'Normal'
     local ratio = contrast(group.fg or normal.fg, group.bg or normal.bg)
     assert(ratio >= minimum, string.format('%s contrast %.4f is below %.1f', name, ratio, minimum))
 end
@@ -433,11 +464,32 @@ for _, cold in ipairs { false, true } do
         theme.setup { low_blue_light = cold }
         vim.cmd 'colorscheme deepwhite'
         for _, name in ipairs {
-            'Normal', 'Comment', '@comment', 'LineNr', 'LspInlayHint', 'LspCodeLens',
-            'WarningMsg', 'Tag', 'DiagnosticError', 'DiagnosticWarn', 'DiagnosticInfo', 'DiagnosticHint', 'DiagnosticOk',
-            'DiagnosticVirtualTextWarn', 'DiagnosticVirtualLinesHint', 'DiagnosticFloatingOk',
-            'DiffText', 'Visual', 'MiniHipatternsHack', 'Substitute', 'RainbowDelimiterYellow',
-            'CmpItemAbbr', 'CmpItemKindSnippet', 'CmpItemKindKeyword', 'NotifyWARNTitle', 'DapUISource',
+            'Normal',
+            'Comment',
+            '@comment',
+            'LineNr',
+            'LspInlayHint',
+            'LspCodeLens',
+            'WarningMsg',
+            'Tag',
+            'DiagnosticError',
+            'DiagnosticWarn',
+            'DiagnosticInfo',
+            'DiagnosticHint',
+            'DiagnosticOk',
+            'DiagnosticVirtualTextWarn',
+            'DiagnosticVirtualLinesHint',
+            'DiagnosticFloatingOk',
+            'DiffText',
+            'Visual',
+            'MiniHipatternsHack',
+            'Substitute',
+            'RainbowDelimiterYellow',
+            'CmpItemAbbr',
+            'CmpItemKindSnippet',
+            'CmpItemKindKeyword',
+            'NotifyWARNTitle',
+            'DapUISource',
         } do
             if name:sub(1, 1) ~= '@' or has_captures then readable(name, 4.5) end
         end
@@ -455,7 +507,11 @@ for _, cold in ipairs { false, true } do
         theme.setup { low_blue_light = cold }
         vim.cmd 'colorscheme deepwhite'
         for _, name in ipairs {
-            'Pmenu', 'NormalFloat', 'FloatBorder', 'LspSignatureActiveParameter', 'DiagnosticFloatingWarn',
+            'Pmenu',
+            'NormalFloat',
+            'FloatBorder',
+            'LspSignatureActiveParameter',
+            'DiagnosticFloatingWarn',
         } do
             readable(name, 4.5)
         end
@@ -470,9 +526,16 @@ for _, cold in ipairs { false, true } do
         theme.setup { low_blue_light = cold }
         vim.cmd 'colorscheme deepwhite'
         for _, name in ipairs {
-            'MiniPickBorderText', 'MiniPickPrompt', 'MiniPickPromptCaret', 'MiniPickPromptPrefix',
-            'MiniPickMatchRanges', 'MiniPickPreviewRegion', 'MiniFilesTitle', 'MiniFilesTitleFocused',
-            'MiniFilesDirectory', 'MiniFilesBorderModified',
+            'MiniPickBorderText',
+            'MiniPickPrompt',
+            'MiniPickPromptCaret',
+            'MiniPickPromptPrefix',
+            'MiniPickMatchRanges',
+            'MiniPickPreviewRegion',
+            'MiniFilesTitle',
+            'MiniFilesTitleFocused',
+            'MiniFilesDirectory',
+            'MiniFilesBorderModified',
         } do
             readable(name, 4.5)
         end
@@ -491,9 +554,17 @@ for _, cold in ipairs { false, true } do
             eq(hl('GitSigns' .. kind), hl('MiniDiffSign' .. kind))
         end
         for _, name in ipairs {
-            'MiniIconsCyan', 'MiniIconsGreen', 'MiniIconsOrange', 'MiniIconsYellow',
-            'WhichKeyIconCyan', 'WhichKeyIconGreen', 'WhichKeyIconYellow',
-            'CodeDiffGutterInsert', 'CodeDiffGutterDelete', 'CodeDiffGutterInsertNumber', 'CodeDiffGutterDeleteNumber',
+            'MiniIconsCyan',
+            'MiniIconsGreen',
+            'MiniIconsOrange',
+            'MiniIconsYellow',
+            'WhichKeyIconCyan',
+            'WhichKeyIconGreen',
+            'WhichKeyIconYellow',
+            'CodeDiffGutterInsert',
+            'CodeDiffGutterDelete',
+            'CodeDiffGutterInsertNumber',
+            'CodeDiffGutterDeleteNumber',
         } do
             readable(name, 3)
         end
@@ -508,7 +579,7 @@ for _, cold in ipairs { false, true } do
     end)
 end
 
-local extras = dofile('tests/extra.lua')
+local extras = dofile 'tests/extra.lua'
 for _, name in ipairs { 'Kitty', 'WezTerm', 'Windows Terminal', 'Xresources' } do
     test(name .. ' ANSI slots', function()
         local data, c = extras.terminals[name](), colors()
@@ -528,10 +599,15 @@ end
 
 test('vivid readable roles follow theme', function()
     local vivid, c = extras.vivid(), colors()
-    for _, role in ipairs { 'hint', 'success', 'warning' } do eq(vivid.colors[role], c[role]) end
+    for _, role in ipairs { 'hint', 'success', 'warning' } do
+        eq(vivid.colors[role], c[role])
+    end
     for name, role in pairs {
-        symlink = 'hint', executable_file = 'success', fifo = 'warning',
-        block_device = 'warning', character_device = 'warning',
+        symlink = 'hint',
+        executable_file = 'success',
+        fifo = 'warning',
+        block_device = 'warning',
+        character_device = 'warning',
     } do
         eq(vivid.styles['core.' .. name].foreground, role)
     end
@@ -551,10 +627,10 @@ test('vivid explicit text styles contrast >= 4.5', function()
     end
 end)
 
-if not has_captures then print('NOTE: @ capture/semantic highlights require Neovim 0.8+ and are not applied on 0.7') end
+if not has_captures then print 'NOTE: @ capture/semantic highlights require Neovim 0.8+ and are not applied on 0.7' end
 print(string.format('RESULT: %d passed, %d failed', passed, failed))
 if passed + failed == 0 then
-    print('No tests matched DEEPWHITE_TEST')
+    print 'No tests matched DEEPWHITE_TEST'
     vim.cmd 'cquit 2'
 elseif failed > 0 then
     vim.cmd 'cquit 1'

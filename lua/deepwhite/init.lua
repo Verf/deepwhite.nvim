@@ -15,7 +15,7 @@ function M.load()
     if not ok then error('deepwhite.nvim: on_highlights failed: ' .. tostring(err), 0) end
 
     -- Neovim 0.7 rejects @ capture names (including link targets) with W18.
-    if vim.fn.has('nvim-0.8') == 0 then
+    if vim.fn.has 'nvim-0.8' == 0 then
         for name, def in pairs(groups) do
             if name:sub(1, 1) == '@' or (def.link and def.link:sub(1, 1) == '@') then groups[name] = nil end
         end

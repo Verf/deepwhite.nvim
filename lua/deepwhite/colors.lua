@@ -76,8 +76,22 @@ end
 -- ANSI slots 0-15, stored at Lua indices 1-16. Even white must be readable on a light background.
 function M.get_terminal_colors(c)
     return {
-        c.base0, c.red, c.success, c.yellow_fg, c.blue, c.purple, c.hint, c.base1,
-        c.comment, c.red, c.success, c.yellow_fg, c.blue, c.purple, c.hint, c.base0,
+        c.base0,
+        c.red,
+        c.success,
+        c.yellow_fg,
+        c.blue,
+        c.purple,
+        c.hint,
+        c.base1,
+        c.comment,
+        c.red,
+        c.success,
+        c.yellow_fg,
+        c.blue,
+        c.purple,
+        c.hint,
+        c.base0,
     }
 end
 

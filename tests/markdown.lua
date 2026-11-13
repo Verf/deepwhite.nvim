@@ -4,8 +4,10 @@
 -- Requires installed markdown, markdown_inline and lua parsers; DEEPWHITE_PARSERS may point to
 -- another runtime directory containing parser/*.so. Neovim 0.12.6 provides these parsers itself.
 local markdown = vim.env.DEEPWHITE_MARKDOWN
-assert(markdown and vim.fn.filereadable(markdown .. '/plugin/render-markdown.lua') == 1,
-    'Set DEEPWHITE_MARKDOWN to render-markdown.nvim')
+assert(
+    markdown and vim.fn.filereadable(markdown .. '/plugin/render-markdown.lua') == 1,
+    'Set DEEPWHITE_MARKDOWN to render-markdown.nvim'
+)
 local child = vim.fn.jobstart({ vim.v.progpath, '--embed', '-u', 'NONE', '-i', 'NONE', '-n' }, { rpc = true })
 local function call(method, ...) return vim.rpcrequest(child, method, ...) end
 local function lua(code, ...) return call('nvim_exec_lua', code, { ... }) end
@@ -29,12 +31,17 @@ local function check(name, fn)
 end
 local function sample(row, text) return lua('return visible_cell(...)', row, text) end
 local function expected(fg, bg, style)
-    return lua([[
+    return lua(
+        [[
         local fg, bg, style = ...
         local c = require('deepwhite.colors').get_colors(require('deepwhite.config').options)
         return { fg = tonumber(c[fg]:sub(2), 16), bg = tonumber(c[bg]:sub(2), 16),
             bold = style == 'bold', underline = style == 'underline' }
-    ]], fg, bg, style)
+    ]],
+        fg,
+        bg,
+        style
+    )
 end
 local function readable(cell, minimum)
     local function luminance(rgb)
@@ -43,23 +50,28 @@ local function readable(cell, minimum)
             return v <= 0.04045 and v / 12.92 or ((v + 0.055) / 1.055) ^ 2.4
         end
         return 0.2126 * linear(math.floor(rgb / 65536))
-            + 0.7152 * linear(math.floor(rgb / 256) % 256) + 0.0722 * linear(rgb % 256)
+            + 0.7152 * linear(math.floor(rgb / 256) % 256)
+            + 0.0722 * linear(rgb % 256)
     end
     local a, b = luminance(cell.fg), luminance(cell.bg)
     local ratio = (math.max(a, b) + 0.05) / (math.min(a, b) + 0.05)
-    assert(ratio >= minimum, string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell)))
+    assert(
+        ratio >= minimum,
+        string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell))
+    )
 end
 local function render()
-    lua([[
+    lua [[
         rendered = false
         require('render-markdown').render({ buf = vim.api.nvim_get_current_buf() })
-    ]])
-    wait_for('return rendered')
+    ]]
+    wait_for 'return rendered'
 end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 100, 42, { rgb = true })
-    lua([=[
+    lua(
+        [=[
         local root, markdown, treesitter, parsers = ...
         if treesitter then
             assert(vim.fn.isdirectory(treesitter .. '/queries/markdown') == 1,
@@ -135,18 +147,33 @@ local ok, err = xpcall(function()
         })
         vim.api.nvim_win_set_cursor(win, { 30, 0 })
         vim.treesitter.start(0, 'markdown')
-    ]=], vim.fn.getcwd(), markdown, vim.env.DEEPWHITE_TREESITTER, vim.env.DEEPWHITE_PARSERS)
+    ]=],
+        vim.fn.getcwd(),
+        markdown,
+        vim.env.DEEPWHITE_TREESITTER,
+        vim.env.DEEPWHITE_PARSERS
+    )
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
-        lua([[
+        lua(
+            [[
             require('deepwhite').setup({ low_blue_light = ... })
             vim.cmd 'colorscheme deepwhite'
             vim.api.nvim_win_set_cursor(win, { 30, 0 })
-        ]], cold)
+        ]],
+            cold
+        )
         render()
         check(label .. ' six headings remain bold and readable without diff backgrounds', function()
-            for row, text in ipairs { 'Heading one', 'Heading two', 'Heading three', 'Heading four', 'Heading five', 'Heading six' } do
+            for row, text in ipairs {
+                'Heading one',
+                'Heading two',
+                'Heading three',
+                'Heading four',
+                'Heading five',
+                'Heading six',
+            } do
                 lua('mark(...)', row, 'RenderMarkdownH' .. row .. 'Bg')
                 local cell = sample(row, text)
                 eq(cell, expected('base0', 'base7', 'bold'))
@@ -154,12 +181,12 @@ local ok, err = xpcall(function()
             end
         end)
         check(label .. ' actual link icon and label remain underlined and inline code distinct', function()
-            local icon = lua("local _, icon = mark(8, 'RenderMarkdownLink'); return icon")
+            local icon = lua "local _, icon = mark(8, 'RenderMarkdownLink'); return icon"
             local cell = sample(8, 'Example link')
             eq(cell, expected('base0', 'base7', 'underline'))
             readable(cell, 4.5)
             readable(sample(8, icon), 3)
-            lua("mark(8, 'RenderMarkdownCodeInline')")
+            lua "mark(8, 'RenderMarkdownCodeInline')"
             cell = sample(8, 'inline_code')
             eq(cell, expected('base0', 'base8'))
             readable(cell, 4.5)
@@ -168,12 +195,12 @@ local ok, err = xpcall(function()
             for row, text in pairs { [10] = 'ordinary item', [11] = 'pending item', [12] = 'completed item' } do
                 readable(sample(row, text), 4.5)
             end
-            local icons = lua([[
+            local icons = lua [[
                 local _, bullet = mark(10, 'RenderMarkdownBullet')
                 local _, unchecked = mark(11, 'RenderMarkdownUnchecked')
                 local _, checked = mark(12, 'RenderMarkdownChecked')
                 return { bullet, unchecked, checked }
-            ]])
+            ]]
             assert(icons[2] ~= icons[3], 'Checkbox states must differ by shape, not color alone')
             readable(sample(10, icons[1]), 3)
             eq(sample(11, icons[2]), expected('base0', 'base7'))
@@ -181,10 +208,10 @@ local ok, err = xpcall(function()
             readable(sample(12, icons[3]), 3)
         end)
         check(label .. ' quote and real table decorations remain readable', function()
-            local quote = lua("local _, icon = mark(14, 'RenderMarkdownQuote1'); return icon")
+            local quote = lua "local _, icon = mark(14, 'RenderMarkdownQuote1'); return icon"
             readable(sample(14, quote), 3)
             readable(sample(14, 'quoted text'), 4.5)
-            lua("mark(16, 'RenderMarkdownTableHead'); mark(18, 'RenderMarkdownTableRow')")
+            lua "mark(16, 'RenderMarkdownTableHead'); mark(18, 'RenderMarkdownTableRow')"
             eq(sample(16, 'Name'), expected('base0', 'base7', 'bold'))
             eq(sample(18, 'alpha'), expected('base0', 'base7'))
             for _, row in ipairs { 15, 16, 17, 18, 19 } do
@@ -192,7 +219,7 @@ local ok, err = xpcall(function()
             end
         end)
         check(label .. ' Lua comment on code background and original fences remain readable', function()
-            lua("mark(21, 'RenderMarkdownCode'); mark(22, 'RenderMarkdownCode')")
+            lua "mark(21, 'RenderMarkdownCode'); mark(22, 'RenderMarkdownCode')"
             eq(sample(21, 'Comment inside code'), expected('comment', 'base8'))
             readable(sample(21, 'Comment inside code'), 4.5)
             eq(sample(22, 'local'), expected('base0', 'base8'))
@@ -204,17 +231,17 @@ local ok, err = xpcall(function()
             readable(sample(28, '<!-- visible comment -->'), 4.5)
         end)
         check(label .. ' insert mode removes rendered code background and normal mode restores it', function()
-            lua('cleared = false')
+            lua 'cleared = false'
             call('nvim_input', 'i')
-            wait_for("return vim.fn.mode() == 'i' and cleared")
+            wait_for "return vim.fn.mode() == 'i' and cleared"
             eq(sample(21, 'Comment inside code'), expected('comment', 'base7'))
             call('nvim_input', '<Esc>')
-            wait_for("return vim.fn.mode() == 'n'")
+            wait_for "return vim.fn.mode() == 'n'"
             render()
             eq(sample(21, 'Comment inside code'), expected('comment', 'base8'))
         end)
         check(label .. ' theme reload and module setup preserve default links and background overrides', function()
-            lua([[
+            lua [[
                 vim.cmd 'colorscheme deepwhite'
                 require('render-markdown').setup(render_options)
                 local links = {
@@ -228,7 +255,7 @@ local ok, err = xpcall(function()
                 for i = 1, 6 do
                     assert(vim.api.nvim_get_hl(0, { name = 'RenderMarkdownH' .. i .. 'Bg' }).link == 'Bold')
                 end
-            ]])
+            ]]
             render()
             eq(sample(1, 'Heading one'), expected('base0', 'base7', 'bold'))
             eq(sample(21, 'Comment inside code'), expected('comment', 'base8'))

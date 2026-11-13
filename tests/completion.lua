@@ -7,12 +7,12 @@ local function call(method, ...) return vim.rpcrequest(child, method, ...) end
 local function lua(code, ...) return call('nvim_exec_lua', code, { ... }) end
 local function wait_for(code)
     if vim.wait(3000, function() return lua(code) end, 10) then return end
-    local state = lua([[
+    local state = lua [[
         local win = actions and actions.info
         return { mode = vim.fn.mode(), completion = vim.fn.complete_info(), requests = requests,
             pending_resolve = pending_resolve ~= nil,
             info_highlight = win and vim.api.nvim_win_is_valid(win) and vim.wo[win].winhighlight or 'no info window' }
-    ]])
+    ]]
     error('Timed out: ' .. code .. '\n' .. vim.inspect(state))
 end
 local function eq(actual, expected)
@@ -27,7 +27,8 @@ end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 100, 36, { rgb = true })
-    lua([[
+    lua(
+        [[
         local root, mini = ...
         vim.opt.runtimepath:prepend(root)
         vim.opt.runtimepath:prepend(mini)
@@ -115,30 +116,36 @@ local ok, err = xpcall(function()
             end,
         })
         assert(client_id, 'LSP fixture did not start')
-    ]], vim.fn.getcwd(), mini)
-    wait_for('return vim.lsp.get_client_by_id(client_id).initialized')
+    ]],
+        vim.fn.getcwd(),
+        mini
+    )
+    wait_for 'return vim.lsp.get_client_by_id(client_id).initialized'
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
-        lua([[
+        lua(
+            [[
             require('deepwhite').setup({ low_blue_light = ..., on_highlights = function() end })
             vim.cmd 'colorscheme deepwhite'
             MiniCompletion.setup(MiniCompletion.config)
             _G.palette = require('deepwhite.colors').get_colors(require('deepwhite.config').options)
-        ]], cold)
-        local links = lua([[
+        ]],
+            cold
+        )
+        local links = lua [[
             local result = {}
             for _, name in ipairs { 'MiniCompletionActiveParameter', 'MiniCompletionDeprecated', 'MiniCompletionInfoBorderOutdated' } do
                 result[name] = vim.api.nvim_get_hl(0, { name = name }).link
             end
             return result
-        ]])
+        ]]
         eq(links.MiniCompletionActiveParameter, 'LspSignatureActiveParameter')
         eq(links.MiniCompletionDeprecated, 'DiagnosticDeprecated')
         eq(links.MiniCompletionInfoBorderOutdated, 'DiagnosticFloatingWarn')
         pass(label .. ' completion uses upstream default links')
 
-        local refs = lua([[
+        local refs = lua [[
             local c = palette
             local defs = {
                 normal = { fg = c.base0, bg = c.base7 },
@@ -176,110 +183,113 @@ local ok, err = xpcall(function()
             end
             vim.api.nvim_win_set_cursor(0, { 15, 0 })
             return result
-        ]])
+        ]]
         assert(refs.match ~= refs.normal, 'Rendered reference cells must distinguish matching text')
 
-        input('ial')
-        wait_for("return vim.fn.mode() == 'i'")
-        lua('MiniCompletion.complete_twostage(false, true)')
-        wait_for("return vim.fn.pumvisible() == 1 and #vim.fn.complete_info().items == 3")
-        local plain_menu = lua([[
+        input 'ial'
+        wait_for "return vim.fn.mode() == 'i'"
+        lua 'MiniCompletion.complete_twostage(false, true)'
+        wait_for 'return vim.fn.pumvisible() == 1 and #vim.fn.complete_info().items == 3'
+        local plain_menu = lua [[
             vim.cmd 'redraw'
             local p = vim.fn.pum_getpos()
             return { vim.fn.screenattr(p.row + 1, p.col + 1), vim.fn.screenattr(p.row + 1, p.col + 3) }
-        ]])
+        ]]
         eq(plain_menu[1], refs.match)
         eq(plain_menu[2], refs.normal)
-        input('<C-n>')
-        wait_for("return vim.fn.complete_info().selected == 0 and float_with('Documentation for alpha') ~= nil")
-        local selected_menu = lua([[
+        input '<C-n>'
+        wait_for "return vim.fn.complete_info().selected == 0 and float_with('Documentation for alpha') ~= nil"
+        local selected_menu = lua [[
             vim.cmd 'redraw'
             local p = vim.fn.pum_getpos()
             return { vim.fn.screenattr(p.row + 1, p.col + 1), vim.fn.screenattr(p.row + 1, p.col + 3) }
-        ]])
+        ]]
         eq(selected_menu[1], refs.match_selected)
         eq(selected_menu[2], refs.selected)
         pass(label .. ' native popup distinguishes matches with and without selection')
 
-        local doc = lua([[
+        local doc = lua [[
             local f = assert(float_with('Documentation for alpha'))
             return { text = cell(f.win, f.row, f.col), border = border_cell(f.win) }
-        ]])
+        ]]
         eq(doc.text, refs.normal)
         eq(doc.border, refs.border)
         -- Upstream sorts deprecated candidates after non-deprecated ones, even with sortText.
-        input('<C-n><C-n>')
-        wait_for([[return pending_resolve ~= nil and vim.wo[actions.info].winhighlight:find('MiniCompletionInfoBorderOutdated', 1, true) ~= nil]])
-        eq(lua('return border_cell(actions.info)'), refs.outdated)
-        local deprecated = lua([[
+        input '<C-n><C-n>'
+        wait_for [[return pending_resolve ~= nil and vim.wo[actions.info].winhighlight:find('MiniCompletionInfoBorderOutdated', 1, true) ~= nil]]
+        eq(lua 'return border_cell(actions.info)', refs.outdated)
+        local deprecated = lua [[
             vim.cmd 'redraw'
             local p = vim.fn.pum_getpos()
             local row = p.row + vim.fn.complete_info().selected + 1
             return { vim.fn.screenattr(row, p.col + 1), vim.fn.screenattr(row, p.col + 3) }
-        ]])
+        ]]
         eq(deprecated[1], refs.deprecated_match)
         eq(deprecated[2], refs.deprecated)
-        lua('pending_resolve(); pending_resolve = nil')
-        wait_for("return float_with('Documentation for alpha_old') ~= nil")
-        eq(lua('return border_cell(actions.info)'), refs.border)
+        lua 'pending_resolve(); pending_resolve = nil'
+        wait_for "return float_with('Documentation for alpha_old') ~= nil"
+        eq(lua 'return border_cell(actions.info)', refs.border)
         pass(label .. ' deprecated item and stale/resolved documentation use native semantics')
-        input('<C-e><Esc>')
-        wait_for("return vim.fn.mode() == 'n'")
+        input '<C-e><Esc>'
+        wait_for "return vim.fn.mode() == 'n'"
 
-        lua("vim.api.nvim_buf_set_lines(0, 14, 15, false, { '' }); vim.api.nvim_win_set_cursor(0, { 15, 0 })")
-        input('ialpha(')
-        wait_for("return float_with('alpha(first, second)') ~= nil")
-        local signature = lua([[
+        lua "vim.api.nvim_buf_set_lines(0, 14, 15, false, { '' }); vim.api.nvim_win_set_cursor(0, { 15, 0 })"
+        input 'ialpha('
+        wait_for "return float_with('alpha(first, second)') ~= nil"
+        local signature = lua [[
             local f = assert(float_with('alpha(first, second)'))
             local line = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(f.win), f.row - 1, f.row, false)[1]
             return { normal = cell(f.win, f.row, line:find('first', 1, true)),
                 active = cell(f.win, f.row, line:find('second', 1, true)), border = border_cell(f.win) }
-        ]])
+        ]]
         eq(signature.normal, refs.normal)
         eq(signature.active, refs.active)
         eq(signature.border, refs.border)
-        input('<Esc>')
-        wait_for("return vim.fn.mode() == 'n'")
-        lua([[
+        input '<Esc>'
+        wait_for "return vim.fn.mode() == 'n'"
+        lua [[
             require('deepwhite').setup({ on_highlights = function(groups, c)
                 groups.LspSignatureActiveParameter = { fg = c.hint, bold = true, underline = true }
             end })
             vim.cmd 'colorscheme deepwhite'
             vim.api.nvim_buf_set_lines(0, 14, 15, false, { '' })
             vim.api.nvim_win_set_cursor(0, { 15, 0 })
-        ]])
-        input('ialpha(')
-        wait_for("return float_with('alpha(first, second)') ~= nil")
-        local custom = lua([[
+        ]]
+        input 'ialpha('
+        wait_for "return float_with('alpha(first, second)') ~= nil"
+        local custom = lua [[
             local f = assert(float_with('alpha(first, second)'))
             local line = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(f.win), f.row - 1, f.row, false)[1]
             return cell(f.win, f.row, line:find('second', 1, true))
-        ]])
+        ]]
         eq(custom, refs.active_custom)
         pass(label .. ' signature active parameter follows native user override after reload')
-        input('<Esc>')
-        wait_for("return vim.fn.mode() == 'n'")
-        lua("vim.lsp.buf.hover({ border = 'single' })")
-        wait_for("return float_with('Native hover documentation') ~= nil")
-        local hover = lua([[
+        input '<Esc>'
+        wait_for "return vim.fn.mode() == 'n'"
+        lua "vim.lsp.buf.hover({ border = 'single' })"
+        wait_for "return float_with('Native hover documentation') ~= nil"
+        local hover = lua [[
             local f = assert(float_with('Native hover documentation'))
             local result = { text = cell(f.win, f.row, f.col), border = border_cell(f.win) }
             vim.api.nvim_win_close(f.win, true)
             return result
-        ]])
+        ]]
         eq(hover.text, refs.normal)
         eq(hover.border, refs.border)
         pass(label .. ' native LSP hover shares documentation float styling')
     end
-    lua([[
+    lua [[
         for _, method in ipairs { 'textDocument/completion', 'completionItem/resolve', 'textDocument/signatureHelp', 'textDocument/hover' } do
             assert((requests[method] or 0) > 0, 'LSP path not exercised: ' .. method)
         end
-    ]])
+    ]]
 end, debug.traceback)
 
 vim.fn.jobstop(child)
 vim.fn.jobwait({ child }, 2000)
-if not ok then print('FAIL completion UI integration\n' .. err); vim.cmd 'cquit 1' end
+if not ok then
+    print('FAIL completion UI integration\n' .. err)
+    vim.cmd 'cquit 1'
+end
 print(string.format('RESULT: %d completion UI checks passed', passed))
 vim.cmd 'qa!'

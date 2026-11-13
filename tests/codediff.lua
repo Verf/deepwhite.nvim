@@ -2,8 +2,10 @@
 -- DEEPWHITE_CODEDIFF=/path/to/codediff.nvim nvim --headless -u NONE -i NONE -n -l tests/codediff.lua
 -- Requires the plugin's native diff library to be installed already. Set DEEPWHITE_TEST to filter checks.
 local codediff = vim.env.DEEPWHITE_CODEDIFF
-assert(codediff and vim.fn.filereadable(codediff .. '/lua/codediff/init.lua') == 1,
-    'Set DEEPWHITE_CODEDIFF to codediff.nvim')
+assert(
+    codediff and vim.fn.filereadable(codediff .. '/lua/codediff/init.lua') == 1,
+    'Set DEEPWHITE_CODEDIFF to codediff.nvim'
+)
 local child = vim.fn.jobstart({ vim.v.progpath, '--embed', '-u', 'NONE', '-i', 'NONE', '-n' }, { rpc = true })
 local function call(method, ...) return vim.rpcrequest(child, method, ...) end
 local function lua(code, ...) return call('nvim_exec_lua', code, { ... }) end
@@ -17,11 +19,15 @@ local function readable(cell, minimum)
             return v <= 0.04045 and v / 12.92 or ((v + 0.055) / 1.055) ^ 2.4
         end
         return 0.2126 * linear(math.floor(rgb / 65536))
-            + 0.7152 * linear(math.floor(rgb / 256) % 256) + 0.0722 * linear(rgb % 256)
+            + 0.7152 * linear(math.floor(rgb / 256) % 256)
+            + 0.0722 * linear(rgb % 256)
     end
     local a, b = luminance(cell.fg), luminance(cell.bg)
     local ratio = (math.max(a, b) + 0.05) / (math.min(a, b) + 0.05)
-    assert(ratio >= minimum, string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell)))
+    assert(
+        ratio >= minimum,
+        string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell))
+    )
 end
 local passed, failed = 0, 0
 local function check(name, fn)
@@ -35,23 +41,22 @@ local function check(name, fn)
         print('FAIL ' .. name .. '\n' .. err)
     end
 end
-local function fixture(original, modified, comments)
-    lua('fixture(...)', original, modified, comments == true)
-end
+local function fixture(original, modified, comments) lua('fixture(...)', original, modified, comments == true) end
 local function sample(side, row, col) return lua('return cell(windows[...], select(2, ...))', side, row, col) end
 local function color(key) return lua('return tonumber(palette[...]:sub(2), 16)', key) end
 local function recipe()
     -- Exactly the public configuration documented in README; no post-setup highlight patches.
-    lua([[
+    lua [[
         require('codediff').setup({ highlights = {
             line_delete = '#FAE1E1', char_insert = 'DiffText', char_delete = 'DiffText',
         } })
-    ]])
+    ]]
 end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 110, 36, { rgb = true })
-    lua([[
+    lua(
+        [[
         local root, codediff = ...
         vim.opt.runtimepath:prepend(root)
         vim.opt.runtimepath:append(codediff)
@@ -106,37 +111,43 @@ local ok, err = xpcall(function()
                 end
             end
         end
-    ]], vim.fn.getcwd(), codediff)
+    ]],
+        vim.fn.getcwd(),
+        codediff
+    )
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
-        lua([[
+        lua(
+            [[
             require('deepwhite').setup({ low_blue_light = ..., on_highlights = function() end })
             vim.cmd 'colorscheme deepwhite'
             _G.palette = require('deepwhite.colors').get_colors(require('deepwhite.config').options)
             require('codediff.config').options = vim.deepcopy(require('codediff.config').defaults)
             require('codediff').setup({})
-        ]], cold)
+        ]],
+            cold
+        )
         check(label .. ' default line and word diff retain distinct backgrounds and readable plain text', function()
             fixture({ 'anchor', 'mode = old_value', 'tail' }, { 'anchor', 'mode = new_value', 'tail' })
             local original, modified = sample('original', 2, 1), sample('modified', 2, 1)
-            eq(original.bg, color('diff_delete_bg'))
-            eq(modified.bg, color('diff_add_bg'))
+            eq(original.bg, color 'diff_delete_bg')
+            eq(modified.bg, color 'diff_add_bg')
             for _, side in ipairs { 'original', 'modified' } do
                 local changed = sample(side, 2, 8)
                 assert(changed.bg ~= sample(side, 2, 1).bg, 'Changed span must differ from line context')
                 readable(changed, 4.5)
                 readable(sample(side, 2, 1), 4.5)
             end
-            eq(lua('return rendered_groups.CodeDiffCharInsert and rendered_groups.CodeDiffCharDelete'), true)
+            eq(lua 'return rendered_groups.CodeDiffCharInsert and rendered_groups.CodeDiffCharDelete', true)
         end)
         check(label .. ' documented recipe keeps comment contexts and changed spans readable', function()
             recipe()
             fixture({ 'anchor', '-- mode = old_value', 'tail' }, { 'anchor', '-- mode = new_value', 'tail' }, true)
             for _, side in ipairs { 'original', 'modified' } do
                 local context, changed = sample(side, 2, 1), sample(side, 2, 11)
-                eq(context.fg, color('comment'))
-                eq(changed, { fg = color('base0'), bg = color('diff_text'), bold = false })
+                eq(context.fg, color 'comment')
+                eq(changed, { fg = color 'base0', bg = color 'diff_text', bold = false })
                 readable(context, 4.5)
                 readable(changed, 4.5)
             end
@@ -144,24 +155,27 @@ local ok, err = xpcall(function()
         check(label .. ' documented recipe covers whole comment additions and deletions', function()
             recipe()
             fixture({ 'anchor', 'tail' }, { 'anchor', '-- added comment', 'tail' }, true)
-            eq(lua('return rendered_groups.CodeDiffLineInsert'), true)
+            eq(lua 'return rendered_groups.CodeDiffLineInsert', true)
             readable(sample('modified', 2, 4), 4.5)
             fixture({ 'anchor', '-- deleted comment', 'tail' }, { 'anchor', 'tail' }, true)
-            eq(lua('return rendered_groups.CodeDiffLineDelete'), true)
+            eq(lua 'return rendered_groups.CodeDiffLineDelete', true)
             readable(sample('original', 2, 4), 4.5)
         end)
         check(label .. ' optional gutter signs and line numbers use readable semantic foregrounds', function()
-            lua("require('codediff').setup({ diff = { gutter_signs = { insert_text = '+', delete_text = '-' } } })")
+            lua "require('codediff').setup({ diff = { gutter_signs = { insert_text = '+', delete_text = '-' } } })"
             fixture({ 'anchor', 'old value', 'tail' }, { 'anchor', 'new value', 'tail' })
             for side, role in pairs { original = 'git_delete', modified = 'git_add' } do
-                local cells = lua([[
+                local cells = lua(
+                    [[
                     local win = windows[...]
                     vim.cmd 'redraw!'
                     local p = vim.fn.screenpos(win, 2, 1)
                     -- Two sign slots and a three-cell number column precede buffer text.
                     assert(vim.fn.screenstring(p.row, p.col - 2) == '2', 'Expected actual changed-line number')
                     return { screen_cell(p.row, p.col - 2), screen_cell(p.row, p.col - 7) }
-                ]], side)
+                ]],
+                    side
+                )
                 for _, cell in ipairs(cells) do
                     eq(cell.fg, color(role))
                     readable(cell, 3)
@@ -170,7 +184,7 @@ local ok, err = xpcall(function()
         end)
         check(label .. ' native links and documented customization survive theme reload and setup', function()
             recipe()
-            lua([[
+            lua [[
                 require('deepwhite').setup({ on_highlights = function(groups)
                     groups.DiffText = { fg = '#112233', bg = '#EEDDCC', bold = true }
                 end })
@@ -186,7 +200,7 @@ local ok, err = xpcall(function()
                 } do
                     assert(vim.api.nvim_get_hl(0, { name = name }).link == target, name .. ' lost native link')
                 end
-            ]])
+            ]]
             fixture({ 'anchor', '-- old value', 'tail' }, { 'anchor', '-- new value', 'tail' }, true)
             eq(sample('modified', 2, 4), { fg = 0x112233, bg = 0xEEDDCC, bold = true })
         end)
@@ -194,7 +208,10 @@ local ok, err = xpcall(function()
 end, debug.traceback)
 vim.fn.jobstop(child)
 vim.fn.jobwait({ child }, 2000)
-if not ok then print('FAIL CodeDiff UI setup\n' .. err); vim.cmd 'cquit 1' end
+if not ok then
+    print('FAIL CodeDiff UI setup\n' .. err)
+    vim.cmd 'cquit 1'
+end
 print(string.format('RESULT: %d CodeDiff UI checks passed, %d failed', passed, failed))
 if failed > 0 or passed == 0 then vim.cmd 'cquit 1' end
 vim.cmd 'qa!'

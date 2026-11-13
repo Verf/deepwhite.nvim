@@ -18,9 +18,7 @@ local function lua(code, ...) return call('nvim_exec_lua', code, { ... }) end
 local function wait_for(code)
     assert(vim.wait(3000, function() return lua(code) end, 10), 'Timed out: ' .. code)
 end
-local function input(keys)
-    call('nvim_input', keys)
-end
+local function input(keys) call('nvim_input', keys) end
 local function eq(actual, expected)
     assert(vim.deep_equal(actual, expected), 'expected ' .. vim.inspect(expected) .. ', got ' .. vim.inspect(actual))
 end
@@ -32,7 +30,8 @@ end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 100, 32, { rgb = true })
-    lua([[
+    lua(
+        [[
         local root, mini, fixture = ...
         vim.opt.runtimepath:prepend(root)
         vim.opt.runtimepath:prepend(mini)
@@ -64,16 +63,23 @@ local ok, err = xpcall(function()
             local start = assert(shown:find(text, 1, true), 'Visible text missing: ' .. shown)
             return vim.fn.screenattr(pos.row, pos.col + start - 1)
         end
-    ]], root, mini, fixture)
+    ]],
+        root,
+        mini,
+        fixture
+    )
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
-        lua([[
+        lua(
+            [[
             require('deepwhite').setup({ low_blue_light = ... })
             vim.cmd 'colorscheme deepwhite'
             _G.palette = require('deepwhite.colors').get_colors(require('deepwhite.config').options)
-        ]], cold)
-        local refs = lua([[
+        ]],
+            cold
+        )
+        local refs = lua [[
             local c, defs = palette, {}
             defs.current_marked_plain = { fg = c.base0, bg = c.light_orange, bold = true, underline = true }
             defs.marked_match = { fg = c.hint, bg = c.light_orange, bold = true, underline = true }
@@ -109,17 +115,20 @@ local ok, err = xpcall(function()
             result.border = vim.fn.screenattr(pos.row, pos.col - 1)
             vim.api.nvim_win_close(border_win, true)
             return result
-        ]])
+        ]]
         -- Starting after theme loading must not replace the theme's groups with module defaults.
-        lua([[
+        lua [[
             MiniPick.setup(MiniPick.config)
             MiniFiles.setup(MiniFiles.config)
             assert(vim.api.nvim_get_hl(0, { name = 'MiniPickMatchMarked', link = false }).underline)
-        ]])
+        ]]
         pass(label .. ' theme/module load order')
 
         -- Notify, not request: MiniPick.start waits for the user while still servicing RPC input.
-        vim.rpcnotify(child, 'nvim_exec_lua', [[
+        vim.rpcnotify(
+            child,
+            'nvim_exec_lua',
+            [[
             MiniPick.start({ source = {
                 name = 'DeepWhite navigation', cwd = fixture,
                 items = {
@@ -128,16 +137,18 @@ local ok, err = xpcall(function()
                     { text = 'src/a-long-directory-name/alpha-long.lua', path = fixture .. '/src/a-long-directory-name/alpha-long.lua' },
                 },
             } })
-        ]], {})
-        wait_for('local s = MiniPick.get_picker_state(); return s ~= nil and not s.is_busy')
-        lua("MiniPick.set_picker_query({ 'a', 'l', 'p', 'h', 'a' })")
-        wait_for('return not MiniPick.get_picker_state().is_busy and #MiniPick.get_picker_matches().all == 3')
-        lua([[
+        ]],
+            {}
+        )
+        wait_for 'local s = MiniPick.get_picker_state(); return s ~= nil and not s.is_busy'
+        lua "MiniPick.set_picker_query({ 'a', 'l', 'p', 'h', 'a' })"
+        wait_for 'return not MiniPick.get_picker_state().is_busy and #MiniPick.get_picker_matches().all == 3'
+        lua [[
             MiniPick.set_picker_match_inds({ 1, 2 }, 'marked')
             MiniPick.set_picker_match_inds({ 1 }, 'current')
             MiniPick.refresh()
-        ]])
-        local rendered = lua([[
+        ]]
+        local rendered = lua [[
             local s = MiniPick.get_picker_state()
             local result = {}
             for row, line in ipairs(vim.api.nvim_buf_get_lines(s.buffers.main, 0, -1, false)) do
@@ -147,7 +158,7 @@ local ok, err = xpcall(function()
                 end
             end
             return result
-        ]])
+        ]]
         eq(#rendered, 3)
         for _, row in ipairs(rendered) do
             if row.text:find('one.lua', 1, true) then
@@ -163,9 +174,9 @@ local ok, err = xpcall(function()
         end
         pass(label .. ' rendered picker current + marked + matching ranges')
 
-        input('<Tab>')
-        wait_for('local s = MiniPick.get_picker_state(); return s.buffers.preview ~= nil')
-        local preview = lua([[
+        input '<Tab>'
+        wait_for 'local s = MiniPick.get_picker_state(); return s.buffers.preview ~= nil'
+        local preview = lua [[
             local s = MiniPick.get_picker_state()
             local buf = vim.api.nvim_win_get_buf(s.windows.main)
             for row, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
@@ -173,17 +184,17 @@ local ok, err = xpcall(function()
                 if col and line:find('local', 1, true) then return cell(s.windows.main, row, col) end
             end
             error('Expected preview text not found')
-        ]])
+        ]]
         eq(preview, refs.preview)
         pass(label .. ' rendered picker preview region')
-        input('<Esc>')
-        wait_for('return not MiniPick.is_picker_active()')
+        input '<Esc>'
+        wait_for 'return not MiniPick.is_picker_active()'
 
-        lua([[
+        lua [[
             MiniFiles.open(fixture .. '/src/alpha-one.lua', false)
             MiniFiles.set_branch({ fixture, fixture .. '/src', fixture .. '/src/alpha-one.lua' }, { depth_focus = 2 })
-        ]])
-        local directory = lua([[
+        ]]
+        local directory = lua [[
             local s = MiniFiles.get_explorer_state()
             assert(#s.windows == 3, 'Expected parent, focused directory, and preview')
             local focused = vim.api.nvim_get_current_win()
@@ -199,12 +210,12 @@ local ok, err = xpcall(function()
             assert(directory_cell, 'Directory not shown')
             _G.files_original = vim.api.nvim_buf_get_lines(vim.api.nvim_win_get_buf(focused), 0, -1, false)
             return directory_cell
-        ]])
+        ]]
         eq(directory, refs.directory)
         -- Use real input so the module receives its normal TextChanged events.
-        input('Gopending-file.txt<Esc>')
-        wait_for([[return vim.wo.winhighlight:find('FloatBorder:MiniFilesBorderModified', 1, true) ~= nil]])
-        local border = lua([[
+        input 'Gopending-file.txt<Esc>'
+        wait_for [[return vim.wo.winhighlight:find('FloatBorder:MiniFilesBorderModified', 1, true) ~= nil]]
+        local border = lua [[
             vim.cmd 'redraw'
             local pos = vim.fn.screenpos(vim.api.nvim_get_current_win(), 1, 1)
             local result = vim.fn.screenattr(pos.row, pos.col - 1)
@@ -213,7 +224,7 @@ local ok, err = xpcall(function()
             vim.bo.modified = false
             assert(MiniFiles.close(), 'Explorer must close without synchronizing changes')
             return result
-        ]])
+        ]]
         eq(border, refs.border)
         eq(vim.fn.filereadable(fixture .. '/src/pending-file.txt'), 0)
         pass(label .. ' rendered files columns, focused directory, and pending-edit border')

@@ -26,14 +26,18 @@ local function contrast(cell)
             return v <= 0.04045 and v / 12.92 or ((v + 0.055) / 1.055) ^ 2.4
         end
         return 0.2126 * linear(math.floor(rgb / 65536))
-            + 0.7152 * linear(math.floor(rgb / 256) % 256) + 0.0722 * linear(rgb % 256)
+            + 0.7152 * linear(math.floor(rgb / 256) % 256)
+            + 0.0722 * linear(rgb % 256)
     end
     local a, b = luminance(cell.fg), luminance(cell.bg)
     return (math.max(a, b) + 0.05) / (math.min(a, b) + 0.05)
 end
 local function readable(cell, minimum)
     local ratio = contrast(cell)
-    assert(ratio >= minimum, string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell)))
+    assert(
+        ratio >= minimum,
+        string.format('Rendered contrast %.4f is below %.1f: %s', ratio, minimum, vim.inspect(cell))
+    )
 end
 local passed, failed = 0, 0
 local function check(name, fn)
@@ -48,10 +52,12 @@ local function check(name, fn)
     end
 end
 local function fixture(lines, syntax)
-    input('<Esc>')
-    wait_for("return vim.fn.mode() == 'n'")
+    input '<Esc>'
+    wait_for "return vim.fn.mode() == 'n'"
     local marks = {}
-    for row, group in pairs(syntax or {}) do marks[#marks + 1] = { row = row, group = group } end
+    for row, group in pairs(syntax or {}) do
+        marks[#marks + 1] = { row = row, group = group }
+    end
     lua('mc.clearCursors(); fixture(...)', lines, marks)
 end
 local function sample(row, col) return lua('return float_attr(main_win, ...)', row, col) end
@@ -60,27 +66,28 @@ local function rendered(row, col, reference)
     return lua('return ref_styles[...]', reference)
 end
 local function add_cursors()
-    input('<F6><F6><F6>')
-    wait_for('return mc.numCursors() == 4 and mc.numEnabledCursors() == 4')
+    input '<F6><F6><F6>'
+    wait_for 'return mc.numCursors() == 4 and mc.numEnabledCursors() == 4'
 end
 local function selected_fixture(syntax)
     fixture({ 'alpha beta alpha', 'anchor' }, syntax)
-    input('v$<F9>')
-    wait_for("return vim.fn.mode() == 'v' and mc.numCursors() == 2 and has_mark('MultiCursorVisual', 1)")
+    input 'v$<F9>'
+    wait_for "return vim.fn.mode() == 'v' and mc.numCursors() == 2 and has_mark('MultiCursorVisual', 1)"
 end
 local function show_whichkey()
     -- which-key waits in getcharstr(): use input, not a synchronous request to show().
-    input('<F12>')
-    wait_for('return wk_window() ~= nil')
+    input '<F12>'
+    wait_for 'return wk_window() ~= nil'
 end
 local function hide_whichkey()
-    input('<Esc>')
-    wait_for('return wk_window() == nil')
+    input '<Esc>'
+    wait_for 'return wk_window() == nil'
 end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 100, 36, { rgb = true })
-    lua([[
+    lua(
+        [[
         local root, multicursor, whichkey, mini = ...
         vim.opt.runtimepath:prepend(root)
         for _, path in ipairs { multicursor, whichkey } do vim.opt.runtimepath:append(path) end
@@ -230,8 +237,13 @@ local ok, err = xpcall(function()
                 if vim.wo[win].winhighlight:find('MiniCmdlinePeekNormal', 1, true) then return win end
             end
         end
-    ]], vim.fn.getcwd(), multicursor, whichkey, mini)
-    wait_for("return require('which-key.config').loaded")
+    ]],
+        vim.fn.getcwd(),
+        multicursor,
+        whichkey,
+        mini
+    )
+    wait_for "return require('which-key.config').loaded"
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
@@ -252,69 +264,75 @@ local ok, err = xpcall(function()
             fixture({ 'alpha word', 'alpha word', 'alpha word', 'anchor' }, { [2] = 'String', [3] = 'Comment' })
             add_cursors()
             local active = { sample(1, 1), sample(2, 1), sample(3, 1) }
-            local sign = lua([[
+            local sign = lua [[
                 vim.cmd 'redraw!'
                 local p = vim.fn.screenpos(main_win, 1, 1)
                 return vim.fn.screenstring(p.row, p.col - 2)
-            ]])
-            input('<F7>')
-            wait_for('return not mc.cursorsEnabled() and mc.numDisabledCursors() == 4')
+            ]]
+            input '<F7>'
+            wait_for 'return not mc.cursorsEnabled() and mc.numDisabledCursors() == 4'
             for row = 1, 3 do
                 eq(lua("return has_mark('MultiCursorDisabledCursor', ...)", row), true)
                 -- Same color is intentional upstream; dotted vs solid signs distinguish state.
                 eq(sample(row, 1), active[row])
                 readable(rendered(row, 1, ({ 'cursor_plain', 'cursor_string', 'cursor_comment' })[row]), 4.5)
             end
-            local disabled_sign = lua([[
+            local disabled_sign = lua [[
                 vim.cmd 'redraw!'
                 local p = vim.fn.screenpos(main_win, 1, 1)
                 return vim.fn.screenstring(p.row, p.col - 2)
-            ]])
+            ]]
             assert(sign ~= '' and disabled_sign ~= '' and sign ~= disabled_sign, 'Enabled/disabled signs must differ')
-            input('<F8>')
-            wait_for('return mc.cursorsEnabled() and mc.numEnabledCursors() == 4 and mc.numDisabledCursors() == 0')
+            input '<F8>'
+            wait_for 'return mc.cursorsEnabled() and mc.numEnabledCursors() == 4 and mc.numDisabledCursors() == 0'
             eq(sample(1, 1), active[1])
         end)
         check(label .. ' multicursor actual operator match preview follows Search without hiding syntax', function()
             fixture({ 'alpha word', 'alpha word', 'alpha word', 'anchor' }, { [2] = 'String', [3] = 'Comment' })
             local underlying = { sample(1, 8), sample(2, 8), sample(3, 8) }
-            input('<F10>')
-            wait_for([[
+            input '<F10>'
+            wait_for [[
                 for _, match in ipairs(vim.fn.getmatches()) do
                     if match.group == 'MultiCursorMatchPreview' then return true end
                 end
                 return false
-            ]])
+            ]]
             for row = 1, 3 do
                 readable(rendered(row, 2, 'preview'), 4.5)
                 eq(sample(row, 8), underlying[row])
             end
-            input('<Esc>')
-            wait_for('return #vim.fn.getmatches() == 0')
+            input '<Esc>'
+            wait_for 'return #vim.fn.getmatches() == 0'
             eq(sample(3, 2), underlying[3])
         end)
         check(label .. ' which-key modern keys, groups, descriptions, separators and frame survive reload', function()
-            fixture({ 'anchor' })
+            fixture { 'anchor' }
             for iteration = 1, 2 do
                 show_whichkey()
-                eq(lua("return require('which-key.config').options.icons.mappings"), false)
+                eq(lua "return require('which-key.config').options.icons.mappings", false)
                 for group, reference in pairs {
-                    WhichKey = 'plain', WhichKeyDesc = 'plain', WhichKeySeparator = 'muted', WhichKeyGroup = 'bold',
+                    WhichKey = 'plain',
+                    WhichKeyDesc = 'plain',
+                    WhichKeySeparator = 'muted',
+                    WhichKeyGroup = 'bold',
                 } do
                     eq(lua('return wk_attr(...)', group), lua('return refs[...]', reference))
                 end
-                eq(lua("return frame_attrs(wk_window(), '+Git')"), lua('return { border = refs.border, title = refs.title }'))
+                eq(
+                    lua "return frame_attrs(wk_window(), '+Git')",
+                    lua 'return { border = refs.border, title = refs.title }'
+                )
                 -- Exact rendered-reference equality above establishes the actual colors; check their contrast.
-                readable(lua("return ref_styles.plain"), 4.5)
-                readable(lua("return ref_styles.muted"), 4.5)
+                readable(lua 'return ref_styles.plain', 4.5)
+                readable(lua 'return ref_styles.muted', 4.5)
                 hide_whichkey()
-                if iteration == 1 then lua("vim.cmd 'colorscheme deepwhite'; fixture({ 'anchor' })") end
+                if iteration == 1 then lua "vim.cmd 'colorscheme deepwhite'; fixture({ 'anchor' })" end
             end
         end)
         if mini then
             check(label .. ' mini.cmdline actual range peek keeps comment, line number and frame readable', function()
-                fixture({ 'anchor' })
-                lua([[
+                fixture { 'anchor' }
+                lua [[
                     local lines = {}
                     for row = 1, 80 do lines[row] = row == 60 and '-- Peek comment' or ('line ' .. row) end
                     vim.api.nvim_buf_clear_namespace(0, ref_ns, 0, -1)
@@ -323,28 +341,34 @@ local ok, err = xpcall(function()
                         end_col = #lines[60], hl_group = 'Comment', priority = 100,
                     })
                     vim.api.nvim_win_set_cursor(main_win, { 1, 0 })
-                ]])
-                input(':60')
-                wait_for('return peek_window() ~= nil')
-                eq(lua('return float_attr(peek_window(), 60, 4)'), lua('return refs.muted'))
-                readable(lua('return ref_styles.muted'), 4.5)
-                eq(lua("return frame_attrs(peek_window(), 'Peek')"), lua('return { border = refs.border, title = refs.title }'))
-                eq(lua([[
+                ]]
+                input ':60'
+                wait_for 'return peek_window() ~= nil'
+                eq(lua 'return float_attr(peek_window(), 60, 4)', lua 'return refs.muted')
+                readable(lua 'return ref_styles.muted', 4.5)
+                eq(
+                    lua "return frame_attrs(peek_window(), 'Peek')",
+                    lua 'return { border = refs.border, title = refs.title }'
+                )
+                eq(
+                    lua [[
                     vim.cmd 'redraw!'
                     local p = vim.fn.screenpos(peek_window(), 60, 1)
                     assert(vim.fn.screenstring(p.row, p.col - 3) == '6'
                         and vim.fn.screenstring(p.row, p.col - 2) == '0', 'Expected actual peek line number 60')
                     return vim.fn.screenattr(p.row, p.col - 3)
-                ]]), lua('return refs.muted'))
-                input('<Esc>')
-                wait_for('return peek_window() == nil')
+                ]],
+                    lua 'return refs.muted'
+                )
+                input '<Esc>'
+                wait_for 'return peek_window() == nil'
             end)
         end
     end
     -- Inspect selections last: enabling experimental hlstate adds provenance to attribute IDs,
     -- which must not affect the earlier float/reference comparisons. Read actual colors here so
     -- a legitimate foreground fix can satisfy the contrast test without changing its expectation.
-    lua([[
+    lua [[
         _G.selection_colors = function(row, col)
             if not inspecting then
                 vim.api.nvim__inspect_cell(1, 0, 0)
@@ -358,30 +382,32 @@ local ok, err = xpcall(function()
             if attr.reverse then fg, bg = bg, fg end
             return { fg = fg, bg = bg }
         end
-    ]])
+    ]]
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
         lua("require('deepwhite').setup({ low_blue_light = ... }); vim.cmd 'colorscheme deepwhite'", cold)
         check(label .. ' multicursor actual match selections inherit Visual in enabled and disabled states', function()
             selected_fixture()
-            local selected = lua('return selection_colors()')
-            eq(selected.bg, lua("return tonumber(palette.base5:sub(2), 16)"))
+            local selected = lua 'return selection_colors()'
+            eq(selected.bg, lua 'return tonumber(palette.base5:sub(2), 16)')
             readable(selected, 4.5)
-            input('<F7>')
-            wait_for("return not mc.cursorsEnabled() and has_mark('MultiCursorDisabledVisual', 1)")
-            local disabled = lua('return selection_colors()')
+            input '<F7>'
+            wait_for "return not mc.cursorsEnabled() and has_mark('MultiCursorDisabledVisual', 1)"
+            local disabled = lua 'return selection_colors()'
             eq(disabled, selected)
             readable(disabled, 4.5)
         end)
         check(label .. ' multicursor selected comments meet informative-text contrast target', function()
-            selected_fixture({ [1] = 'Comment' })
-            local active = lua('return { secondary = selection_colors(), primary = selection_colors(1, 14) }')
-            input('<F7>')
-            wait_for("return not mc.cursorsEnabled() and has_mark('MultiCursorDisabledVisual', 1)")
-            local disabled = lua('return { secondary = selection_colors(), primary = selection_colors(1, 14) }')
+            selected_fixture { [1] = 'Comment' }
+            local active = lua 'return { secondary = selection_colors(), primary = selection_colors(1, 14) }'
+            input '<F7>'
+            wait_for "return not mc.cursorsEnabled() and has_mark('MultiCursorDisabledVisual', 1)"
+            local disabled = lua 'return { secondary = selection_colors(), primary = selection_colors(1, 14) }'
             local ratios = {
-                active_secondary = contrast(active.secondary), active_primary = contrast(active.primary),
-                disabled_secondary = contrast(disabled.secondary), disabled_primary = contrast(disabled.primary),
+                active_secondary = contrast(active.secondary),
+                active_primary = contrast(active.primary),
+                disabled_secondary = contrast(disabled.secondary),
+                disabled_primary = contrast(disabled.primary),
             }
             for _, ratio in pairs(ratios) do
                 assert(ratio >= 4.5, 'Selected comment contrast is below 4.5: ' .. vim.inspect(ratios))
@@ -395,10 +421,10 @@ if not ok then
     print('FAIL workflow UI setup\n' .. err)
     vim.cmd 'cquit 1'
 end
-if not mini then print('NOTE: mini.icons and mini.cmdline checks require DEEPWHITE_MINI') end
+if not mini then print 'NOTE: mini.icons and mini.cmdline checks require DEEPWHITE_MINI' end
 print(string.format('RESULT: %d workflow UI checks passed, %d failed', passed, failed))
 if passed + failed == 0 then
-    print('No tests matched DEEPWHITE_TEST')
+    print 'No tests matched DEEPWHITE_TEST'
     vim.cmd 'cquit 2'
 elseif failed > 0 then
     vim.cmd 'cquit 1'

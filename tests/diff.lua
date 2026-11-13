@@ -22,7 +22,8 @@ local function check(name, fn)
     print('PASS ' .. name)
 end
 local function fixture(ref, text, linematch)
-    lua([[
+    lua(
+        [[
         local ref, text, linematch = ...
         MiniDiff.disable(0)
         vim.wo.cursorline = false
@@ -52,27 +53,32 @@ local function fixture(ref, text, linematch)
         _G.updated = false
         MiniDiff.set_ref_text(0, ref)
         MiniDiff.toggle_overlay(0)
-    ]], ref, text, linematch or 60)
-    wait_for('return updated and #MiniDiff.get_buf_data(0).hunks > 0')
+    ]],
+        ref,
+        text,
+        linematch or 60
+    )
+    wait_for 'return updated and #MiniDiff.get_buf_data(0).hunks > 0'
 end
-local function sample(row, col)
-    return lua('return cell(main_win, ...)', row, col)
-end
-local function reference(name)
-    return lua('return cell(main_win, ref_rows[...], 1)', name)
-end
+local function sample(row, col) return lua('return cell(main_win, ...)', row, col) end
+local function reference(name) return lua('return cell(main_win, ref_rows[...], 1)', name) end
 local function virtual(row, col)
-    return lua([[
+    return lua(
+        [[
         local row, col = ...
         vim.cmd 'redraw'
         local p = vim.fn.screenpos(main_win, row, col)
         return screen_style(p.row - 1, p.col)
-    ]], row, col)
+    ]],
+        row,
+        col
+    )
 end
 
 local ok, err = xpcall(function()
     call('nvim_ui_attach', 100, 36, { rgb = true })
-    lua([[
+    lua(
+        [[
         local root, mini = ...
         -- Equal-looking attributes can have different screenattr() IDs: empty default
         -- highlights carry an internal flag. Compare rendered colors/styles instead.
@@ -106,11 +112,15 @@ local ok, err = xpcall(function()
             assert(p.row > 0 and p.col > 0, 'Expected a visible cell')
             return screen_style(p.row, p.col)
         end
-    ]], vim.fn.getcwd(), mini)
+    ]],
+        vim.fn.getcwd(),
+        mini
+    )
 
     for _, cold in ipairs { false, true } do
         local label = cold and 'cold' or 'warm'
-        lua([[
+        lua(
+            [[
             require('deepwhite').setup({ low_blue_light = ..., on_highlights = function() end })
             vim.cmd 'colorscheme deepwhite'
             _G.palette = require('deepwhite.colors').get_colors(require('deepwhite.config').options)
@@ -131,80 +141,90 @@ local ok, err = xpcall(function()
             }
             _G.ref_keys = vim.tbl_keys(ref_defs)
             table.sort(ref_keys)
-        ]], cold)
+        ]],
+            cold
+        )
 
         check(label .. ' word diff distinguishes changed text from context', function()
             fixture({ 'anchor', '-- mode = old_value', 'tail' }, { 'anchor', '-- mode = new_value', 'tail' })
             -- A real Comment foreground, as produced by syntax/Tree-sitter, below the overlay priority.
-            lua([[vim.api.nvim_buf_set_extmark(0, syntax_ns, 1, 0, {
+            lua [[vim.api.nvim_buf_set_extmark(0, syntax_ns, 1, 0, {
                 end_col = 19, hl_group = 'Comment', priority = 100,
-            })]])
+            })]]
             local context, changed = sample(2, 1), sample(2, 11)
             assert(not vim.deep_equal(changed, context), 'Current changed span is indistinguishable from its context')
-            eq(context, reference('comment'))
-            eq(changed, reference('change'))
-            eq(virtual(2, 1), reference('context'))
-            eq(virtual(2, 11), reference('change'))
+            eq(context, reference 'comment')
+            eq(changed, reference 'change')
+            eq(virtual(2, 1), reference 'context')
+            eq(virtual(2, 11), reference 'change')
         end)
 
         check(label .. ' add and multiline delete with readable signs', function()
             fixture({ 'anchor', 'tail' }, { 'anchor', 'added line', 'tail' })
-            eq(sample(2, 1), reference('add'))
-            eq(lua([[
+            eq(sample(2, 1), reference 'add')
+            eq(
+                lua [[
                 local p = vim.fn.screenpos(main_win, 2, 1)
                 return screen_style(p.row, p.col - 4)
-            ]]), reference('sign_add'))
+            ]],
+                reference 'sign_add'
+            )
             fixture({ 'anchor', 'deleted one', 'deleted two', 'tail' }, { 'anchor', 'tail' })
-            local deleted = lua([[
+            local deleted = lua [[
                 vim.cmd 'redraw'
                 local p = vim.fn.screenpos(main_win, 2, 1)
                 return { screen_style(p.row - 2, p.col), screen_style(p.row - 1, p.col),
                     screen_style(vim.fn.screenpos(main_win, 1, 1).row, p.col - 4) }
-            ]])
-            eq(deleted, { reference('delete'), reference('delete'), reference('sign_delete') })
-            eq(sample(2, 1), reference('plain'))
+            ]]
+            eq(deleted, { reference 'delete', reference 'delete', reference 'sign_delete' })
+            eq(sample(2, 1), reference 'plain')
         end)
 
         check(label .. ' unequal replacement and empty added line', function()
             fixture({ 'anchor', 'old one', 'old two', 'tail' }, { 'anchor', 'replacement', 'tail' }, 0)
-            eq(lua('return MiniDiff.get_buf_data(0).hunks[1].type'), 'change')
-            eq(virtual(2, 1), reference('change'))
-            eq(sample(2, 1), reference('plain'))
-            eq(lua([[
+            eq(lua 'return MiniDiff.get_buf_data(0).hunks[1].type', 'change')
+            eq(virtual(2, 1), reference 'change')
+            eq(sample(2, 1), reference 'plain')
+            eq(
+                lua [[
                 local p = vim.fn.screenpos(main_win, 2, 1)
                 return screen_style(p.row, p.col - 4)
-            ]]), reference('sign_change'))
+            ]],
+                reference 'sign_change'
+            )
             fixture({ 'anchor', 'tail' }, { 'anchor', '', 'tail' })
             -- hl_eol must expose the addition even when there is no text to color.
-            eq(sample(2, 1), reference('add'))
+            eq(sample(2, 1), reference 'add')
             fixture({ 'anchor', '', 'tail' }, { 'anchor', 'tail' })
-            eq(virtual(2, 1), reference('delete'))
+            eq(virtual(2, 1), reference 'delete')
         end)
 
         check(label .. ' cursorline selection and diagnostics compose with word diff', function()
             fixture({ 'anchor', 'mode = old_value', 'tail' }, { 'anchor', 'mode = new_value', 'tail' })
-            lua([[vim.wo.cursorline = true; vim.api.nvim_win_set_cursor(0, { 2, 0 })]])
-            eq(sample(2, 1), reference('cursor'))
-            eq(sample(2, 8), reference('change'))
-            lua([[
+            lua [[vim.wo.cursorline = true; vim.api.nvim_win_set_cursor(0, { 2, 0 })]]
+            eq(sample(2, 1), reference 'cursor')
+            eq(sample(2, 8), reference 'change')
+            lua [[
                 vim.diagnostic.set(diag_ns, 0, { {
                     lnum = 1, col = 7, end_lnum = 1, end_col = 10,
                     severity = vim.diagnostic.severity.ERROR, message = 'Fixture diagnostic',
                 } }, { underline = true, virtual_text = false, signs = false })
-            ]])
-            eq(sample(2, 8), reference('diagnostic'))
-            lua('vim.diagnostic.reset(diag_ns, 0)')
-            input('0v$')
-            wait_for("return vim.fn.mode() == 'v'")
-            eq(sample(2, 1), reference('selected'))
-            eq(sample(2, 8), reference('selected'))
-            input('<Esc>')
-            wait_for("return vim.fn.mode() == 'n'")
-            eq(sample(2, 8), reference('change'))
+            ]]
+            eq(sample(2, 8), reference 'diagnostic')
+            lua 'vim.diagnostic.reset(diag_ns, 0)'
+            input '0v$'
+            wait_for "return vim.fn.mode() == 'v'"
+            eq(sample(2, 1), reference 'selected')
+            eq(sample(2, 8), reference 'selected')
+            input '<Esc>'
+            wait_for "return vim.fn.mode() == 'n'"
+            eq(sample(2, 8), reference 'change')
         end)
 
-        check(label .. ' native defaults and customization survive reload and setup', function()
-            lua([[
+        check(
+            label .. ' native defaults and customization survive reload and setup',
+            function()
+                lua [[
                 local links = {
                     MiniDiffOverChange = 'DiffText', MiniDiffOverChangeBuf = 'MiniDiffOverChange',
                 }
@@ -223,8 +243,9 @@ local ok, err = xpcall(function()
                 local context = vim.api.nvim_get_hl(0, { name = 'MiniDiffOverContextBuf', link = false })
                 assert(vim.deep_equal(context, { default = true }),
                     'Buffer context should retain the empty module default: ' .. vim.inspect(context))
-            ]])
-        end)
+            ]]
+            end
+        )
     end
 end, debug.traceback)
 

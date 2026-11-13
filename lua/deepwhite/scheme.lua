@@ -36,7 +36,7 @@ function M.get_groups(c)
         SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
         LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
         LineNrBelow = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, below the cursor line.
-        CursorLineNr = { link="CursorLine" }, -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
+        CursorLineNr = { link = 'CursorLine' }, -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
         CursorLineFold = { link = 'CursorLineNr' }, -- Like FoldColumn when 'cursorline' is set for the cursor line.
         CursorLineSign = { link = 'CursorLineNr' }, -- Like SignColumn when 'cursorline' is set for the cursor line.
         MatchParen = { fg = c.red, underline = true }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
@@ -45,14 +45,14 @@ function M.get_groups(c)
         MsgSeparator = { bg = c.base3 }, -- Separator for scrolled messages |msgsep|.
         MoreMsg = { link = 'ModeMsg' }, -- |more-prompt|
         NonText = { fg = c.base5 }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text.
-        NormalFloat = { link = "Normal" }, -- Normal text in floating windows.
+        NormalFloat = { link = 'Normal' }, -- Normal text in floating windows.
         FloatBorder = { fg = c.base0 }, -- Border of floating windows.
         FloatTitle = { fg = c.base0 }, -- Title of floating windows.
         FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
         FloatShadow = { bg = c.base0, blend = 80 }, -- Drop shadow for floating windows (border='shadow').
         FloatShadowThrough = { bg = c.base0, blend = 100 }, -- Shadow corners for border='shadow'.
         NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
-        Pmenu = { link = "Normal" }, -- Popup menu: Normal item.
+        Pmenu = { link = 'Normal' }, -- Popup menu: Normal item.
         PmenuSel = { bg = c.base6 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
         PmenuKind = { link = 'Pmenu' }, -- Popup menu: Normal item "kind".
         PmenuKindSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "kind".
