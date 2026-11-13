@@ -90,6 +90,9 @@ Boolean options require booleans and hooks require functions; invalid types repo
 
 ### Color and highlight overrides
 
+<details>
+<summary>Palette roles, hook examples and contrast notes</summary>
+
 The warm paper and pastel syntax backgrounds are preserved. These foreground roles are designed for
 information that must remain readable on either background:
 
@@ -135,7 +138,15 @@ at least 3:1. Tests cover both normal backgrounds, the MiniDiff change overlay, 
 Decorative whitespace is intentionally subtle. These are design targets, not a blanket accessibility
 certification for all plugins, terminal filters or user overrides.
 
+</details>
+
 ### External terminal presets
+
+Terminal and vivid presets are available in `extra/`. Expand the quick starts below, or see the
+[detailed terminal guide](docs/TERMINALS.md) for platform-specific notes.
+
+<details>
+<summary>Supported tools, installation quick starts and preset generation</summary>
 
 The generated files in `extra/` use the warm `#FAF2EB` background. Supported terminals now include
 **Ghostty, Alacritty, Rio, Warp, foot and iTerm2**, alongside Kitty, WezTerm, Windows Terminal and Xresources.
@@ -306,11 +317,16 @@ For Fish:
 set -gx LS_COLORS (vivid generate /absolute/path/to/deepwhite.nvim/extra/vivid_themes_deepwhite.yml)
 ```
 
+</details>
+
 ### Plugin integration policy
 
 Prefer a plugin's native/default highlight links when they already look right. Style the shared Neovim
 groups first, and add a plugin-specific override only for an observed visual or semantic mismatch.
 A complete inventory of plugin group names is not a goal.
+
+<details>
+<summary>Plugin-specific notes: completion, mini.nvim, CodeDiff, Markdown and statuslines</summary>
 
 ### Completion and LSP floats
 
@@ -453,6 +469,8 @@ The screenshots illustrate the layout; they predate the readable-foreground adju
 
 ![screenshot](screenshot/barbar.png)
 
+</details>
+
 ## Tests
 
 From the repository root, on Neovim 0.7 or newer:
@@ -465,6 +483,10 @@ No test framework or plugin installation is needed. The runner checks theme load
 resolved highlights, configuration and hook behavior, lualine option isolation, all four external ANSI
 palettes, vivid foreground roles, and contrast ratios. Extra-file readers cover the checked-in layouts;
 they are not general TOML/YAML parsers or terminal-application integration tests.
+
+<details>
+<summary>Core test details, help checks, formatting and CI</summary>
+
 It uses the appropriate highlight-reading API for the running version;
 assertions for applied `@…` groups run only where those names are supported. All existing modern-version
 assertions remain enabled. A failure exits with a nonzero status; the final `cquit 1` also guards against
@@ -505,6 +527,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md#automatic-formatting-before-commits) for d
 and serialized-extra jobs, for pushes, pull requests, and manual runs. The stable job follows new releases; the locally verified stable version
 for this change is 0.12.6. Plugin UI tests remain separate, optional checks rather than part of the
 minimum-version compatibility promise.
+
+</details>
+
+<details>
+<summary>Optional real-plugin UI tests and verified revisions</summary>
 
 An optional integration test uses **real mini.pick and mini.files modules** in an embedded Neovim
 with an attached UI. Point it at your mini.nvim runtime directory (no automatic downloads):
@@ -591,7 +618,10 @@ Plugin revisions for this verification (including the three earlier mini.nvim su
 These checks do not certify the rendering of your terminal's fonts or Nerd Font icons; the navigation
 UI test uses ASCII file prefixes to avoid requiring a particular font.
 
-See [the audit and optimization plan](docs/AUDIT.md) for the original findings and remaining work.
+</details>
+
+See [the contributor guide](CONTRIBUTING.md) for development setup and
+[the audit and optimization plan](docs/AUDIT.md) for the original findings and remaining work.
 
 ## Q & A
 
@@ -602,8 +632,8 @@ Now: [mini.statusline](https://github.com/echasnovski/mini.nvim/blob/main/readme
 Previous:
 
 <details>
-<summary>customizd heirline</summary>
-    
+<summary>Previous custom Heirline configuration</summary>
+
 ```lua
 {
     'rebelot/heirline.nvim',
