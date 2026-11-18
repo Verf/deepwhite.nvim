@@ -35,6 +35,10 @@ function M.get_colors(options)
     if options.low_blue_light then
         colors.base7 = '#FAFAFA' -- hsv(60, 0%, 98%)
     end
+    if options.on_colors then
+        local ok, err = xpcall(function() options.on_colors(colors) end, debug.traceback)
+        if not ok then error('deepwhite.nvim: on_colors failed: ' .. tostring(err), 0) end
+    end
     return colors
 end
 

@@ -8,17 +8,42 @@ function M.load()
         vim.notify_once 'deepwhite.nvim: you must use neovim 0.7 or higher'
         return
     end
-    vim.cmd [[hi clear]]
+    local palette = require 'deepwhite.colors'
+    local colors = palette.get_colors(config.options)
+    local groups = require('deepwhite.scheme').get_groups(colors)
+    local ok, err = xpcall(function() config.options.on_highlights(groups, colors) end, debug.traceback)
+    if not ok then error('deepwhite.nvim: on_highlights failed: ' .. tostring(err), 0) end
 
+    -- Neovim 0.7 rejects @ capture names (including link targets) with W18.
+    if vim.fn.has 'nvim-0.8' == 0 then
+        for name, def in pairs(groups) do
+            if name:sub(1, 1) == '@' or (def.link and def.link:sub(1, 1) == '@') then groups[name] = nil end
+        end
+    end
+
+    -- Prepare user overrides before clearing the active theme, so callback errors leave it intact.
+    vim.cmd [[hi clear]]
     vim.g.colors_name = 'deepwhite'
     vim.o.background = 'light'
     vim.o.termguicolors = true
 
-    local colors = require('deepwhite.colors').get_colors(config.options)
-    local groups = require('deepwhite.scheme').get_groups(colors)
+    local non_linked_groups = {}
+    local linked_groups = {}
 
-    for name, val in pairs(groups) do
-        vim.api.nvim_set_hl(0, name, val)
+    for gname, gdef in pairs(groups) do
+        if gdef.link then
+            table.insert(linked_groups, { name = gname, definition = gdef })
+        else
+            table.insert(non_linked_groups, { name = gname, definition = gdef })
+        end
+    end
+
+    for _, group in ipairs(non_linked_groups) do
+        vim.api.nvim_set_hl(0, group.name, group.definition)
+    end
+
+    for _, group in ipairs(linked_groups) do
+        vim.api.nvim_set_hl(0, group.name, group.definition)
     end
 end
 
