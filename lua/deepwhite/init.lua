@@ -45,6 +45,12 @@ function M.load()
     for _, group in ipairs(linked_groups) do
         vim.api.nvim_set_hl(0, group.name, group.definition)
     end
+
+    if config.options.terminal_colors then
+        for index, color in ipairs(palette.get_terminal_colors(colors)) do
+            vim.g['terminal_color_' .. (index - 1)] = color
+        end
+    end
 end
 
 return M

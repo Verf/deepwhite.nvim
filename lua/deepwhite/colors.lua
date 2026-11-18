@@ -1,5 +1,31 @@
 local M = {}
 
+-- Independent terminal foregrounds on warm paper, not editor accent copies.
+-- Colored text >= 4.5:1, body/neutral text >= 7:1; grays stay untinted.
+-- Balance hue and saturation as well as lightness; chromatic tiers differ by >= 6 L*.
+-- Editor/pastel colors and existing on_colors source mappings stay unchanged.
+-- Each entry is { terminal role, existing on_colors source, default color }.
+local terminal_roles = {
+    { 'terminal_red', 'red', '#AD3535' },
+    { 'terminal_green', 'success', '#31692D' },
+    { 'terminal_yellow', 'yellow_fg', '#7C5917' },
+    { 'terminal_blue', 'blue', '#36549E' },
+    { 'terminal_magenta', 'purple', '#8E3078' },
+    { 'terminal_cyan', 'hint', '#1A656D' },
+    { 'terminal_white', 'base1', '#454545' },
+    { 'terminal_bright_black', 'comment', '#4C4C4C' },
+    { 'terminal_bright_red', 'red', '#C1453D' },
+    { 'terminal_bright_green', 'success', '#427930' },
+    { 'terminal_bright_yellow', 'yellow_fg', '#916717' },
+    { 'terminal_bright_blue', 'blue', '#4368B4' },
+    { 'terminal_bright_magenta', 'purple', '#A4478E' },
+    { 'terminal_bright_cyan', 'hint', '#227980' },
+    { 'terminal_bright_white', 'base0', '#505050' },
+    -- Vivid keeps pink socket/door and orange device/FIFO categories, adapted for text.
+    { 'terminal_pink', 'pink', '#9D4479' },
+    { 'terminal_warning', 'warning', '#98521B' },
+}
+
 function M.get_colors(options)
     local colors = {
         base0 = '#1A1918', -- hsv(30, 8%, 10%)
@@ -66,11 +92,44 @@ function M.get_colors(options)
     colors.git_change = colors.warning
     colors.git_delete = colors.red
 
+    local original = {}
+    for _, role in ipairs(terminal_roles) do
+        original[role[2]] = colors[role[2]]
+    end
     if options.on_colors then
         local ok, err = xpcall(function() options.on_colors(colors) end, debug.traceback)
         if not ok then error('deepwhite.nvim: on_colors failed: ' .. tostring(err), 0) end
     end
+    -- Resolve terminal defaults after the hook: explicit terminal values win,
+    -- including values equal to the defaults. Otherwise keep source overrides.
+    for _, role in ipairs(terminal_roles) do
+        if colors[role[1]] == nil then
+            colors[role[1]] = colors[role[2]] == original[role[2]] and role[3] or colors[role[2]]
+        end
+    end
     return colors
+end
+
+-- ANSI slots 0-15, stored at Lua indices 1-16. Even white must be readable on a light background.
+function M.get_terminal_colors(c)
+    return {
+        c.base0,
+        c.terminal_red,
+        c.terminal_green,
+        c.terminal_yellow,
+        c.terminal_blue,
+        c.terminal_magenta,
+        c.terminal_cyan,
+        c.terminal_white,
+        c.terminal_bright_black,
+        c.terminal_bright_red,
+        c.terminal_bright_green,
+        c.terminal_bright_yellow,
+        c.terminal_bright_blue,
+        c.terminal_bright_magenta,
+        c.terminal_bright_cyan,
+        c.terminal_bright_white,
+    }
 end
 
 return M

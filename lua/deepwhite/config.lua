@@ -2,6 +2,7 @@ local M = {}
 
 M.options = {
     low_blue_light = false,
+    terminal_colors = false,
     on_colors = function(colors) end,
     on_highlights = function(groups, colors) end,
 }
@@ -11,6 +12,7 @@ function M.setup(options)
     assert(type(options) == 'table', 'deepwhite.nvim: setup options must be a table')
     for name, expected in pairs {
         low_blue_light = 'boolean',
+        terminal_colors = 'boolean',
         on_colors = 'function',
         on_highlights = 'function',
     } do
