@@ -2,220 +2,247 @@ local M = {}
 
 function M.get_groups(c)
     return {
+        -- basic
         Normal = { fg = c.base0, bg = c.base7 },
-        NormalFloat = { link = 'Normal' },
-        NonText = { fg = c.base3 },
-
-        SpecialKey = { fg = c.blue },
-        Directory = { link = 'SpecialKey' },
-
-        Title = { fg = c.base0, bold = true },
-
-        IncSearch = { fg = c.base0, bg = c.light_yellow },
-        Search = { link = 'IncSearch' },
-        CurSearch = { link = 'IncSearch' },
-
-        LineNr = { fg = c.base3 },
-        CursorLineNr = { link = 'Normal' },
-
-        Question = { fg = c.base0, bold = true },
-
-        StatusLine = { fg = c.base0, bg = c.base7, bold = true },
-        StatusLineNC = { fg = c.base0, bg = c.base7 },
-
-        TabLine = { link = 'Normal' },
-        TabLineSel = { reverse = true },
-
-        WinSeparator = { fg = c.base0 },
-
-        SignColumn = { link = 'LineNr' },
-        FoldColumn = { link = 'SignColumn' },
-
-        Conceal = { fg = c.base5 },
-        SpellBad = { fg = c.base0, undercurl = true },
-        SpellCap = { link = 'SpellBad' },
-        SpellLocal = { link = 'SpellBad' },
-        SpellRare = { link = 'SpellBad' },
-
-        Pmenu = { fg = c.base0, bg = c.base7 },
-        PmenuSel = { fg = c.base0, bg = c.base3 },
-        PmenuSbar = { bg = c.base0 },
-        PmenuThumb = { link = 'PmenuSbar' },
-
-        WildMenu = { bg = c.base4 },
-        Visual = { bg = c.base5 },
-        Folded = {},
-
-        Cursor = { bg = c.base2 },
-        TermCursor = { link = 'Cursor' },
-        CursorLine = { bg = c.base6 },
-        CursorColumn = { link = 'CursorLine' },
-
-        ColorColumn = { bg = c.light_yellow },
-
-        MoreMsg = { fg = c.cyan },
-        ModeMsg = { fg = c.blue },
-        ErrorMsg = { fg = c.base7, bg = c.red },
-        WarningMsg = { fg = c.base7, bg = c.orange },
-
-        DiffAdd = { fg = c.green },
-        DiffChange = { fg = c.orange },
-        DiffDelete = { fg = c.red },
-
-        Comment = { fg = c.base3 },
-        Constant = { fg = c.base0, bg = c.light_blue }, -- String Character Number Boolean Float
-        String = { fg = c.base0, bg = c.light_green },
-        Identifier = { fg = c.base0 },
-        Delimiter = { link = 'Identifier' },
-        Statement = { fg = c.base0, bg = c.light_orange }, -- Conditional Repeat Label Operator Keyword Exception
-        Operator = { link = 'Identifier' },
-        PreProc = { link = 'Question' }, -- Include Define Macro PreCondit
-        Type = { fg = c.pink }, -- StorageClass Structure Typedef
-        Special = { link = 'SpecialKey' }, -- SpecialChar Tag Delimiter SpecialComment Debug
-        Function = { link = 'Identifier' },
+        Bold = { bold = true },
+        Italic = { italic = true },
         Underlined = { underline = true },
-        Ignore = { fg = c.base7 },
-        Error = { link = 'ErrorMsg' },
-        Todo = { fg = c.green },
+        Strikethrough = { strikethrough = true },
+        -- search & substitute
+        Search = { fg = c.base0, bg = c.light_orange }, -- Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
+        CurSearch = { fg = c.base0, bg = c.light_pink, bold = true }, -- Current match for the last search pattern (see 'hlsearch').
+        IncSearch = { fg = c.base0, bg = c.light_pink }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c".
+        Substitute = { fg = c.base7, bg = c.warning }, -- |:substitute| replacement text highlighting.
+        -- other :help highlight-groups highlight-default
+        ColorColumn = { bg = c.base8 }, -- Used for the columns set with 'colorcolumn'.
+        Conceal = { fg = c.base5 }, -- Placeholder characters substituted for concealed text (see 'conceallevel').
+        Cursor = { bg = c.base2 }, -- Character under the cursor.
+        lCursor = { link = 'Cursor' }, -- Character under the cursor when |language-mapping| is used (see 'guicursor').
+        CursorIM = { link = 'Cursor' }, -- Like Cursor, but used when in IME mode. *CursorIM*
+        CursorColumn = { bg = c.base6 }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
+        CursorLine = { bg = c.base6 }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
+        Directory = { link = 'SpecialKey' }, -- Directory names (and other special names in listings).
+        DiffAdd = { bg = c.diff_add_bg }, -- Diff mode: Added line. |diff.txt|
+        DiffChange = { bg = c.diff_change_bg }, -- Diff mode: Changed line. |diff.txt|
+        DiffDelete = { bg = c.diff_delete_bg }, -- Diff mode: Deleted line. |diff.txt|
+        DiffText = { fg = c.base0, bg = c.diff_text }, -- Keep changed text readable over the stronger background. |diff.txt|
+        EndOfBuffer = { fg = c.base6 }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
+        TermCursor = { link = 'Cursor' }, -- Cursor in a focused terminal.
+        ErrorMsg = { fg = c.red }, -- Error messages on the command line.
+        WinSeparator = { fg = c.base0 }, -- Separators between window splits.
+        Folded = { fg = 'NONE', bg = 'NONE' }, -- Line used for closed folds.
+        LineNr = { fg = c.comment }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+        FoldColumn = { link = 'LineNr' }, -- 'foldcolumn'
+        SignColumn = { link = 'LineNr' }, -- Column where |signs| are displayed.
+        LineNrAbove = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, above the cursor line.
+        LineNrBelow = { link = 'LineNr' }, -- Line number for when the 'relativenumber' option is set, below the cursor line.
+        CursorLineNr = { link = 'CursorLine' }, -- Like LineNr when 'cursorline' is set and 'cursorlineopt' contains "number" or is "both", for the cursor line.
+        CursorLineFold = { link = 'CursorLineNr' }, -- Like FoldColumn when 'cursorline' is set for the cursor line.
+        CursorLineSign = { link = 'CursorLineNr' }, -- Like SignColumn when 'cursorline' is set for the cursor line.
+        MatchParen = { fg = c.red, underline = true }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+        ModeMsg = { fg = c.blue }, -- 'showmode' message (e.g., "-- INSERT --").
+        MsgArea = { link = 'Normal' }, -- Area for messages and command-line, see also 'cmdheight'.
+        MsgSeparator = { bg = c.base3 }, -- Separator for scrolled messages |msgsep|.
+        MoreMsg = { link = 'ModeMsg' }, -- |more-prompt|
+        NonText = { fg = c.base5 }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text.
+        NormalFloat = { link = 'Normal' }, -- Normal text in floating windows.
+        FloatBorder = { fg = c.base0 }, -- Border of floating windows.
+        FloatTitle = { fg = c.base0 }, -- Title of floating windows.
+        FloatFooter = { fg = c.base0 }, -- Footer of floating windows.
+        FloatShadow = { bg = c.base0, blend = 80 }, -- Drop shadow for floating windows (border='shadow').
+        FloatShadowThrough = { bg = c.base0, blend = 100 }, -- Shadow corners for border='shadow'.
+        NormalNC = { link = 'Normal' }, -- Normal text in non-current windows.
+        Pmenu = { link = 'Normal' }, -- Popup menu: Normal item.
+        PmenuSel = { bg = c.base6 }, -- Popup menu: Selected item. Combined with |hl-Pmenu|.
+        PmenuKind = { link = 'Pmenu' }, -- Popup menu: Normal item "kind".
+        PmenuKindSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "kind".
+        PmenuExtra = { link = 'Pmenu' }, -- Popup menu: Normal item "extra text".
+        PmenuExtraSel = { link = 'PmenuSel' }, -- Popup menu: Selected item "extra text".
+        PmenuSbar = { bg = c.base7 }, -- Popup menu: Scrollbar.
+        PmenuThumb = { bg = c.base4 }, -- Popup menu: Thumb of the scrollbar.
+        PmenuMatch = { fg = c.hint, bold = true }, -- Emphasize matches without replacing the menu background.
+        PmenuMatchSel = { link = 'PmenuMatch' }, -- Keep the match accent on the selected item's background.
+        ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
+        Question = { bold = true }, -- |hit-enter| prompt and yes/no questions.
+        QuickFixLine = { bold = true }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
+        SnippetTabstop = { link = 'Normal' }, -- Tabstops in snippets. |vim.snippet|
+        SpecialKey = { fg = c.blue }, -- Unprintable characters: Text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
+        SpellBad = { fg = c.base0, undercurl = true }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
+        SpellCap = { link = 'SpellBad' }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
+        SpellLocal = { link = 'SpellBad' }, -- Word that is recognized by the spellchecker as one that is used in another region. |spell| Combined with the highlighting used otherwise.
+        SpellRare = { link = 'SpellBad' }, -- Word that is recognized by the spellchecker as one that is hardly ever used. |spell| Combined with the highlighting used otherwise.
+        StatusLine = { fg = c.base0, bg = c.base3 }, -- Status line of current window.
+        StatusLineNC = { link = 'LineNr' }, -- Status lines of not-current windows.
+        StatusLineTerm = { link = 'StatusLine' }, -- Status line of |terminal| window.
+        StatusLineTermNC = { link = 'StatusLineNC' }, -- Status line of non-current |terminal| windows.
+        TabLine = { fg = c.base7, bg = c.base1 }, -- Tab pages line, not active tab page label.
+        TabLineFill = { bg = c.base7 }, -- Tab pages line, where there are no labels.
+        TabLineSel = { fg = c.base0, bg = c.base7 }, -- Tab pages line, active tab page label.
+        Title = { bold = true }, -- Titles for output from ":set all", ":autocmd" etc.
+        Visual = { fg = c.base0, bg = c.base5 }, -- Keep selected comments and other muted text readable.
+        VisualNOS = { bg = c.base4 }, -- Visual mode selection when vim is "Not Owning the Selection".
+        WarningMsg = { fg = c.warning }, -- Warning messages.
+        Whitespace = { fg = c.base5 }, -- "nbsp", "space", "tab", "multispace", "lead" and "trail" in 'listchars'.
+        WildMenu = { bg = c.base4 }, -- Current match in 'wildmenu' completion.
+        WinBar = { link = 'StatusLine' }, -- Window bar of current window.
+        WinBarNC = { link = 'StatusLineNC' }, -- Window bar of not-current windows.
 
-        MatchParen = { fg = c.red, underline = true },
+        -- gui
+        Menu = { link = 'Pmenu' },
+        Scrollbar = { link = 'PmenuSbar' },
+        Tooltip = { link = 'Pmenu' },
 
-        -- Plugins
-        -- Lspsaga
-        RenameNormal = { link = 'Normal' },
+        -- suggested
+        Comment = { fg = c.comment }, -- any comment
 
-        -- Treesittere
-        ['@variable'] = { link = 'Identifier' },
-        ['@variable.builtin'] = { link = 'Type' },
-        ['@variable.parameter'] = { link = 'Identifier' },
-        ['@variable.member'] = { link = 'Identifier' },
+        Constant = { fg = c.base0, bg = c.light_blue }, -- any constant
+        String = { fg = c.base0, bg = c.light_green }, -- a string constant: "this is a string"
+        Character = { link = 'Constant' }, -- a character constant: 'c', '\n'
+        Number = { link = 'Constant' }, -- a number constant: 234, 0xff
+        Boolean = { link = 'Constant' }, -- a boolean constant: TRUE, false
+        Float = { link = 'Constant' }, -- a floating point constant: 2.3e10
+        Identifier = { fg = c.base0 }, -- any variable name
+        Function = { link = 'Identifier' }, -- function name (also: methods for classes)
 
-        ['@constant'] = { link = 'Constant' },
-        ['@constant.builtin'] = { link = 'Type' },
-        ['@constant.macro'] = { link = 'Define' },
+        Statement = { fg = c.base0, bg = c.light_orange }, -- any statement
+        Conditional = { link = 'Statement' }, -- if, then, else, endif, switch, etc.
+        Repeat = { link = 'Statement' }, -- for, do, while, etc.
+        Label = { link = 'Statement' }, -- case, default, etc.
+        Operator = { link = 'Identifier' }, -- "sizeof", "+", "*", etc.
+        Keyword = { link = 'Statement' }, -- any other keyword
+        Exception = { link = 'Statement' }, -- try, catch, throw
 
-        ['@module'] = { link = 'Include' },
-        ['@module.builtin'] = { link = 'Include' },
-        ['@label'] = { link = 'Label' },
+        PreProc = { link = 'Identifier' }, -- generic Preprocessor
+        Include = { link = 'Identifier' }, -- preprocessor #include
+        Define = { link = 'Identifier' }, -- preprocessor #define
+        Macro = { link = 'Identifier' }, -- same as Define
+        PreCondit = { link = 'Identifier' }, -- preprocessor #if, #else, #endif, etc.
 
-        ['@string'] = { link = 'String' },
-        ['@string.documentation'] = { link = 'String' },
-        ['@string.regexp'] = { link = 'String' },
-        ['@string.escape'] = { link = 'SpecialChar' },
-        ['@string.special'] = { link = 'SpecialChar' },
-        ['@string.special.symbol'] = { link = 'Identifier' },
-        ['@string.special.path'] = { link = 'Underlined' },
-        ['@string.special.url'] = { link = 'Underlined' },
+        Type = { fg = c.pink }, -- int, long, char, etc.
+        StorageClass = { link = 'Type' }, -- static, register, volatile, etc.
+        Structure = { link = 'Type' }, -- struct, union, enum, etc.
+        Typedef = { link = 'Type' }, -- a typedef
 
-        ['@character'] = { link = 'Character' },
-        ['@character.special'] = { link = 'SpecialChar' },
+        Special = { link = 'SpecialKey' }, -- any special symbol
+        SpecialChar = { link = 'SpecialKey' }, -- special character in a constant
+        Tag = { fg = c.warning }, -- you can use CTRL-] on this
+        Delimiter = { link = 'Identifier' }, --character that needs attention
+        SpecialComment = { link = 'SpecialKey' }, -- special things inside a comment
+        Debug = { link = 'SpecialKey' }, -- debugging statements
 
-        ['@boolean'] = { link = 'Boolean' },
-        ['@number'] = { link = 'Number' },
-        ['@number.float'] = { link = 'Float' },
+        Ignore = { fg = c.base7 }, -- left blank, hidden  |hl-Ignore|
 
-        ['@type'] = { link = 'Type' },
-        ['@type.builtin'] = { link = 'Type' },
-        ['@type.qualifier'] = { link = 'Type' },
-        ['@type.definition'] = { link = 'Typedef' },
+        Error = { bg = c.light_red }, -- any erroneous construct
 
-        ['@attribute'] = { link = 'PreProc' },
-        ['@property'] = { link = 'Identifier' },
+        Todo = { bg = c.light_red }, -- anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
-        ['@function'] = { link = 'Function' },
-        ['@function.builtin'] = { link = 'Special' },
-        ['@function.call'] = { link = 'Special' },
-        ['@function.macro'] = { link = 'Macro' },
+        Added = { link = 'DiffAdd' }, -- added line in a diff
+        Changed = { link = 'DiffChange' }, -- changed line in a diff
+        Removed = { link = 'DiffDelete' }, -- removed line in a diff
 
-        ['@function.method'] = { link = '@function' },
-        ['@function.method.call'] = { link = '@function.call' },
+        -- :help treesitter-highlight-groups
+        ['@variable'] = { link = 'Identifier' }, -- various variable names
+        ['@variable.builtin'] = { link = 'Type' }, -- built-in variable names (e.g. `this`, `self`)
+        ['@variable.parameter'] = { link = 'Identifier' }, -- special parameters (e.g. `_`, `it`)
 
-        ['@constructor'] = { link = 'Identifier' },
-        ['@operator'] = { link = 'Operator' },
+        ['@constant'] = { link = 'Constant' }, -- constant identifiers
+        ['@constant.builtin'] = { link = 'Type' }, -- built-in constant values
+        ['@constant.macro'] = { link = 'Macro' }, -- constants defined by the preprocessor
 
-        ['@keyword'] = { link = 'Keyword' },
-        ['@keyword.coroutine'] = { link = 'Keyword' },
-        ['@keyword.function'] = { bg = c.light_purple },
-        ['@keyword.operator'] = { link = 'Keyword' },
-        ['@keyword.import'] = { link = 'Include' },
-        ['@keyword.storage'] = { link = 'Keyword' },
-        ['@keyword.repeat'] = { link = 'Repeat' },
-        ['@keyword.return'] = { link = 'Keyword' },
-        ['@keyword.debug'] = { link = 'Debug' },
-        ['@keyword.exception'] = { link = 'Exception' },
+        ['@module'] = { link = 'Include' }, -- modules or namespaces
+        ['@module.builtin'] = { link = 'Type' }, -- built-in modules or namespaces
+        ['@label'] = { link = 'Label' }, -- `GOTO` and other labels (e.g. `label:` in C), including heredoc labels
 
-        ['@keyword.conditional'] = { link = 'Conditional' },
-        ['@keyword.conditional.ternary'] = { link = 'Conditional' },
-        ['@keyword.directive'] = { link = 'PreProc' },
-        ['@keyword.directive.define'] = { link = 'PreProc' },
+        ['@string'] = { link = 'String' }, -- string literals
+        ['@string.escape'] = { link = 'SpecialChar' }, -- escape sequences
+        ['@string.special'] = { link = 'SpecialChar' }, -- other special strings (e.g. dates)
+        ['@string.special.url'] = { bg = c.light_green, underline = true }, -- URIs (e.g. hyperlinks)
 
-        ['@punctutation.delimiter'] = { link = 'Delimiter' },
-        ['@punctutation.bracket'] = { link = 'Delimiter' },
-        ['@punctutation.special'] = { link = 'Delimiter' },
+        ['@character'] = { link = 'Character' }, -- character literals
+        ['@character.special'] = { link = 'SpecialChar' }, -- special characters (e.g. wildcards)
 
-        ['@comment'] = { link = 'Comment' },
-        ['@comment.documentation'] = { link = 'Comment' },
+        ['@boolean'] = { link = 'Boolean' }, -- boolean literals
+        ['@number'] = { link = 'Number' }, -- numeric literals
+        ['@number.float'] = { link = 'Float' }, -- floating-point number literals
 
-        ['@comment.warning'] = { link = 'WarningMsg' },
-        ['@comment.error'] = { link = 'Error' },
-        ['@comment.todo'] = { link = 'Todo' },
-        ['@comment.note'] = { link = 'SpecialComment' },
+        ['@type'] = { link = 'Type' }, -- type or class definitions and annotations
+        ['@type.builtin'] = { link = 'Type' }, -- built-in types
+        ['@type.definition'] = { link = 'Type' }, -- identifiers in type definitions (e.g. `typedef <type> <identifier>` in C)
 
-        ['@markup.strong'] = { bold = true },
-        ['@markup.emphasis'] = { italic = true },
-        ['@markup.underline'] = { underline = true },
-        ['@markup.strike'] = { strikethrough = true },
+        ['@attribute'] = { link = 'Type' }, -- attribute annotations (e.g. Python decorators, Rust lifetimes)
+        ['@attribute.builtin'] = { link = 'Type' }, -- builtin annotations (e.g. `@property` in Python)
+        ['@property'] = { link = 'Identifier' }, -- the key in key/value pairs
 
-        ['@markup.heading'] = { link = 'Title' },
-        ['@markup.heading.gitcommit'] = { link = '@spell' },
+        ['@function'] = { link = 'Function' }, -- function definitions
+        ['@function.builtin'] = { link = 'Type' }, -- built-in functions
 
-        ['@markup.quote'] = { link = 'Comment' },
-        ['@markup.math'] = { link = 'Special' },
-        ['@markup.environment'] = { link = 'Macro' },
+        ['@function.method'] = { link = '@function' }, -- method definitions
 
-        ['@markup.link'] = { link = 'Underlined' },
-        ['@markup.link.label'] = { link = 'SpecialChar' },
-        ['@markup.link.url'] = { link = 'Keyword' },
+        ['@constructor'] = { link = 'Identifier' }, -- constructor calls and definitions
 
-        ['@markup.raw'] = { link = 'SpecialComment' },
-        ['@markup.raw.block'] = {},
+        ['@operator'] = { link = 'Operator' }, -- symbolic operators (e.g. `+`, `*`)
 
-        ['@markup.list'] = { link = 'Identifier' },
-        ['@markup.list.checked'] = { link = 'Comment' },
-        ['@markup.list.unchecked'] = { link = 'Identifier' },
+        ['@keyword'] = { link = 'Keyword' }, -- keywords not fitting into specific categories
+        ['@keyword.function'] = { bg = c.light_purple }, -- keywords that define a function (e.g. `func` in Go, `def` in Python)
 
-        ['@tag'] = { link = 'Label' },
-        ['@tag.delimiter'] = { link = 'Delimiter' },
-        ['@tag.attribute'] = { link = 'Identifier' },
+        ['@punctuation'] = { link = 'Identifier' }, -- punctuation
+        ['@punctuation.special'] = { link = 'SpecialChar' }, -- special symbols (e.g. `{}` in string interpolation)
 
-        ['@diff.plus'] = { link = 'DiffAdd' },
-        ['@diff.minus'] = { link = 'DiffDelete' },
-        ['@diff.delta'] = { link = 'DiffChange' },
+        ['@comment'] = { link = 'Comment' }, -- line and block comments
 
-        -- lsp
-        DiagnosticError = { fg = c.red },
-        DiagnosticHint = { fg = c.base3 },
-        DiagnosticInfo = { fg = c.blue },
-        DiagnosticOk = { fg = c.green },
-        DiagnosticUnderlineError = { sp = c.red, undercurl = true },
-        DiagnosticUnderlineHint = { sp = c.base3, undercurl = true },
-        DiagnosticUnderlineInfo = { sp = c.blue, undercurl = true },
-        DiagnosticUnderlineOk = { sp = c.green, undercurl = true },
-        DiagnosticUnderlineWarn = { sp = c.orange, undercurl = true },
-        DiagnosticWarn = { fg = c.orange },
-        -- lsp highlights
+        ['@comment.error'] = { bg = c.light_red }, -- error-type comments (e.g. `ERROR`, `FIXME`, `DEPRECATED`)
+        ['@comment.warning'] = { bg = c.light_orange }, -- warning-type comments (e.g. `WARNING`, `FIX`, `HACK`)
+        ['@comment.todo'] = { bg = c.light_cyan }, -- todo-type comments (e.g. `TODO`, `WIP`)
+        ['@comment.note'] = { bg = c.light_blue }, -- note-type comments (e.g. `NOTE`, `INFO`, `XXX`)
+
+        ['@markup.strong'] = { link = 'Bold' }, -- bold text
+        ['@markup.italic'] = { link = 'Italic' }, -- italic text
+        ['@markup.strikethrough'] = { link = 'Strikethrough' }, -- struck-through text
+        ['@markup.underline'] = { link = 'Underlined' }, -- underlined text (only for literal underline markup!)
+
+        ['@markup.heading'] = { link = 'Title' }, -- headings, titles (including markers)
+
+        ['@markup.quote'] = { link = 'Identifier' }, -- block quotes
+        ['@markup.math'] = { link = 'Special' }, -- math environments (e.g. `$ ... $` in LaTeX)
+
+        ['@markup.link'] = { link = 'Underlined' }, -- text references, footnotes, citations, etc.
+
+        ['@markup.raw'] = { link = 'Identifier' }, -- literal or verbatim text (e.g. inline code)
+
+        ['@markup.list'] = { link = 'Identifier' }, -- list markers
+        ['@markup.list.checked'] = { link = 'Comment' }, -- checked todo-style list markers
+
+        ['@diff.plus'] = { link = 'Added' }, -- added text (for diff files)
+        ['@diff.minus'] = { link = 'Removed' }, -- deleted text (for diff files)
+        ['@diff.delta'] = { link = 'Changed' }, -- changed text (for diff files)
+
+        ['@tag'] = { link = 'Label' }, -- XML-style tag names (e.g. in XML, HTML, etc.)
+        ['@tag.builtin'] = { link = 'Type' }, -- builtin tag names (e.g. HTML5 tags)
+        ['@tag.attribute'] = { link = 'Identifier' }, -- XML-style tag attributes
+        ['@tag.delimiter'] = { link = 'Delimiter' }, -- XML-style tag delimiters
+
+        -- vim.lsp
+        LspReferenceText = { link = 'Underlined' }, -- Used for highlighting "text" references
+        LspReferenceRead = { link = 'LspReferenceText' }, -- Used for highlighting "read" references
+        LspReferenceWrite = { link = 'LspReferenceText' }, -- Used for highlighting "write" references
+        LspReferenceTarget = { link = 'LspReferenceText' }, -- Used for highlighting reference targets (e.g. in a hover range)
+        LspInlayHint = { link = 'Comment' }, -- Used for highlighting inlay hints (make them subtle like comments)
+        LspCodeLens = { link = 'Comment' }, -- Used to color the virtual text of the codelens.
+        LspCodeLensSeparator = { link = 'Comment' }, -- Used to color the separator between two or more code lenses.
+        LspSignatureActiveParameter = { link = 'LspReferenceText' }, -- Used to highlight the active parameter in the signature help.
+
         ['@lsp.type.class'] = { link = '@type' },
-        ['@lsp.type.decorator'] = { link = '@function' },
+        ['@lsp.type.decorator'] = { link = '@type' },
         ['@lsp.type.enum'] = { link = '@type' },
         ['@lsp.type.enumMember'] = { link = '@constant' },
         ['@lsp.type.function'] = { link = '@function.call' },
         ['@lsp.type.interface'] = { link = '@type' },
-        ['@lsp.type.macro'] = { link = '@macro' },
+        ['@lsp.type.macro'] = { link = '@constant.macro' },
         ['@lsp.type.method'] = { link = '@function.call' },
-        ['@lsp.type.namespace'] = { link = '@namespace' },
-        ['@lsp.type.parameter'] = { link = '@parameter' },
+        ['@lsp.type.namespace'] = { link = '@module' },
+        ['@lsp.type.parameter'] = { link = '@variable.parameter' },
         ['@lsp.type.property'] = { link = '@property' },
-        ['@lsp.type.struct'] = { link = '@structure' },
+        ['@lsp.type.struct'] = { link = '@type' },
         ['@lsp.type.type'] = { link = '@type' },
         ['@lsp.type.variable'] = { link = '@variable' },
         ['@lsp.typemod.class.defaultLibrary'] = { link = '@type.builtin' },
@@ -233,33 +260,249 @@ function M.get_groups(c)
         ['@lsp.typemod.variable.defaultLibrary'] = { link = '@variable.builtin' },
         ['@lsp.typemod.variable.injected'] = { link = '@variable' },
 
-        -- rainbow
-        TSRainbowRed = { fg = c.red },
-        TSRainbowOrange = { fg = c.orange },
-        TSRainbowYellow = { fg = c.yellow },
-        TSRainbowGreen = { fg = c.green },
-        TSRainbowCyan = { fg = c.cyan },
-        TSRainbowBlue = { fg = c.blue },
-        TSRainbowViolet = { fg = c.purple },
+        -- vim.diagnostic
+        DiagnosticError = { link = 'ErrorMsg' },
+        DiagnosticWarn = { link = 'WarningMsg' },
+        DiagnosticInfo = { fg = c.blue },
+        DiagnosticHint = { fg = c.hint },
+        DiagnosticOk = { fg = c.success },
 
-        -- rainbow-delimiters
+        DiagnosticVirtualTextError = { link = 'DiagnosticError' },
+        DiagnosticVirtualTextWarn = { link = 'DiagnosticWarn' },
+        DiagnosticVirtualTextInfo = { link = 'DiagnosticInfo' },
+        DiagnosticVirtualTextHint = { link = 'DiagnosticHint' },
+        DiagnosticVirtualTextOk = { link = 'DiagnosticOk' },
+
+        DiagnosticVirtualLinesError = { link = 'DiagnosticVirtualTextError' },
+        DiagnosticVirtualLinesWarn = { link = 'DiagnosticVirtualTextWarn' },
+        DiagnosticVirtualLinesInfo = { link = 'DiagnosticVirtualTextInfo' },
+        DiagnosticVirtualLinesHint = { link = 'DiagnosticVirtualTextHint' },
+        DiagnosticVirtualLinesOk = { link = 'DiagnosticVirtualTextOk' },
+
+        DiagnosticUnderlineError = { sp = c.red, undercurl = true },
+        DiagnosticUnderlineWarn = { sp = c.warning, undercurl = true },
+        DiagnosticUnderlineInfo = { sp = c.blue, undercurl = true },
+        DiagnosticUnderlineHint = { sp = c.hint, undercurl = true },
+        DiagnosticUnderlineOk = { sp = c.success, undercurl = true },
+
+        DiagnosticFloatingError = { link = 'DiagnosticError' },
+        DiagnosticFloatingWarn = { link = 'DiagnosticWarn' },
+        DiagnosticFloatingInfo = { link = 'DiagnosticInfo' },
+        DiagnosticFloatingHint = { link = 'DiagnosticHint' },
+        DiagnosticFloatingOk = { link = 'DiagnosticOk' },
+        DiagnosticSignError = { link = 'DiagnosticError' },
+        DiagnosticSignWarn = { link = 'DiagnosticWarn' },
+        DiagnosticSignInfo = { link = 'DiagnosticInfo' },
+        DiagnosticSignHint = { link = 'DiagnosticHint' },
+        DiagnosticSignOk = { link = 'DiagnosticOk' },
+        DiagnosticDeprecated = { strikethrough = true },
+        DiagnosticUnnecessary = { link = 'Comment' },
+
+        -- markdown
+        markdownListMarker = { link = 'Identifier' },
+        markdownOrderedListMarker = { link = 'Identifier' },
+
+        -- Plugins
+        -- Git
+        GitStaged = { bg = c.light_green },
+        GitModified = { bg = c.light_orange },
+        GitDeleted = { bg = c.light_red },
+        GitRenamed = { bg = c.light_cyan },
+        GitUntracked = { link = 'Normal' },
+        GitIgnored = { link = 'Comment' },
+
+        -- Mini Animate
+        MiniAnimateCursor = { link = 'Cursor' },
+        MiniAnimateNormalFloat = { link = 'NormalFloat' },
+
+        -- Mini Clue
+        MiniClueBorder = { link = 'FloatBorder' },
+        MiniClueDescGroup = { link = 'Title' },
+        MiniClueDescSingle = { link = 'NormalFloat' },
+        MiniClueNextKey = { link = 'SpecialKey' },
+        MiniClueNextKeyWithPostkeys = { link = 'WarningMsg' },
+        MiniClueSeparator = { link = 'WinSeparator' },
+        MiniClueTitle = { link = 'FloatTitle' },
+
+        -- Mini Cmdline
+        MiniCmdlinePeekBorder = { link = 'FloatBorder' },
+        MiniCmdlinePeekLineNr = { link = 'LineNr' },
+        MiniCmdlinePeekNormal = { link = 'NormalFloat' },
+        MiniCmdlinePeekSep = { link = 'WinSeparator' },
+        MiniCmdlinePeekSign = { link = 'SignColumn' },
+        MiniCmdlinePeekTitle = { link = 'FloatTitle' },
+
+        -- Mini Cursorword
+        MiniCursorword = { underline = true }, -- Subtle highlight for word under cursor
+        MiniCursorwordCurrent = { link = 'Cursor' }, -- Or leave empty to just show cursor
+
+        -- Mini Deps
+        MiniDepsChangeAdded = { link = 'Added' },
+        MiniDepsChangeRemoved = { link = 'Removed' },
+        MiniDepsHint = { link = 'Comment' },
+        MiniDepsInfo = { link = 'Normal' },
+        MiniDepsMsgBreaking = { link = 'ErrorMsg' },
+        MiniDepsPlaceholder = { link = 'Comment' },
+        MiniDepsTitle = { link = 'Title' },
+        MiniDepsTitleError = { link = 'ErrorMsg' },
+        MiniDepsTitleSame = { link = 'Comment' },
+        MiniDepsTitleUpdate = { link = 'Added' },
+
+        -- Mini Diff
+        MiniDiffSignAdd = { link = 'GitSignsAdd' }, -- "add" hunk lines visualization.
+        MiniDiffSignChange = { link = 'GitSignsChange' }, -- "change" hunk lines visualization.
+        MiniDiffSignDelete = { link = 'GitSignsDelete' }, -- "delete" hunk lines visualization.
+        MiniDiffOverAdd = { bg = c.light_green }, -- added buffer text shown in overlay.
+        -- Changed spans inherit DiffText; buffer context stays unstyled via module defaults.
+        MiniDiffOverContext = { bg = c.light_orange }, -- context of a change shown in reference overlay.
+        MiniDiffOverDelete = { bg = c.light_red }, -- Background highlight for deleted text
+
+        -- Mini Files
+        MiniFilesBorder = { link = 'FloatBorder' },
+        MiniFilesBorderModified = { link = 'DiagnosticWarn' },
+        MiniFilesCursorLine = { bg = c.base6, bold = true },
+        MiniFilesDirectory = { fg = c.hint, bold = true },
+        MiniFilesFile = { link = 'NormalFloat' },
+        MiniFilesNormal = { link = 'NormalFloat' },
+        MiniFilesTitle = { fg = c.comment },
+        MiniFilesTitleFocused = { fg = c.base0, bold = true },
+
+        -- Mini Hipatterns
+        MiniHipatternsFixme = { fg = c.base7, bg = c.red, bold = true },
+        MiniHipatternsHack = { fg = c.base7, bg = c.warning, bold = true },
+        MiniHipatternsNote = { fg = c.base7, bg = c.blue, bold = true },
+        MiniHipatternsTodo = { link = 'Todo' },
+
+        -- Mini Icons
+        MiniIconsAzure = { fg = c.blue },
+        MiniIconsBlue = { fg = c.blue },
+        MiniIconsCyan = { fg = c.hint },
+        MiniIconsGreen = { fg = c.success },
+        MiniIconsGrey = { fg = c.comment },
+        MiniIconsOrange = { fg = c.warning },
+        MiniIconsPurple = { fg = c.purple },
+        MiniIconsRed = { fg = c.red },
+        MiniIconsYellow = { fg = c.yellow_fg }, -- Dark ochre stays readable on a light background
+
+        -- Mini Indentscope
+        MiniIndentscopeSymbol = { fg = c.base4 }, -- Subtle vertical line
+        MiniIndentscopeSymbolOff = { fg = c.base6 }, -- Very subtle for inactive
+
+        -- Mini Jump
+        MiniJump = { link = 'Substitute' }, -- all possible cursor positions
+        -- Mini Jump2d
+        MiniJump2dSpot = { fg = c.base0, bg = c.bright_cyan }, -- highlighting of jump spot's next step
+        MiniJump2dSpotAhead = { fg = c.base0, bg = c.light_cyan }, --highlighting of jump spot's future steps
+
+        -- Mini Map
+        MiniMapNormal = { link = 'Normal' },
+        MiniMapSymbolCount = { link = 'Special' },
+        MiniMapSymbolLine = { link = 'Title' },
+        MiniMapSymbolView = { link = 'CursorLine' }, -- Highlight the view window
+
+        -- Mini Notify
+        MiniNotifyBorder = { link = 'FloatBorder' },
+        MiniNotifyLspProgress = { link = 'Special' },
+        MiniNotifyNormal = { link = 'NormalFloat' },
+        MiniNotifyTitle = { link = 'FloatTitle' },
+
+        -- Mini Operators
+        MiniOperatorsExchangeFrom = { link = 'IncSearch' }, -- Highlight source to be exchanged
+
+        -- Mini Pick
+        MiniPickBorder = { link = 'FloatBorder' },
+        MiniPickBorderBusy = { link = 'DiagnosticInfo' },
+        MiniPickBorderText = { fg = c.comment },
+        MiniPickCursor = { link = 'Cursor' },
+        MiniPickHeader = { link = 'Title' },
+        MiniPickIconDirectory = { link = 'MiniFilesDirectory' },
+        MiniPickIconFile = { link = 'NormalFloat' },
+        -- Keep row foregrounds unset so query ranges and file icons retain their colors.
+        MiniPickMatchCurrent = { bg = c.base6, bold = true },
+        MiniPickMatchMarked = { bg = c.light_orange, underline = true },
+        MiniPickMatchRanges = { fg = c.hint, bold = true },
+        MiniPickNormal = { link = 'NormalFloat' },
+        MiniPickPreviewLine = { link = 'CursorLine' },
+        MiniPickPreviewRegion = { fg = c.base0, bg = c.light_cyan, bold = true, underline = true },
+        MiniPickPrompt = { fg = c.base0, bold = true },
+        MiniPickPromptCaret = { link = 'MiniPickPromptPrefix' },
+        MiniPickPromptPrefix = { fg = c.hint, bold = true },
+
+        -- Mini Snippets
+        MiniSnippetsCurrent = { link = 'Search' },
+        MiniSnippetsCurrentReplace = { link = 'Substitute' },
+        MiniSnippetsFinal = { link = 'Special' },
+        MiniSnippetsUnvisited = { link = 'Special' },
+        MiniSnippetsVisited = { link = 'Comment' },
+
+        -- Mini Starter
+        MiniStarterCurrent = { link = 'CursorLine' },
+        MiniStarterFooter = { link = 'Comment' },
+        MiniStarterHeader = { link = 'Title' },
+        MiniStarterInactive = { link = 'Comment' },
+        MiniStarterItem = { link = 'Normal' },
+        MiniStarterItemBullet = { link = 'Delimiter' },
+        MiniStarterItemPrefix = { link = 'WarningMsg' },
+        MiniStarterQuery = { link = 'Special' },
+        MiniStarterSection = { link = 'Special' },
+
+        -- Mini Statusline
+        MiniStatuslineModeNormal = { fg = c.base0, bg = c.light_purple, bold = true },
+        MiniStatuslineModeInsert = { fg = c.base0, bg = c.light_green, bold = true },
+        MiniStatuslineModeVisual = { fg = c.base0, bg = c.light_cyan, bold = true },
+        MiniStatuslineModeReplace = { fg = c.base0, bg = c.light_orange, bold = true },
+        MiniStatuslineModeCommand = { fg = c.base0, bg = c.light_red, bold = true },
+        MiniStatuslineModeOther = { fg = c.base0, bg = c.light_blue, bold = true },
+
+        MiniStatuslineDevinfo = { link = 'Normal' },
+        MiniStatuslineFilename = { link = 'Normal' },
+        MiniStatuslineFileinfo = { link = 'Normal' },
+
+        MiniStatuslineInactive = { fg = c.comment },
+
+        -- Mini Surround
+        MiniSurround = { link = 'IncSearch' }, -- Highlight surrounding chars
+
+        -- Mini Tabline
+        MiniTablineCurrent = { link = 'TabLineSel' }, -- buffer is current (has cursor in it).
+        MiniTablineVisible = { link = 'TabLine' }, -- buffer is visible (displayed in some window).
+        MiniTablineHidden = { link = 'TabLine' }, -- buffer is hidden (not displayed).
+        MiniTablineModifiedCurrent = { fg = c.base0, bg = c.base7, bold = true, italic = true }, -- buffer is modified and current.
+        MiniTablineModifiedVisible = { fg = c.base0, bg = c.base6, bold = true, italic = true }, -- buffer is modified and visible.
+        MiniTablineModifiedHidden = { fg = c.base0, bg = c.base6, bold = true, italic = true }, -- buffer is modified and hidden.
+        MiniTablineFill = { link = 'TabLineFill' }, -- unused right space of tabline.
+        MiniTablineTabpagesection = { link = 'Search' }, -- section with tabpage information.
+        MiniTablineTrunc = { link = 'Comment' }, -- truncation symbols indicating more left/right tabs.
+
+        -- Mini Test
+        MiniTestEmphasis = { bold = true },
+        MiniTestFail = { fg = c.red, bold = true },
+        MiniTestPass = { fg = c.success, bold = true },
+
+        -- Mini Trailspace
+        MiniTrailspace = { link = 'Error' },
+
+        -- nvimdev/lspsaga.nvim
+        RenameNormal = { link = 'Normal' },
+
+        -- hiphish/rainbow-delimiters.nvim
         RainbowDelimiterRed = { fg = c.red },
-        RainbowDelimiterYellow = { fg = c.yellow },
+        RainbowDelimiterYellow = { fg = c.yellow_fg },
         RainbowDelimiterBlue = { fg = c.blue },
-        RainbowDelimiterOrange = { fg = c.orange },
-        RainbowDelimiterGreen = { fg = c.green },
+        RainbowDelimiterOrange = { fg = c.warning },
+        RainbowDelimiterGreen = { fg = c.success },
         RainbowDelimiterViolet = { fg = c.purple },
-        RainbowDelimiterCyan = { fg = c.cyan },
+        RainbowDelimiterCyan = { fg = c.hint },
 
-        -- nvim-notify
+        -- rcarriga/nvim-notify
         NotifyERRORBorder = { fg = c.base0 },
         NotifyWARNBorder = { fg = c.base0 },
         NotifyINFOBorder = { fg = c.base0 },
         NotifyDEBUGBorder = { fg = c.base0 },
         NotifyTRACEBorder = { fg = c.base0 },
         NotifyERRORTitle = { fg = c.red },
-        NotifyWARNTitle = { fg = c.orange },
-        NotifyINFOTitle = { fg = c.green },
+        NotifyWARNTitle = { fg = c.warning },
+        NotifyINFOTitle = { fg = c.success },
         NotifyDEBUGTitle = { fg = c.blue },
         NotifyTRACETitle = { fg = c.purple },
         NotifyERRORIcon = { link = 'NotifyERRORTitle' },
@@ -268,17 +511,23 @@ function M.get_groups(c)
         NotifyDEBUGIcon = { link = 'NotifyDEBUGTitle' },
         NotifyTRACEIcon = { link = 'NotifyTRACETitle' },
 
-        -- nvim-cmp
+        -- esmuellert/codediff.nvim: signs need foregrounds, not the pastel diff backgrounds.
+        CodeDiffGutterInsert = { link = 'GitSignsAdd' },
+        CodeDiffGutterDelete = { link = 'GitSignsDelete' },
+        CodeDiffGutterInsertNumber = { link = 'GitSignsAdd' },
+        CodeDiffGutterDeleteNumber = { link = 'GitSignsDelete' },
+
+        -- hrsh7th/nvim-cmp
         CmpItemAbbr = { link = 'Comment' },
-        CmpItemAbbrDeprecated = { link = 'Visual' },
+        CmpItemAbbrDeprecated = { link = 'DiagnosticDeprecated' },
         CmpItemAbbrMatch = { link = 'Identifier' },
         CmpItemAbbrMatchFuzzy = { link = 'CmpItemAbbrMatch' },
 
-        CmpItemKindText = { fg = c.base0 },
-        CmpItemKindSnippet = { fg = c.base2 },
+        CmpItemKindText = { link = 'Pmenu' },
+        CmpItemKindSnippet = { fg = c.comment },
         CmpItemKindConstant = { fg = c.blue },
         CmpItemKindVariable = { fg = c.blue },
-        CmpItemKindKeyword = { fg = c.orange },
+        CmpItemKindKeyword = { fg = c.warning },
         CmpItemKindMethod = { fg = c.purple },
         CmpItemKindFunction = { link = 'CmpItemKindMethod' },
         CmpItemKindConstructor = { link = 'CmpItemKindMethod' },
@@ -287,64 +536,10 @@ function M.get_groups(c)
         CmpItemKindModule = { link = 'CmpItemKindClass' },
         CmpItemKindStruct = { link = 'CmpItemKindClass' },
 
-        -- mini.deps
-        MiniDepsChangeAdded = { fg = c.green },
-        MiniDepsChangeRemoved = { fg = c.orange },
-        MiniDepsHint = { fg = c.base3 },
-        MiniDepsInfo = { fg = c.base0 },
-        MiniDepsTitle = { fg = c.base0, bold = true },
-        MiniDepsTitleError = { fg = c.red, bold = true },
-        MiniDepsTitleSame = { fg = c.blue, bold = true },
-        MiniDepsTitleUpdate = { fg = c.green, bold = true },
-
-        -- mini.diff
-        MiniDiffSignAdd = { bg = c.light_green },
-        MiniDiffSignChange = { bg = c.light_orange },
-        MiniDiffSignDelete = { bg = c.light_red },
-        MiniDiffOverAdd = { bg = c.light_green },
-        MiniDiffOverChange = { bg = c.light_orange },
-        MiniDiffOverContext = { bg = c.light_cyan },
-        MiniDiffOverDelete = { bg = c.light_red },
-
-        -- mini.files
-        MiniFilesBorder = { link = 'WinSeparator' }, -- border of regular windows.
-        MiniFilesBorderModified = { link = 'DiffChange' }, -- border of windows showing modified buffer.
-        MiniFilesDirectory = { link = 'SpecialKey' }, -- text and icon representing directory.
-        MiniFilesFile = { link = 'Identifier' }, -- text representing file.
-        MiniFilesNormal = { link = 'Normal' }, -- basic foreground/background highlighting.
-        MiniFilesTitle = { link = 'Comment' }, -- title of regular windows.
-        MiniFilesTitleFocused = { link = 'PreProc' }, -- title of focused window.
-
-        -- mini.jump2d
-        MiniJump2dSpot = { fg = c.red, bold = true },
-        MiniJump2dSpotAhead = { fg = c.orange },
-
-        -- mini.statusline
-        MiniStatuslineModeNormal = { bg = c.light_purple },
-        MiniStatuslineModeInsert = { bg = c.light_green },
-        MiniStatuslineModeVisual = { bg = c.light_cyan },
-        MiniStatuslineModeReplace = { bg = c.light_orange },
-        MiniStatuslineModeCommand = { bg = c.light_red },
-        MiniStatuslineModeOther = { bg = c.light_blue },
-        MiniStatuslineInactive = { fg = c.base3 },
-
-        -- mini.starter
-        MiniStarterHeader = { fg = c.base0 },
-        MiniStarterFooter = { fg = c.base3 },
-        MiniStarterItemPrefix = { fg = c.red },
-
-        -- mini.tabline
-        MiniTablineCurrent = { fg = c.base7, bg = c.base0 },
-        MiniTablineVisible = { link = 'MiniTablineCurrent' },
-        MiniTablineHidden = { fg = c.base0, bg = c.base7 },
-        MiniTablineModifiedCurrent = { fg = c.orange, bg = c.base0 },
-        MiniTablineModifiedVisible = { link = 'MiniTablineModifiedCurrent' },
-        MiniTablineModifiedHidden = { fg = c.orange, bg = c.base7 },
-
-        -- barbar
+        -- romgrk/barbar.nvim
         BufferCurrent = { link = 'TabLineSel' },
         BufferCurrentIndex = { link = 'TabLineSel' },
-        BufferCurrentMod = { fg = c.orange },
+        BufferCurrentMod = { fg = c.warning },
         BufferCurrentSign = { fg = c.base7 },
         BufferCurrentTarget = { fg = c.red },
         BufferInactive = { link = 'TabLine' },
@@ -362,25 +557,21 @@ function M.get_groups(c)
         BufferOffset = { link = 'TabLineSel' },
         BufferScrollArrow = { link = 'TabLineSel' },
 
-        -- noice.nvim
-        NoiceCmdlinePopupTitle = { fg = c.base0, bold = true },
-        NoiceCmdlinePopupBorder = { fg = c.base0 },
-
-        -- Neogit
+        -- neogitorg/neogit
         NeogitDiffAdd = { bg = c.light_green },
         NeogitDiffAddHighlight = { link = 'NeogitDiffAdd' },
         NeogitDiffDelete = { bg = c.light_red },
         NeogitDiffDeleteHighlight = { link = 'NeogitDiffDelete' },
         NeogitHunkHeader = { link = 'NeogitHunkHeaderHighlight' },
 
-        -- Diffview
+        -- sindrets/diffview.nvim
         DiffviewDiffAdd = { bg = c.light_green },
         DiffviewDiffDelete = { bg = c.light_red },
         DiffviewDiffChange = { bg = c.light_orange },
 
-        -- modicator.nvim
+        -- mawkler/modicator.nvim
         NormalMode = { link = 'Normal' },
-        InsertMode = { bold = True },
+        InsertMode = { bold = true },
         VisualMode = { link = 'Visual' },
         CommandMode = { link = 'NormalMode' },
         ReplaceMode = { fg = c.red },
@@ -392,21 +583,89 @@ function M.get_groups(c)
         DapUIVariable = { link = 'Normal' },
         DapUIValue = { link = 'Normal' },
         DapUIFrameName = { link = 'Normal' },
-        DapUIThread = { fg = c.orange },
+        DapUIThread = { fg = c.warning },
         DapUIWatchesValue = { link = 'DapUIThread' },
         DapUIBreakpointsInfo = { link = 'DapUIThread' },
-        DapUIBreakpointsCurrentLine = { fg = c.orange, bold = True },
+        DapUIBreakpointsCurrentLine = { fg = c.warning, bold = true },
         DapUIWatchesError = { link = 'DapUIWatchesEmpty' },
         DapUIBreakpointsDisabledLine = { fg = c.muted },
-        DapUISource = { fg = c.iris },
-        DapUIBreakpointsPath = { fg = c.cyan },
+        DapUISource = { fg = c.purple },
+        DapUIBreakpointsPath = { fg = c.hint },
         DapUIScope = { link = 'DapUIBreakpointsPath' },
         DapUILineNumber = { link = 'DapUIBreakpointsPath' },
         DapUIBreakpointsLine = { link = 'DapUIBreakpointsPath' },
         DapUIFloatBorder = { link = 'DapUIBreakpointsPath' },
         DapUIStoppedThread = { link = 'DapUIBreakpointsPath' },
         DapUIDecoration = { link = 'DapUIBreakpointsPath' },
-        DapUIModifiedValue = { fg = c.cyan, bold = True },
+        DapUIModifiedValue = { fg = c.hint, bold = true },
+
+        -- MeanderingProgrammer/render-markdown.nvim
+        RenderMarkdownH1Bg = { link = 'Bold' },
+        RenderMarkdownH2Bg = { link = 'Bold' },
+        RenderMarkdownH3Bg = { link = 'Bold' },
+        RenderMarkdownH4Bg = { link = 'Bold' },
+        RenderMarkdownH5Bg = { link = 'Bold' },
+        RenderMarkdownH6Bg = { link = 'Bold' },
+
+        -- OXY2DEV/markview.nvim
+        MarkviewPalette0 = { fg = c.base0, bg = c.base6 },
+        MarkviewPalette0Fg = { fg = c.base0 },
+        MarkviewPalette0Bg = { bg = c.base6 },
+        MarkviewPalette0Sign = { link = 'MarkviewPalette0Fg' },
+        MarkviewPalette1 = { fg = c.base0, bg = c.light_red },
+        MarkviewPalette1Fg = { fg = c.base0 },
+        MarkviewPalette1Bg = { bg = c.light_red },
+        MarkviewPalette1Sign = { link = 'MarkviewPalette1Fg' },
+        MarkviewPalette2 = { fg = c.base0, bg = c.light_pink },
+        MarkviewPalette2Fg = { fg = c.base0 },
+        MarkviewPalette2Bg = { bg = c.light_pink },
+        MarkviewPalette2Sign = { link = 'MarkviewPalette2Fg' },
+        MarkviewPalette3 = { fg = c.base0, bg = c.light_purple },
+        MarkviewPalette3Fg = { fg = c.base0 },
+        MarkviewPalette3Bg = { bg = c.light_purple },
+        MarkviewPalette3Sign = { link = 'MarkviewPalette3Fg' },
+        MarkviewPalette4 = { fg = c.base0, bg = c.light_blue },
+        MarkviewPalette4Fg = { fg = c.base0 },
+        MarkviewPalette4Bg = { bg = c.light_blue },
+        MarkviewPalette4Sign = { link = 'MarkviewPalette4Fg' },
+        MarkviewPalette5 = { fg = c.base0, bg = c.light_cyan },
+        MarkviewPalette5Fg = { fg = c.base0 },
+        MarkviewPalette5Bg = { bg = c.light_cyan },
+        MarkviewPalette5Sign = { link = 'MarkviewPalette5Fg' },
+        MarkviewPalette6 = { fg = c.base0, bg = c.light_orange },
+        MarkviewPalette6Fg = { fg = c.base0 },
+        MarkviewPalette6Bg = { bg = c.light_orange },
+        MarkviewPalette6Sign = { link = 'MarkviewPalette6Fg' },
+
+        -- lewis6991/gitsigns.nvim
+        GitSignsAdd = { fg = c.git_add },
+        GitSignsChange = { fg = c.git_change },
+        GitSignsDelete = { fg = c.git_delete },
+
+        -- lukas-reineke/indent-blankline.nvim
+        IblScope = { fg = c.base2 },
+        IblIndent = { fg = c.base4 },
+
+        -- which-key
+        WhichKeyGroup = { link = 'Bold' },
+        WhichKeyIconAzure = { fg = c.hint },
+        WhichKeyIconBlue = { fg = c.blue },
+        WhichKeyIconCyan = { fg = c.hint },
+        WhichKeyIconGreen = { fg = c.success },
+        WhichKeyIconGrey = { fg = c.comment },
+        WhichKeyIconOrange = { fg = c.warning },
+        WhichKeyIconPurple = { fg = c.purple },
+        WhichKeyIconRed = { fg = c.red },
+        WhichKeyIconYellow = { fg = c.yellow_fg },
+
+        -- Snacks.nvim
+        SnacksPickerDir = { link = 'Comment' },
+
+        -- orgmode.nvim
+        ['@org.keyword.todo'] = { fg = c.base0, bg = c.bright_red, bold = true },
+        ['@org.keyword.done'] = { fg = c.base0, bg = c.bright_green, bold = true },
+        ['@org.agenda.deadline'] = { fg = c.base0 },
+        ['@org.agenda.schedule'] = { fg = c.base0 },
     }
 end
 
