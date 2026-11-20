@@ -2,7 +2,7 @@
   <h2 align="center">DeepWhite</h2>
 </p>
 
-![screenshot](screenshot/screenshot1.png)
+![DeepWhite theme in Neovim](screenshot/screenshot1.png)
 
 ## About
 
@@ -490,35 +490,6 @@ the upstream solid/dotted sign distinction; no extra multicursor color scheme is
 which-key's modern preset and mini.cmdline's range-preview window also use their existing/default links.
 Their checked text, titles, borders and line numbers need no additional plugin-specific overrides.
 Experimental Neovim UI2 message windows are not included in these plugin UI checks.
-
-### Statusline and tabline
-
-```lua
-require('lualine').setup({
-    options = { theme = 'deepwhite' },
-})
-require('barbar').setup({
-    icons = { filetype = { custom_colors = true } },
-})
-```
-
-The lualine theme no longer changes `fillchars`. If you want the previous horizontal-line decoration,
-opt in yourself:
-
-```lua
-vim.opt_global.fillchars:append { stl = '─', stlnc = '─' }
-vim.opt_local.fillchars:append { stl = '─', stlnc = '─' }
-```
-
-The screenshots illustrate the layout; they predate the readable-foreground adjustments above.
-
-- lualine theme
-
-![screenshot](screenshot/lualine.png)
-
-- barbar theme
-
-![screenshot](screenshot/barbar.png)
 
 </details>
 
