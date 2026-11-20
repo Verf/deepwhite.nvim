@@ -158,6 +158,49 @@ test('visual selection uses a readable foreground instead of retaining muted syn
     eq(hl('Visual').bg, hex(colors().base5))
 end)
 
+-- Native snippets were added in Neovim 0.10.
+if vim.fn.has 'nvim-0.10' == 1 then
+    for _, cold in ipairs { false, true } do
+        test((cold and 'cold' or 'warm') .. ' native snippet placeholders keep a visible background', function()
+            theme.setup { low_blue_light = cold }
+            vim.cmd 'colorscheme deepwhite'
+            local previous = vim.api.nvim_get_current_buf()
+            local buf = vim.api.nvim_create_buf(false, true)
+            vim.api.nvim_set_current_buf(buf)
+            local ok, err = xpcall(function()
+                vim.snippet.expand 'local ${1:name} = ${2:value}; ${0}'
+                assert(vim.snippet.active(), 'Expected an active snippet')
+                local line, groups = vim.api.nvim_get_current_line(), {}
+                for _, mark in ipairs(vim.api.nvim_buf_get_extmarks(buf, -1, 0, -1, { details = true })) do
+                    local col, details = mark[3], mark[4]
+                    if details.hl_group and details.end_col and details.end_col > col then
+                        groups[line:sub(col + 1, details.end_col)] = details.hl_group
+                    end
+                end
+                for _, label in ipairs { 'name', 'value' } do
+                    local group = assert(groups[label], 'Missing highlight on snippet placeholder ' .. label)
+                    local bg = hl(group).bg
+                    assert(bg and bg ~= hl('Normal').bg, 'Snippet placeholder blends into ordinary text: ' .. label)
+                    eq(bg, hl('Visual').bg)
+                end
+            end, debug.traceback)
+            vim.snippet.stop()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'nx', false)
+            vim.api.nvim_set_current_buf(previous)
+            vim.api.nvim_buf_delete(buf, { force = true })
+            if not ok then error(err, 0) end
+        end)
+    end
+end
+
+test('mini cursorword keeps both current and other matches underlined without replacing colors', function()
+    local other, current = hl 'MiniCursorword', hl 'MiniCursorwordCurrent'
+    assert(other.underline and current.underline, 'Both cursorword groups should be underlined')
+    eq(other.fg, nil)
+    eq(other.bg, nil)
+    eq(current, other)
+end)
+
 test('codediff gutters follow shared Git foreground roles', function()
     for _, row in ipairs {
         { 'CodeDiffGutterInsert', 'GitSignsAdd' },

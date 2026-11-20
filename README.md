@@ -196,7 +196,7 @@ vim.cmd [[colorscheme deepwhite]]
 | --- | --- |
 | `deepwhite_kitty.conf` | Include from your Kitty configuration |
 | `deepwhite_wezterm.toml` | Place in a WezTerm color-scheme directory and select `deepwhite` |
-| `deepwhite_windows_terminal.json` | Add this scheme object to Windows Terminal's `schemes` array and select it for a profile |
+| `deepwhite_windows_terminal.json` | Add the `deepwhite` scheme to `schemes`, or replace its existing entry when upgrading |
 | `deepwhite_xresources.Xresources` | Merge into your existing Xresources configuration |
 | `deepwhite_ghostty.conf` | Install as `ghostty/themes/deepwhite` and select `theme = deepwhite`, or use its absolute path |
 | `deepwhite_alacritty.toml` | Import through `[general].import` in current Alacritty TOML configuration |
@@ -269,10 +269,16 @@ For another theme directory, add it to `config.color_scheme_dirs`; see the
 
 ##### Windows Terminal
 
-Open **Settings → Open JSON file**, and add the complete object from
-`extra/deepwhite_windows_terminal.json` to the existing `schemes` array. Then choose **deepwhite**
-under **Profiles → your profile → Appearance → Color scheme**, and save. Do not replace `settings.json`
-with the theme object.
+Open **Settings → Open JSON file** and find the `schemes` array in `settings.json`.
+
+- **New installation:** Add the object from `extra/deepwhite_windows_terminal.json` and select
+  **deepwhite** under **Profiles → your profile → Appearance → Color scheme**.
+- **Upgrade:** Replace the existing object named `deepwhite` in place. Do not append a second object
+  with that name: Windows Terminal can keep using the first one. Leave the profile's `colorScheme`
+  setting and any light/dark scheme pairing unchanged.
+
+Save the file without replacing the entire `settings.json` or changing other schemes. See the
+[Windows Terminal guide](docs/TERMINALS.md#windows-terminal) for profile-specific overrides.
 
 ##### Xresources
 

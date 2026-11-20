@@ -65,7 +65,7 @@ function M.get_groups(c)
         ComplMatchIns = { link = 'Normal' }, -- Matched text of the currently inserted completion.
         Question = { bold = true }, -- |hit-enter| prompt and yes/no questions.
         QuickFixLine = { bold = true }, -- Current |quickfix| item in the quickfix window. Combined with |hl-CursorLine| when the cursor is there.
-        SnippetTabstop = { link = 'Normal' }, -- Tabstops in snippets. |vim.snippet|
+        SnippetTabstop = { link = 'Visual' }, -- Keep tabstops visible against ordinary text. |vim.snippet|
         SpecialKey = { fg = c.blue }, -- Unprintable characters: Text displayed differently from what it really is. But not 'listchars' whitespace. |hl-Whitespace|
         SpellBad = { fg = c.base0, undercurl = true }, -- Word that is not recognized by the spellchecker. |spell| Combined with the highlighting used otherwise.
         SpellCap = { link = 'SpellBad' }, -- Word that should start with a capital. |spell| Combined with the highlighting used otherwise.
@@ -333,8 +333,8 @@ function M.get_groups(c)
         MiniCmdlinePeekTitle = { link = 'FloatTitle' },
 
         -- Mini Cursorword
-        MiniCursorword = { underline = true }, -- Subtle highlight for word under cursor
-        MiniCursorwordCurrent = { link = 'Cursor' }, -- Or leave empty to just show cursor
+        MiniCursorword = { underline = true }, -- Underline matches without changing syntax colors.
+        MiniCursorwordCurrent = { link = 'MiniCursorword' },
 
         -- Mini Deps
         MiniDepsChangeAdded = { link = 'Added' },

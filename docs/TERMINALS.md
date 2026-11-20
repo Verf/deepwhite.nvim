@@ -103,9 +103,20 @@ not a substitute for checking actual application output with your font/renderer.
 | --- | --- | --- |
 | Kitty | `deepwhite_kitty.conf` | Add `include /absolute/path/to/deepwhite_kitty.conf` to your Kitty config |
 | WezTerm | `deepwhite_wezterm.toml` | Put it in a color-scheme directory and select `color_scheme = 'deepwhite'` |
-| Windows Terminal | `deepwhite_windows_terminal.json` | Add the object to the `schemes` array, then select `deepwhite` for a profile; do not replace the entire settings file |
+| Windows Terminal | `deepwhite_windows_terminal.json` | Add the scheme or replace the existing `deepwhite` entry; see the steps below |
 | Xresources | `deepwhite_xresources.Xresources` | Merge it into your Xresources, e.g. `xrdb -merge /absolute/path/to/deepwhite_xresources.Xresources` |
 | vivid | `vivid_themes_deepwhite.yml` | Use `vivid generate /absolute/path/to/vivid_themes_deepwhite.yml` to generate `LS_COLORS` |
+
+### Windows Terminal
+
+Open **Settings → Open JSON file** and locate the `schemes` array. On a fresh installation,
+add the object from `extra/deepwhite_windows_terminal.json` and select `deepwhite` for the profile.
+
+When upgrading, replace the object whose `name` is `deepwhite` instead of appending a duplicate.
+Windows Terminal can keep the first object with a given name, so appending the new preset may leave
+an older one in use. Keep the profile's `colorScheme` reference (including a light/dark pair if you
+use one), your other schemes, and the rest of `settings.json` intact. If you customized the scheme
+itself, carry those overrides into the replacement. Explicit profile colors can still override the scheme.
 
 ## Ghostty
 
